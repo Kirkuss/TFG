@@ -1,6 +1,5 @@
 import cv2
-import numpy as np
-import matplotlib.pyplot as plt
+import Performance_stats as perf
 
 show = True
 detailed = True
@@ -106,13 +105,7 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-print("x: " + str(len(list_x)))
-print("y: " + str(len(list_y)))
-plt.plot(list_x,list_y)
-plt.xlabel("iterations")
-plt.ylabel("Found faces")
-plt.title("Rendimiento - aislamiento")
-plt.show()
+perf.isolation_performance_plot(list_x, list_y, "iterations", "founds", "Performance - isolation")
 
 """
 for (x,y,w,h) in faces:
