@@ -36,36 +36,6 @@ class face:
         return ("face: (" + str(self.x) + ", " + str(self.y) + ") w: " + str(self.w) + " h: " + str(self.h))
 
 
-class dataList(face):
-
-    def __init__(self, item, next = None):
-        self.item = item
-        self.next = next
-
-    def getNext(self): return self.next
-
-    def getItemById(self, id):
-        while self.next is not None:
-            if self.item.id == id: return self.item
-            else: return self.next.getItemById(id)
-        return None
-
-    def updateItem(self, item):
-        self.item.x = item.x
-        self.item.y = item.y
-        self.item.w = item.w
-        self.item.h = item.h
-
-    def countItems(self):
-        if self.item is None: count = 0
-        else: count = 1
-        while self.next is not None:
-            count += self.next.countItems()
-            pass
-
-        return count
-
-
 
 
 
