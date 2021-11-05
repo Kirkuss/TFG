@@ -1,8 +1,7 @@
 import cv2
 
 class face:
-    def __init__(self, x, y, w, h, id):
-        self.id = id
+    def __init__(self, x, y, w, h):
         self.x = x
         self.y = y
         self.w = w
@@ -14,7 +13,7 @@ class face:
     # con el area del punto de la cara anterior
     # la cara es la misma y actualiza el estado
 
-    def equal(self, conf, x, y, frame):
+    def equal(self, conf, item, frame):
         x1, y1 = int(self.x + (self.w * conf)),int(self.y + (self.h * conf))
         x2, y2 = int(self.x - (self.w * conf)),int(self.y - (self.h * conf))
 
@@ -28,7 +27,7 @@ class face:
 
         cv2.rectangle(frame, (x2, y2), (x1, y1), (0, 255, 0), 1)
 
-        if x in rx and y in ry:
+        if item.x in rx and item.y in ry:
             return True
         else:
             return False
@@ -37,7 +36,8 @@ class face:
         return ("face: (" + str(self.x) + ", " + str(self.y) + ") w: " + str(self.w) + " h: " + str(self.h))
 
 
-class dataList:
+class dataList(face):
+
     def __init__(self, item, next = None):
         self.item = item
         self.next = next

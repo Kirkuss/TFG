@@ -26,7 +26,8 @@ cap.set(3,640)
 cap.set(4,480)
 
 #f_Found = []
-list = DS.dataList(None)
+list = {}
+list_AUX = {}
 
 founds = 0
 iterations = 0
@@ -34,22 +35,40 @@ iterations = 0
 list_x = []
 list_y = []
 
-while True and iterations <= 0:
+while (cap.isOpened()):
     iterations += 1
     ret, frame = cap.read()
     frame = cv2.resize(frame, (540, 380), fx = 0, fy = 0, interpolation = cv2.INTER_CUBIC)
     GrayFrame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = faceCascade.detectMultiScale(GrayFrame,1.1,4)
-    Updated = False
 
     for (x, y, w, h) in faces:
-        if list.countItems() == 0:
+        newFace = DS.face(x, y, w, h)
+        newFound = True
+
+        print(list)
+
+        if len(list) == 0:
             founds += 1
-            newFace = DS.face(x, y, w, h, founds)
-            list.item = newFace
+            list[str(founds)] = newFace
+            print("Added first")
         else:
-            print("Todo bien")
-            """
+            for k, v in list.items():
+                if newFace.equal(0.25, list[k], frame):
+                    print("Coincidence found")
+                    list[k] = newFace
+                    print(list)
+                    newFound = False
+                    break
+
+        if newFound and len(list) > 0:
+            founds += 1
+            list[str(founds)] = newFace
+            #founds += 1
+            #list_AUX[str(founds)] = newFace
+
+
+        """
             for obj in f_Found:
                 if obj.equal(0.25, x, y, frame):
                     print("Coincidence found")
@@ -58,7 +77,7 @@ while True and iterations <= 0:
                     f_Found.append(faceFound)
                     founds += 1
                     print("Added new")
-            """
+        """
 
         if detailed:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
@@ -83,7 +102,6 @@ while True and iterations <= 0:
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
         break
-
 
 perf.isolation_performance_plot(list_x, list_y, "iterations", "founds", "Performance - isolation")
 
