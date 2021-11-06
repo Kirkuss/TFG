@@ -1,7 +1,7 @@
 import cv2
 
 def noiseOut(list2clear):
-    aux = list2clear.copy()
+    aux = list2clear.copy() #Los diccionarios no funcionan de forma dinamica
     for k in list2clear:
         if not list2clear[k].valid:
             del aux[k]
