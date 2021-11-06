@@ -1,11 +1,20 @@
 import cv2
 
+def noiseOut(list2clear):
+    aux = list2clear.copy()
+    for k in list2clear:
+        if not list2clear[k].valid:
+            del aux[k]
+    return aux
+
 class face:
-    def __init__(self, x, y, w, h):
+    def __init__(self, x, y, w, h, occurs = 0, valid = False):
         self.x = x
         self.y = y
         self.w = w
         self.h = h
+        self.occurs = occurs
+        self.valid = valid
         # self.visited = False ?
 
     #Metodo equal:
@@ -25,7 +34,7 @@ class face:
 
         #print(str(x2) + " " + str(y2) + " " + str(x1) + " " + str(y1))
 
-        cv2.rectangle(frame, (x2, y2), (x1, y1), (0, 255, 0), 1)
+        #cv2.rectangle(frame, (x2, y2), (x1, y1), (0, 255, 0), 1)
 
         if item.x in rx and item.y in ry:
             return True
@@ -33,7 +42,7 @@ class face:
             return False
 
     def toString(self):
-        return ("face: (" + str(self.x) + ", " + str(self.y) + ") w: " + str(self.w) + " h: " + str(self.h))
+        return ("face: (" + str(self.x) + ", " + str(self.y) + ") ( dim: w: " + str(self.w) + " h: " + str(self.h) + ") occurs: " + str(self.occurs) + " times and valid: " + self.valid)
 
 
 
