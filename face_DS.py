@@ -8,11 +8,13 @@ def noiseOut(list2clear):
     return aux
 
 class face:
-    def __init__(self, x, y, w, h, occurs = 0, valid = False):
+    def __init__(self, x, y, w, h, frame, occurs = 0, valid = False):
+        self.list = {}
         self.x = x
         self.y = y
         self.w = w
         self.h = h
+        self.frame = frame
         self.occurs = occurs
         self.valid = valid
         # self.visited = False ?
@@ -21,6 +23,11 @@ class face:
     # comprueba que un punto dado esta en un area si coincide
     # con el area del punto de la cara anterior
     # la cara es la misma y actualiza el estado
+
+    def queue(self, face, queue):
+        if queue is not None: self.list = queue
+        else: pass
+        self.list[face.frame] = face
 
     def equal(self, conf, item, frame):
         x1, y1 = int(self.x + (self.w * conf)),int(self.y + (self.h * conf))
@@ -42,7 +49,10 @@ class face:
             return False
 
     def toString(self):
-        return ("face: (" + str(self.x) + ", " + str(self.y) + ") ( dim: w: " + str(self.w) + " h: " + str(self.h) + ") occurs: " + str(self.occurs) + " times and valid: " + self.valid)
+        return ("face: (" + str(self.x) + ", " + str(self.y) +
+                ") ( dim: w: " + str(self.w) + " h: " + str(self.h) +
+                ") occurs: " + str(self.occurs) + " times and valid: " +
+                self.valid)
 
 
 
