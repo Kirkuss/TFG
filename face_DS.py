@@ -25,9 +25,11 @@ class face:
     # la cara es la misma y actualiza el estado
 
     def queue(self, face, queue):
-        if queue is not None: self.list = queue
-        else: pass
-        self.list[face.frame] = face
+        if self.valid:
+            if queue is not None: self.list = queue
+            else: pass
+            self.list[face.frame] = face
+        else: self.list = None
 
     def equal(self, conf, item, frame):
         x1, y1 = int(self.x + (self.w * conf)),int(self.y + (self.h * conf))
@@ -41,7 +43,7 @@ class face:
 
         #print(str(x2) + " " + str(y2) + " " + str(x1) + " " + str(y1))
 
-        #cv2.rectangle(frame, (x2, y2), (x1, y1), (0, 255, 0), 1)
+        cv2.rectangle(frame, (x2, y2), (x1, y1), (0, 255, 0), 1)
 
         if item.x in rx and item.y in ry:
             return True

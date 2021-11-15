@@ -7,7 +7,7 @@ import cv2
 import Performance_stats as perf
 import face_DS as DS
 
-show = False
+show = True
 detailed = True
 source = "VIDEO"
 path = "video3.mp4"
@@ -37,7 +37,7 @@ videoLenght = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 founds = 0
 iterations = 0
 postIterations = 0
-ratio = 0.4
+ratio = 0.5
 prop = 0.25
 
 list_x = []
@@ -52,8 +52,6 @@ elif source == "CAM":
 print(" | Data model -> " + model)
 print(" |___________")
 print(" | Processing...")
-
-
 
 def showStats(iterations, postIterations, lenght):
     if postProcessing:
@@ -95,6 +93,8 @@ while (cap.isOpened()):
             newFound = True
             #print(list)
 
+            #Interesa optimizar
+
             if len(list) == 0:
                 founds += 1
                 list[str(founds)] = newFace
@@ -119,20 +119,22 @@ while (cap.isOpened()):
                 newFace.queue(newFace, None)
                 list[str(founds)] = newFace
 
+            #Interesa optimizar
+
             if detailed:
                 if newFace.valid:
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 1)
-                    cv2.putText(frame, "Face", (int(x + (w*prop)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
+                    cv2.putText(frame, "Accepted", (int(x + (w*prop)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
                 else:
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 1)
-                    cv2.putText(frame, "Face?", (int(x + (w*prop)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
+                    cv2.putText(frame, "Rejected", (int(x + (w*prop)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
                 imgCropped = frame[y:y + h, x:x + w]
                 imgCropped = cv2.resize(imgCropped, (320,240))
             else: pass
 
             if show:
                 #cv2.imshow("Gepeto", imgCropped)
-                #cv2.imshow(window, frame)
+                cv2.imshow(window, frame)
                 pass
             else: pass
 
@@ -160,38 +162,17 @@ while (cap.isOpened()):
                 cv2.putText(frame, "Face: " + k, (int(validFace.x + (validFace.w * prop)) + 5, validFace.y - 5),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1,
                             cv2.LINE_AA)
-                #imgCropped = frame[validFace.y:validFace.y + validFace.h, validFace.x:validFace.x + validFace.w]
-                #imgCropped = cv2.resize(imgCropped, (320, 240))
+                imgCropped = frame[validFace.y:validFace.y + validFace.h, validFace.x:validFace.x + validFace.w]
+                imgCropped = cv2.resize(imgCropped, (320, 240))
                 #cv2.imshow("Gepeto" + k, imgCropped)
                 #cv2.imshow(window, frame)
-            else:
-                #cv2.imshow(window, frame)
-                pass
+            cv2.imshow(window, frame)
     else: break
 
 cap.release()
 perf.isolation_performance_plot(list_x, list_y, "iterations", "founds", "Performance - isolation")
 
-#ERROR, TODO:
-# AL LIMPIAR LA LISTA DE CARAS DETECTADAS,
-# SE OBTIENE LA ULTIMA X E Y DE DICHAS CARAS "VALIDAS",
-# ES DECIR, HAY QUE HACER UNA LISTA QUE ALMACENE
-# LAS OCURRENCIAS DE CADA CARA PARA ASI OBTENER
-# UNA IMAGEN COMPLETA EN CADA FOTOGRAMA
-
-#cap.release()
-
-"""
-for (x,y,w,h) in faces:
-    count += 1
-    cv2.rectangle(img,(x,y),(x+w,y+h), (255,0,0), 2)
-    imgCropped = img[y:y+h,x:x+w]
-    print(x,x+w,y,y+h)
-    cv2.imshow(str(count), imgCropped)
-
-cv2.imshow("Salida", img)
-cv2.waitKey(0)
-"""
+cap.release()
 
 
 
