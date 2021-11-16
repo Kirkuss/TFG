@@ -11,7 +11,7 @@ import Utilities as Dmanager
 show = True
 detailed = True
 source = "VIDEO"
-path = "video3.mp4"
+path = "video5.mp4"
 model = "Resources/haarcascade_frontalface_default.xml"
 
 faceCascade = cv2.CascadeClassifier(model)
@@ -67,6 +67,7 @@ def showStats(iterations, postIterations, lenght):
 while (cap.isOpened()):
 
     showStats(iterations, postIterations, videoLenght)
+    ret, frame = cap.read()
 
     if iterations == videoLenght:
         cleanList = {}
@@ -86,7 +87,6 @@ while (cap.isOpened()):
         _ = cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
 
     iterations += 1
-    ret, frame = cap.read()
 
     if ret and postProcessing:
         frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
@@ -158,20 +158,20 @@ while (cap.isOpened()):
         #print("again")
         postIterations += 1
         frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
-        for k, v in cleanList.items():
-            faceItem = cleanList[k]
-            if postIterations in faceItem.list:
-                validFace = faceItem.list[postIterations]
-                cv2.rectangle(frame, (validFace.x, validFace.y), (validFace.x + validFace.w, validFace.y + validFace.h),
-                              (255, 0, 0), 2)
-                cv2.putText(frame, "Face: " + k, (int(validFace.x + (validFace.w * prop)) + 5, validFace.y - 5),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1,
-                            cv2.LINE_AA)
-                imgCropped = frame[validFace.y:validFace.y + validFace.h, validFace.x:validFace.x + validFace.w]
-                imgCropped = cv2.resize(imgCropped, (320, 240))
+        #for k, v in cleanList.items():
+        #    faceItem = cleanList[k]
+        #    if postIterations in faceItem.list:
+        #        validFace = faceItem.list[postIterations]
+        #        cv2.rectangle(frame, (validFace.x, validFace.y), (validFace.x + validFace.w, validFace.y + validFace.h),
+        #                      (255, 0, 0), 2)
+        #        cv2.putText(frame, "Face: " + k, (int(validFace.x + (validFace.w * prop)) + 5, validFace.y - 5),
+        #                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1,
+        #                    cv2.LINE_AA)
+        #        imgCropped = frame[validFace.y:validFace.y + validFace.h, validFace.x:validFace.x + validFace.w]
+        #        imgCropped = cv2.resize(imgCropped, (320, 240))
                 #cv2.imshow("Gepeto" + k, imgCropped)
                 #cv2.imshow(window, frame)
-            cv2.imshow(window, frame)
+        cv2.imshow(window, frame)
     else: break
 
 cap.release()

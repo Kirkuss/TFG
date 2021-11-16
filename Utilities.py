@@ -42,12 +42,3 @@ class jsonManager(object):
     def saveJson(self, path):
         with open(path, 'w') as outfile:
             json.dump(self.data,outfile, indent=4, sort_keys=True)
-
-
-
-"""
-ESTRUCTURA DEL JSON:
-data = 
-    {"id_imagen" :[
-        {"frametoappear": [frametoappear
-"""

@@ -62,7 +62,7 @@ class face:
         serialized["y"] = str(self.y)
         serialized["w"] = str(self.w)
         serialized["h"] = str(self.h)
-        serialized["frame"] = str(self.frame)
+        #serialized["frame"] = str(self.frame) no es necesario porque la key del propio json ya es el frame en el que aparece
         #print(serialized)
         return serialized
 
