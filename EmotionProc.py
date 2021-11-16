@@ -6,6 +6,3 @@ import json
 class ProcessingEngine():
     def __init__(self):
         pass
-
-    def parseJson(self, json):
-        pass
