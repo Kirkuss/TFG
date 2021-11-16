@@ -6,6 +6,7 @@ import time
 import cv2
 import Performance_stats as perf
 import face_DS as DS
+import Utilities as Dmanager
 
 show = True
 detailed = True
@@ -43,6 +44,8 @@ prop = 0.25
 list_x = []
 list_y = []
 
+js = Dmanager.jsonManager()
+
 print(" |___________")
 print(" | AIWake ...")
 if source=="VIDEO":
@@ -78,6 +81,8 @@ while (cap.isOpened()):
               " | Acceptation ratio -> " + str(ratio))
         print(" | Hit ratio -> " + str(round(occRation, 2)) + "%")
         postProcessing = False
+        js.setData(cleanList, "face")
+        js.saveJson("Resources/jsonFiles/PreProcessResults.json")
         _ = cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
 
     iterations += 1
@@ -128,8 +133,8 @@ while (cap.isOpened()):
                 else:
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 1)
                     cv2.putText(frame, "Rejected", (int(x + (w*prop)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
-                imgCropped = frame[y:y + h, x:x + w]
-                imgCropped = cv2.resize(imgCropped, (320,240))
+                #imgCropped = frame[y:y + h, x:x + w]
+                #imgCropped = cv2.resize(imgCropped, (320,240))
             else: pass
 
             if show:

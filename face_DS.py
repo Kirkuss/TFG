@@ -56,6 +56,16 @@ class face:
                 ") occurs: " + str(self.occurs) + " times and valid: " +
                 self.valid)
 
+    def getSerialized(self):
+        serialized = {}
+        serialized["x"] = str(self.x)
+        serialized["y"] = str(self.y)
+        serialized["w"] = str(self.w)
+        serialized["h"] = str(self.h)
+        serialized["frame"] = str(self.frame)
+        #print(serialized)
+        return serialized
+
 
 
 

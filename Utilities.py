@@ -1,5 +1,12 @@
 import json
 
+def serializeFace(face, id):
+    serialized = {}
+    serialized[str(id)] = face.getSerialized()
+    for k in face.list:
+        serialized[str(face.list[k].frame)] = (face.list[k].getSerialized())
+    return serialized
+
 class jsonManager(object):
 
     __instance = None
@@ -10,8 +17,13 @@ class jsonManager(object):
             jsonManager.__instance = object.__new__(cls)
         return jsonManager.__instance
 
-    def setData(self, data):
-        self.data = data
+    def setData(self, data, type):
+        aux = {}
+        if type == "face":
+            for k in data:
+                aux[str(k)] = serializeFace(data[k], k) #ordenara segun la id de la cara (valida, pues la lista viene limpia)
+
+        self.data = aux.copy()
 
     def loadJson(self, path):
         """
@@ -20,9 +32,22 @@ class jsonManager(object):
         de video, un archivo json contenga los resultados de dicho preprocesamieto, de esta manera se pueden guardar
         dichos datos para analizar despues, el programa es mas rapido y ademas, podremos ver los datos producidos por
         el preprocesamiento en un fichero json fuera de la ejecucion del programa.
+
+        Ademas, algo bastante importante es que se van a diferenciar mas aun las etapas de la ejecucion, es decir,
+        postprocesado no va a necesitar que se haga el preprocesado si ya existe el archivo json, pudiendo asi modificar
+        la etapa del preprocesado sin necesidad de que dichos cambios afecten a la siguiente etapa.
         """
         pass
 
     def saveJson(self, path):
         with open(path, 'w') as outfile:
-            json.dump(self.data, outfile)
+            json.dump(self.data,outfile, indent=4, sort_keys=True)
+
+
+
+"""
+ESTRUCTURA DEL JSON:
+data = 
+    {"id_imagen" :[
+        {"frametoappear": [frametoappear
+"""
