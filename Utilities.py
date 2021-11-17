@@ -37,8 +37,14 @@ class jsonManager(object):
         postprocesado no va a necesitar que se haga el preprocesado si ya existe el archivo json, pudiendo asi modificar
         la etapa del preprocesado sin necesidad de que dichos cambios afecten a la siguiente etapa.
         """
-        pass
+        with open (path) as f:
+            data = json.load(f)
+        return data
+        #print(data) , sort_keys=True
+
+
 
     def saveJson(self, path):
         with open(path, 'w') as outfile:
-            json.dump(self.data,outfile, indent=4, sort_keys=True)
+            json.dump(self.data,outfile, indent=4)
+        self.data.clear()

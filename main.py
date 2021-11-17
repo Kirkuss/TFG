@@ -7,6 +7,8 @@ import cv2
 import Performance_stats as perf
 import face_DS as DS
 import Utilities as Dmanager
+import variables as config
+import EmotionProc as ep
 
 show = True
 detailed = True
@@ -30,7 +32,6 @@ cap.set(4,480)
 
 #f_Found = []
 list = {}
-list_AUX = {}
 
 postProcessing = True
 videoLenght = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -56,17 +57,9 @@ print(" | Data model -> " + model)
 print(" |___________")
 print(" | Processing...")
 
-def showStats(iterations, postIterations, lenght):
-    if postProcessing:
-        perc = (iterations/lenght) * 100
-        print('\r', "| Preprocessing... " + str(int(perc)) + "%", end='')
-    elif not postProcessing:
-        perc = (postIterations / lenght) * 100
-        print('\r', "| Postprocessing... " + str(int(perc)) + "%", end='')
-
 while (cap.isOpened()):
 
-    showStats(iterations, postIterations, videoLenght)
+    perf.showStats(iterations, videoLenght, postProcessing)
     ret, frame = cap.read()
 
     if iterations == videoLenght:
@@ -83,8 +76,9 @@ while (cap.isOpened()):
         print(" | Hit ratio -> " + str(round(occRation, 2)) + "%")
         postProcessing = False
         js.setData(cleanList, "face")
-        js.saveJson("Resources/jsonFiles/PreProcessResults.json")
-        _ = cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+        js.saveJson(config.PATH_TO_JSON_PRE)
+        cleanList.clear()
+        list.clear()
 
     iterations += 1
 
@@ -154,30 +148,18 @@ while (cap.isOpened()):
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
             break
-    elif ret and not postProcessing:
-        #print("again")
-        postIterations += 1
-        frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
-        #for k, v in cleanList.items():
-        #    faceItem = cleanList[k]
-        #    if postIterations in faceItem.list:
-        #        validFace = faceItem.list[postIterations]
-        #        cv2.rectangle(frame, (validFace.x, validFace.y), (validFace.x + validFace.w, validFace.y + validFace.h),
-        #                      (255, 0, 0), 2)
-        #        cv2.putText(frame, "Face: " + k, (int(validFace.x + (validFace.w * prop)) + 5, validFace.y - 5),
-        #                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1,
-        #                    cv2.LINE_AA)
-        #        imgCropped = frame[validFace.y:validFace.y + validFace.h, validFace.x:validFace.x + validFace.w]
-        #        imgCropped = cv2.resize(imgCropped, (320, 240))
-                #cv2.imshow("Gepeto" + k, imgCropped)
-                #cv2.imshow(window, frame)
-        cv2.imshow(window, frame)
+
+    elif not postProcessing:
+        cv2.destroyAllWindows()
+        cap.release()
+        ProcessEP = ep.ProcessingEngine()
+        ProcessEP.startPostProcessing()
+        break
+
     else: break
 
-cap.release()
 perf.isolation_performance_plot(list_x, list_y, "iterations", "founds", "Performance - isolation")
 
-cap.release()
 
 
 
