@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
 import cv2
+import os.path
 import json
 import variables as config
 import Utilities as Dmanager
@@ -20,6 +21,9 @@ cap.set(4, 480)
 class ProcessingEngine():
     faces = {}
     videoLenght = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+    #if os.path.isfile(config.EMOTION_MODEL):
+    model = tf.keras.models.load_model(config.EMOTION_MODEL)
 
     def __init__(self):
         pass
@@ -45,6 +49,14 @@ class ProcessingEngine():
                         #print(i)
                         for j in self.faces[i]:
                             if int(j) == iterations:
+                                cropped = frame[int(self.faces[i][j]["y"]):int(self.faces[i][j]["y"]) + int(self.faces[i][j]["h"]),
+                                          int(self.faces[i][j]["x"]):int(self.faces[i][j]["x"])+int(self.faces[i][j]["w"])]
+                                cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
+                                resized = cv2.resize(cropped, (48,48))
+                                resized = np.expand_dims(-1, resized, axis=0)
+                                resized = resized/255
+                                predictions = self.model.predict(resized)
+                                print(predictions[0])
                                 cv2.rectangle(frame, (int(self.faces[i][j]["x"]),int(self.faces[i][j]["y"])),
                                               (int(self.faces[i][j]["x"]) + int(self.faces[i][j]["w"]),
                                                int(self.faces[i][j]["y"]) + int(self.faces[i][j]["h"])),
@@ -57,6 +69,7 @@ class ProcessingEngine():
                         break
                 else:
                     break
+
 
 
 

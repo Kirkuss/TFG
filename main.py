@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-import os
+import os.path
 import sys
 import time
 import cv2
@@ -9,6 +9,12 @@ import face_DS as DS
 import Utilities as Dmanager
 import variables as config
 import EmotionProc as ep
+import ModelTrainer as mt
+
+if not os.path.isfile(config.EMOTION_MODEL):
+    mt.generateModel()
+    exit (1)
+
 
 show = True
 detailed = True
