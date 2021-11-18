@@ -39,7 +39,7 @@ videoLenght = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 founds = 0
 iterations = 0
 postIterations = 0
-ratio = 0.5
+ratio = 0.4
 prop = 0.25
 
 list_x = []

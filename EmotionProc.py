@@ -5,6 +5,8 @@ import json
 import variables as config
 import Utilities as Dmanager
 import Performance_stats as perf
+import tensorflow as tf
+from tensorflow import keras
 
 
 cap = cv2.VideoCapture(config.PATH_TO_VIDEO)
