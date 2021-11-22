@@ -11,10 +11,9 @@ import variables as config
 import EmotionProc as ep
 import ModelTrainer as mt
 
-if not os.path.isfile(config.EMOTION_MODEL):
-    mt.generateModel()
-    exit (1)
 
+mt.generateModel()
+exit (1)
 
 show = True
 detailed = True

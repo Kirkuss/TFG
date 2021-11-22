@@ -23,7 +23,7 @@ class ProcessingEngine():
     videoLenght = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
     #if os.path.isfile(config.EMOTION_MODEL):
-    model = tf.keras.models.load_model(config.EMOTION_MODEL)
+    #model = tf.keras.models.load_model(config.EMOTION_MODEL)
 
     def __init__(self):
         pass
@@ -49,6 +49,7 @@ class ProcessingEngine():
                         #print(i)
                         for j in self.faces[i]:
                             if int(j) == iterations:
+                                """
                                 cropped = frame[int(self.faces[i][j]["y"]):int(self.faces[i][j]["y"]) + int(self.faces[i][j]["h"]),
                                           int(self.faces[i][j]["x"]):int(self.faces[i][j]["x"])+int(self.faces[i][j]["w"])]
                                 cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
@@ -57,6 +58,7 @@ class ProcessingEngine():
                                 resized = resized/255
                                 predictions = self.model.predict(resized)
                                 print(predictions[0])
+                                """
                                 cv2.rectangle(frame, (int(self.faces[i][j]["x"]),int(self.faces[i][j]["y"])),
                                               (int(self.faces[i][j]["x"]) + int(self.faces[i][j]["w"]),
                                                int(self.faces[i][j]["y"]) + int(self.faces[i][j]["h"])),

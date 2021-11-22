@@ -2,6 +2,7 @@
 Model dataset -> https://www.kaggle.com/msambare/fer2013
 """
 import gc
+import math
 
 import tensorflow as tf
 from tensorflow import keras
@@ -35,9 +36,31 @@ def generateModel():
     createTrainData(Classes, trainData)
     random.shuffle(trainData)
 
+    itemNum = len(trainData)
+    var = itemNum
+    iterations = 0
+    test = 0
+    aux = 2000
+
+    while test is not itemNum:
+        var = var - aux
+        if var < 0:
+            aux = itemNum - test
+            return var
+        else:
+            test += aux
+        print("[VAR]: " + str(var))
+        print("[TEST]: " + str(test))
+        pass
+
+
     for features, label in trainData:
         X.append(features)
         y.append(label)
+
+    print("X: " + str(len(X)))
+    #print("Floor: " + str(int(itenNumPair)))
+    exit(1)
 
     X = np.array(X).reshape(-1, config.IMG_SIZE_PROC, config.IMG_SIZE_PROC, 3) #la arquitectura MobileNet necesita 4 dimensiones
     X = X/255.0;
