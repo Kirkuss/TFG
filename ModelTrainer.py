@@ -5,8 +5,8 @@ import gc
 import math
 
 import tensorflow as tf
-import keras
-from keras import layers
+from tensorflow import keras
+from tensorflow.keras import layers
 import cv2
 import os
 import matplotlib.pyplot as plt
@@ -41,7 +41,7 @@ def generateModel():
     createTrainData(Classes, trainData)
     random.shuffle(trainData)
 
-    aux = 1000
+    aux = 100
 
     #for features, label in trainData:
     #   X.append(features)
@@ -58,6 +58,17 @@ def generateModel():
     """
 
     iteration = 0;
+
+    gpus = tf.config.list_physical_devices('GPU')
+    if gpus:
+        try:
+            tf.config.set_logical_device_configuration(
+                gpus[0],
+                [tf.config.LogicalDeviceConfiguration(memory_limit=256)])
+            logical_gpus = tf.config.list_logical_devices('GPU')
+            print(len(gpus), "Physical GPUs, ", len(logical_gpus), "Logical GPUs")
+        except RuntimeError as e:
+            print(e)
 
     for i in list(chunk(trainData, aux)):
         if iteration == 0:
