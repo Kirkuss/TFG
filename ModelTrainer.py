@@ -27,21 +27,47 @@ def createTrainData(Classes, trainData):
             except Exception as e:
                 pass
 
+def createValidationData(Classes, validationData):
+    for c in Classes:
+        path = os.path.join("Resources/datasets/test", c)
+        classNum = Classes.index(c)
+        for img in os.listdir(path):
+            try:
+                frame = cv2.imread(os.path.join(path, img))
+                resizedFrame = cv2.resize(frame, (config.IMG_SIZE_PROC, config.IMG_SIZE_PROC))
+                validationData.append([resizedFrame, classNum])
+            except Exception as e:
+                pass
+
+def chunkClasses(lst):
+    X = []
+    Y = []
+    for features, label in lst:
+        X.append(features)
+        Y.append(label)
+    X = np.array(X).reshape(-1, config.IMG_SIZE_PROC, config.IMG_SIZE_PROC, 3)
+    X = X / 255.0;
+    Y = np.array(Y)
+    return X, Y
+
 def chunk(lst, n):
     for i in range(0, len(lst), n):
-        yield lst[i:i + n]
+        yield chunkClasses(lst[i:i + n])
+
+def progress(n, s):
+    pro = (n/s)*100
+    pro = round(pro, 2)
+    print(f"[PROGRESS]: {pro}%")
 
 def generateModel():
     Classes = ["angry", "disgust", "fear", "happy", "neutral", "sad", "surprise"]
     trainData = []
-
-    X = []
-    Y = []
+    validationData = []
 
     createTrainData(Classes, trainData)
+    createValidationData(Classes, validationData)
     random.shuffle(trainData)
-
-    aux = 100
+    random.shuffle(validationData)
 
     #for features, label in trainData:
     #   X.append(features)
@@ -62,59 +88,74 @@ def generateModel():
     gpus = tf.config.list_physical_devices('GPU')
     if gpus:
         try:
-            tf.config.set_logical_device_configuration(
-                gpus[0],
-                [tf.config.LogicalDeviceConfiguration(memory_limit=256)])
+            for gpu in gpus:
+                tf.config.experimental.set_memory_growth(gpu, True)
+                #tf.config.set_logical_device_configuration(
+                #   gpus[0],
+                #   [tf.config.LogicalDeviceConfiguration(memory_limit=4096)])
             logical_gpus = tf.config.list_logical_devices('GPU')
             print(len(gpus), "Physical GPUs, ", len(logical_gpus), "Logical GPUs")
         except RuntimeError as e:
             print(e)
 
-    for i in list(chunk(trainData, aux)):
-        if iteration == 0:
+    model = tf.keras.applications.MobileNetV2()
 
-            #print(device_lib.list_local_devices())
-            #Kconf = tf.ConfigProto(device_count={'GPU': 1, 'CPU': 4})
-            #sess = tf.Session(config=Kconf)
-            #keras.backend.set_session(sess)
+    # Transfer learning
 
-            model = tf.keras.applications.MobileNetV2()
+    baseInput = model.layers[0].input
+    baseOutput = model.layers[-2].output
 
-            # Transfer learning
+    finalOutput = layers.Dense(128)(baseOutput)
+    finalOuput = layers.Activation('relu')(finalOutput)
+    finalOutput = layers.Dense(64)(finalOuput)
+    finalOuput = layers.Activation('relu')(finalOutput)
+    finalOutput = layers.Dense(7, activation='softmax')(finalOuput)  # 7 clases (enfadado, contento, etc...)
 
-            baseInput = model.layers[0].input
-            baseOutput = model.layers[-2].output
+    newModel = keras.Model(inputs=baseInput, outputs=finalOutput)
+    newModel.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
-            finalOutput = layers.Dense(128)(baseOutput)
-            finalOuput = layers.Activation('relu')(finalOutput)
-            finalOutput = layers.Dense(64)(finalOuput)
-            finalOuput = layers.Activation('relu')(finalOutput)
-            finalOutput = layers.Dense(7, activation='softmax')(finalOuput)  # 7 clases (enfadado, contento, etc...)
+    #iterations = 0
+    batch_size = 50
+    epochs = 5
+    epoch_steps = np.ceil(len(trainData)/batch_size)
+    validation_steps = np.ceil(len(validationData)/batch_size)
 
-            newModel = keras.Model(inputs=baseInput, outputs=finalOutput)
-            newModel.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+    train = chunk(trainData, batch_size)
+    validation = chunk(validationData, batch_size)
+
+    newModel.fit(train, epochs=epochs, steps_per_epoch=epoch_steps,
+                           validation_data=validation, validation_steps=validation_steps)
+    newModel.save(config.EMOTION_MODEL)
+
+    """
+    for i in list(chunk(trainData, batch_size)):
+        #if iterations == 2:
+        #   break
+        #Kconf = tf.ConfigProto(device_count={'GPU': 1, 'CPU': 4})
+        #sess = tf.Session(config=Kconf)
+        #keras.backend.set_session(sess)
+        
+            
+        model = tf.keras.applications.MobileNetV2()
+
+        # Transfer learning
+
+        baseInput = model.layers[0].input
+        baseOutput = model.layers[-2].output
+
+        finalOutput = layers.Dense(128)(baseOutput)
+        finalOuput = layers.Activation('relu')(finalOutput)
+        finalOutput = layers.Dense(64)(finalOuput)
+        finalOuput = layers.Activation('relu')(finalOutput)
+        finalOutput = layers.Dense(7, activation='softmax')(finalOuput)  # 7 clases (enfadado, contento, etc...)
+
+        newModel = keras.Model(inputs=baseInput, outputs=finalOutput)
+        newModel.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+ 
+        if iterations == 0:
+           pass
         else:
-
-            #Kconf = tf.ConfigProto(device_count={'GPU': 1, 'CPU': 4})
-            #sess = tf.Session(config=Kconf)
-            #keras.backend.set_session(sess)
-
-            model = tf.keras.applications.MobileNetV2()
-
-            # Transfer learning
-
-            baseInput = model.layers[0].input
-            baseOutput = model.layers[-2].output
-
-            finalOutput = layers.Dense(128)(baseOutput)
-            finalOuput = layers.Activation('relu')(finalOutput)
-            finalOutput = layers.Dense(64)(finalOuput)
-            finalOuput = layers.Activation('relu')(finalOutput)
-            finalOutput = layers.Dense(7, activation='softmax')(finalOuput)  # 7 clases (enfadado, contento, etc...)
-
-            newModel = keras.Model(inputs=baseInput, outputs=finalOutput)
-            newModel.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
-            model = tf.keras.models.load_weights(config.EMOTION_MODEL)
+           newModel.load_weights(config.EMOTION_MODEL)
         print ("[YIELD]: " + str(len(i)))
         for features, label in i:
                 X.append(features)
@@ -122,10 +163,21 @@ def generateModel():
         X = np.array(X).reshape(-1, config.IMG_SIZE_PROC, config.IMG_SIZE_PROC, 3)
         X = X / 255.0;
         Y = np.array(Y)
-        newModel.fit(X, Y, epochs=25)
+        newModel.fit(X, Y, epochs=epochs)
         newModel.save_weights(config.EMOTION_MODEL)
         X = []
         Y = []
+        n += len(i)
+        progress(n, sizeOf)
+        #del X
+        #del Y
+        #del newModel
+        gc.collect()
+        #break
+        iterations += 1
 
-    exit(1)
+    #newModel.save("Resources/datasets/Models/prueba.h5")
+    while(1):
+        pass
+    """
 

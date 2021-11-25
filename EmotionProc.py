@@ -12,9 +12,9 @@ import tensorflow as tf
 
 cap = cv2.VideoCapture(config.PATH_TO_VIDEO)
 js = Dmanager.jsonManager()
-window = "Postprocesado"
-cv2.namedWindow(window)
-cv2.moveWindow(window, 40, 30)
+#window = "Postprocesado"
+#cv2.namedWindow(window)
+#cv2.moveWindow(window, 40, 30)
 cap.set(3, 640)
 cap.set(4, 480)
 
@@ -66,7 +66,7 @@ class ProcessingEngine():
                                 cv2.putText(frame, "ID " + i,
                                             (int(int(self.faces[i][j]["x"])) + 5, int(self.faces[i][j]["y"]) - 7),
                                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
-                    cv2.imshow(window, frame)
+                    #cv2.imshow(window, frame)
                     if cv2.waitKey(1) & 0xFF == ord ('q'):
                         break
                 else:
