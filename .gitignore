@@ -2,3 +2,4 @@
 *.h5
 /Resources/datasets/train/
 /Resources/datasets/test/
+/Resources/datasets/

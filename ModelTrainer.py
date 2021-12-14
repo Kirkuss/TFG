@@ -48,10 +48,11 @@ def chunkClasses(lst):
     X = np.array(X).reshape(-1, config.IMG_SIZE_PROC, config.IMG_SIZE_PROC, 3)
     X = X / 255.0;
     Y = np.array(Y)
-    return X, Y
+    return X.repeat(10), Y.repeat(10)
 
 def chunk(lst, n):
     for i in range(0, len(lst), n):
+        print(i+n)
         yield chunkClasses(lst[i:i + n])
 
 def progress(n, s):
@@ -115,17 +116,27 @@ def generateModel():
     newModel.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
     #iterations = 0
-    batch_size = 50
-    epochs = 5
-    epoch_steps = np.ceil(len(trainData)/batch_size)
-    validation_steps = np.ceil(len(validationData)/batch_size)
+    batch_size = 10
+    epochs = 10
 
-    train = chunk(trainData, batch_size)
-    validation = chunk(validationData, batch_size)
+    print(len(trainData))
+    print(len(validationData))
 
-    newModel.fit(train, epochs=epochs, steps_per_epoch=epoch_steps,
-                           validation_data=validation, validation_steps=validation_steps)
-    newModel.save(config.EMOTION_MODEL)
+    epoch_steps = int(len(trainData)/batch_size)
+    validation_steps = int(len(validationData)/batch_size)
+
+    print(epoch_steps)
+    print(validation_steps)
+
+    #train = chunk(trainData, batch_size)
+    #validation = chunk(validationData, batch_size)
+
+    newModel.fit(chunk(trainData, batch_size), epochs=epochs, steps_per_epoch=epoch_steps)
+                           #validation_data=validation, validation_steps=validation_steps)
+    newModel.save_weights(config.EMOTION_MODEL)
+
+    #EL YIELD SIGUE DEVOLVIENDO DATOS DESPUES DEL PRIMER EPOCH SIN QUE EMPIECE EL SEGUNDO, LO QUE HACE QUE AL LLEGAR
+    #A 7170 (NUMERO DE DATOS EN LA LISTA DE TEST) SE QUEDE SIN DATOS CON LOS QUE TRABAJAR Y PETE
 
     """
     for i in list(chunk(trainData, batch_size)):
