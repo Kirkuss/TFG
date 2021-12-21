@@ -2,6 +2,7 @@
 Model dataset -> https://www.kaggle.com/msambare/fer2013
 """
 import gc
+import itertools
 import math
 
 import tensorflow as tf
@@ -48,11 +49,10 @@ def chunkClasses(lst):
     X = np.array(X).reshape(-1, config.IMG_SIZE_PROC, config.IMG_SIZE_PROC, 3)
     X = X / 255.0;
     Y = np.array(Y)
-    return X.repeat(10), Y.repeat(10)
+    return X, Y
 
 def chunk(lst, n):
     for i in range(0, len(lst), n):
-        print(i+n)
         yield chunkClasses(lst[i:i + n])
 
 def progress(n, s):
@@ -60,80 +60,151 @@ def progress(n, s):
     pro = round(pro, 2)
     print(f"[PROGRESS]: {pro}%")
 
+def repeatProcess(n):
+    i = 0
+    while i<n:
+        Classes = ["angry", "disgust", "fear", "happy", "neutral", "sad", "surprise"]
+        trainData = []
+        validationData = []
+
+        createTrainData(Classes, trainData)
+        createValidationData(Classes, validationData)
+        random.shuffle(trainData)
+        random.shuffle(validationData)
+
+        gpus = tf.config.list_physical_devices('GPU')
+        if gpus:
+            try:
+                for gpu in gpus:
+                    tf.config.experimental.set_memory_growth(gpu, True)
+                    # tf.config.set_logical_device_configuration(
+                    #   gpus[0],
+                    #   [tf.config.LogicalDeviceConfiguration(memory_limit=4096)])
+                logical_gpus = tf.config.list_logical_devices('GPU')
+                print(len(gpus), "Physical GPUs, ", len(logical_gpus), "Logical GPUs")
+            except RuntimeError as e:
+                print(e)
+
+        model = tf.keras.applications.MobileNetV2()
+
+        baseInput = model.layers[0].input
+        baseOutput = model.layers[-2].output
+
+        finalOutput = layers.Dense(128)(baseOutput)
+        finalOuput = layers.Activation('relu')(finalOutput)
+        finalOutput = layers.Dense(64)(finalOuput)
+        finalOuput = layers.Activation('relu')(finalOutput)
+        finalOutput = layers.Dense(7, activation='softmax')(finalOuput)  # 7 clases (enfadado, contento, etc...)
+
+        newModel = keras.Model(inputs=baseInput, outputs=finalOutput)
+        newModel.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+
+        # iterations = 0
+        batch_size = 10
+        epochs = 10
+
+        print(len(trainData))
+        print(len(validationData))
+
+        epoch_steps = int(len(trainData) / batch_size) / 10
+        validation_steps = int(len(validationData) / batch_size) / 10
+
+        print(epoch_steps)
+        print(validation_steps)
+
+        newModel.load_weights(config.EMOTION_MODEL)
+
+        newModel.fit(chunk(trainData, batch_size), epochs=epochs, steps_per_epoch=epoch_steps)
+        # validation_data=validation, validation_steps=validation_steps)
+        newModel.save_weights(config.EMOTION_MODEL)
+        i += 1
+        gc.collect()
+
+    print("finished proc")
+    return 0
+
 def generateModel():
-    Classes = ["angry", "disgust", "fear", "happy", "neutral", "sad", "surprise"]
-    trainData = []
-    validationData = []
+    hola = False
+    if hola:
 
-    createTrainData(Classes, trainData)
-    createValidationData(Classes, validationData)
-    random.shuffle(trainData)
-    random.shuffle(validationData)
+        Classes = ["angry", "disgust", "fear", "happy", "neutral", "sad", "surprise"]
+        trainData = []
+        validationData = []
 
-    #for features, label in trainData:
-    #   X.append(features)
-    #   y.append(label)
+        createTrainData(Classes, trainData)
+        createValidationData(Classes, validationData)
+        random.shuffle(trainData)
+        random.shuffle(validationData)
 
-    """
-        Bucle for para controlar el uso de la memoria al entrenar el modelo para las caras, funciona de la siguiente 
-        manera:
-        Keras permite entrenar sobre un modelo ya creado, es decir, los primeros 2000 elementos del DataSet formaran
-        el modelo inicial y los siguientes 2000 lo seguiran entrenando, de esta forma no saturamos la memoria del equipo.
-        yield (usado en la funcion chunk) devuelve una lista parcial de elementos que hace posible esto.
-        Como el modelo es sobre emociones no hay riesgo de que "olvide" iteraciones anteriores (no varia de una iteracion
-        a otra)
-    """
 
-    iteration = 0;
+        #for features, label in trainData:
+        #   X.append(features)
+        #   y.append(label)
 
-    gpus = tf.config.list_physical_devices('GPU')
-    if gpus:
-        try:
-            for gpu in gpus:
-                tf.config.experimental.set_memory_growth(gpu, True)
-                #tf.config.set_logical_device_configuration(
-                #   gpus[0],
-                #   [tf.config.LogicalDeviceConfiguration(memory_limit=4096)])
-            logical_gpus = tf.config.list_logical_devices('GPU')
-            print(len(gpus), "Physical GPUs, ", len(logical_gpus), "Logical GPUs")
-        except RuntimeError as e:
-            print(e)
+        """
+            Bucle for para controlar el uso de la memoria al entrenar el modelo para las caras, funciona de la siguiente 
+            manera:
+            Keras permite entrenar sobre un modelo ya creado, es decir, los primeros 2000 elementos del DataSet formaran
+            el modelo inicial y los siguientes 2000 lo seguiran entrenando, de esta forma no saturamos la memoria del equipo.
+            yield (usado en la funcion chunk) devuelve una lista parcial de elementos que hace posible esto.
+            Como el modelo es sobre emociones no hay riesgo de que "olvide" iteraciones anteriores (no varia de una iteracion
+            a otra)
+        """
 
-    model = tf.keras.applications.MobileNetV2()
+        iteration = 0;
 
-    # Transfer learning
+        gpus = tf.config.list_physical_devices('GPU')
+        if gpus:
+            try:
+                for gpu in gpus:
+                    tf.config.experimental.set_memory_growth(gpu, True)
+                    #tf.config.set_logical_device_configuration(
+                    #   gpus[0],
+                    #   [tf.config.LogicalDeviceConfiguration(memory_limit=4096)])
+                logical_gpus = tf.config.list_logical_devices('GPU')
+                print(len(gpus), "Physical GPUs, ", len(logical_gpus), "Logical GPUs")
+            except RuntimeError as e:
+                print(e)
 
-    baseInput = model.layers[0].input
-    baseOutput = model.layers[-2].output
+        model = tf.keras.applications.MobileNetV2()
 
-    finalOutput = layers.Dense(128)(baseOutput)
-    finalOuput = layers.Activation('relu')(finalOutput)
-    finalOutput = layers.Dense(64)(finalOuput)
-    finalOuput = layers.Activation('relu')(finalOutput)
-    finalOutput = layers.Dense(7, activation='softmax')(finalOuput)  # 7 clases (enfadado, contento, etc...)
+        # Transfer learning
 
-    newModel = keras.Model(inputs=baseInput, outputs=finalOutput)
-    newModel.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+        baseInput = model.layers[0].input
+        baseOutput = model.layers[-2].output
 
-    #iterations = 0
-    batch_size = 10
-    epochs = 10
+        finalOutput = layers.Dense(128)(baseOutput)
+        finalOuput = layers.Activation('relu')(finalOutput)
+        finalOutput = layers.Dense(64)(finalOuput)
+        finalOuput = layers.Activation('relu')(finalOutput)
+        finalOutput = layers.Dense(7, activation='softmax')(finalOuput)  # 7 clases (enfadado, contento, etc...)
 
-    print(len(trainData))
-    print(len(validationData))
+        newModel = keras.Model(inputs=baseInput, outputs=finalOutput)
+        newModel.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
-    epoch_steps = int(len(trainData)/batch_size)
-    validation_steps = int(len(validationData)/batch_size)
+        #iterations = 0
+        batch_size = 10
+        epochs = 10
 
-    print(epoch_steps)
-    print(validation_steps)
+        print(len(trainData))
+        print(len(validationData))
 
-    #train = chunk(trainData, batch_size)
-    #validation = chunk(validationData, batch_size)
+        epoch_steps = int(len(trainData)/batch_size)/10
+        validation_steps = int(len(validationData)/batch_size)/10
 
-    newModel.fit(chunk(trainData, batch_size), epochs=epochs, steps_per_epoch=epoch_steps)
-                           #validation_data=validation, validation_steps=validation_steps)
-    newModel.save_weights(config.EMOTION_MODEL)
+        print(epoch_steps)
+        print(validation_steps)
+
+        #train = chunk(trainData, batch_size)
+        #validation = chunk(validationData, batch_size)
+
+        newModel.fit(chunk(trainData, batch_size), epochs=epochs, steps_per_epoch=epoch_steps)
+                               #validation_data=validation, validation_steps=validation_steps)
+        newModel.save_weights(config.EMOTION_MODEL)
+
+        gc.collect()
+
+    repeatProcess(10)
 
     #EL YIELD SIGUE DEVOLVIENDO DATOS DESPUES DEL PRIMER EPOCH SIN QUE EMPIECE EL SEGUNDO, LO QUE HACE QUE AL LLEGAR
     #A 7170 (NUMERO DE DATOS EN LA LISTA DE TEST) SE QUEDE SIN DATOS CON LOS QUE TRABAJAR Y PETE
