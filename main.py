@@ -9,6 +9,7 @@ import face_DS as DS
 import Utilities as Dmanager
 import variables as config
 import EmotionProc as ep
+import DataProcessor as dp
 import ModelTrainer as mt
 
 
@@ -39,6 +40,7 @@ cap.set(4,480)
 list = {}
 
 postProcessing = False
+processCollectedData = True
 videoLenght = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
 founds = 0
@@ -62,12 +64,11 @@ print(" | Data model -> " + model)
 print(" |___________")
 print(" | Processing...")
 
-while (cap.isOpened()):
+while (cap.isOpened()) and not processCollectedData:
 
-    perf.showStats(iterations, videoLenght, postProcessing)
     ret, frame = cap.read()
 
-    if iterations == videoLenght:
+    if iterations == videoLenght and not processCollectedData:
         cleanList = {}
         coincidences = 0
         cleanList = DS.noiseOut(list)
@@ -87,7 +88,8 @@ while (cap.isOpened()):
 
     iterations += 1
 
-    if ret and postProcessing:
+    if ret and postProcessing and not processCollectedData:
+        perf.showStats(iterations, videoLenght, postProcessing)
         frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
         GrayFrame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = faceCascade.detectMultiScale(GrayFrame, 1.1, 4)
@@ -154,7 +156,7 @@ while (cap.isOpened()):
                     break
             break
 
-    elif not postProcessing:
+    elif not postProcessing and not processCollectedData:
         cv2.destroyAllWindows()
         cap.release()
         ProcessEP = ep.ProcessingEngine()
@@ -162,6 +164,11 @@ while (cap.isOpened()):
         break
 
     else: break
+
+if processCollectedData:
+    print("Vamos a procesar")
+    dp.startProcessingData()
+    pass
 
 perf.isolation_performance_plot(list_x, list_y, "iterations", "founds", "Performance - isolation")
 
