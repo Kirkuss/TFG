@@ -12,8 +12,8 @@ import EmotionProc as ep
 import ModelTrainer as mt
 
 
-mt.generateModel()
-exit (1)
+#mt.generateModel()
+#exit (1)
 
 show = True
 detailed = True
@@ -38,7 +38,7 @@ cap.set(4,480)
 #f_Found = []
 list = {}
 
-postProcessing = True
+postProcessing = False
 videoLenght = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
 founds = 0

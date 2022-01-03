@@ -114,8 +114,8 @@ def repeatProcess(n):
 
         newModel.load_weights(config.EMOTION_MODEL)
 
-        newModel.fit(chunk(trainData, batch_size), epochs=epochs, steps_per_epoch=epoch_steps)
-        # validation_data=validation, validation_steps=validation_steps)
+        newModel.fit(chunk(trainData, batch_size), epochs=epochs, steps_per_epoch=epoch_steps,
+                     validation_data=chunk(validationData, batch_size), validation_steps=validation_steps)
         newModel.save_weights(config.EMOTION_MODEL)
         i += 1
         gc.collect()
@@ -124,9 +124,10 @@ def repeatProcess(n):
     return 0
 
 def generateModel():
-    hola = False
+    hola = True
     if hola:
 
+        """
         Classes = ["angry", "disgust", "fear", "happy", "neutral", "sad", "surprise"]
         trainData = []
         validationData = []
@@ -135,6 +136,7 @@ def generateModel():
         createValidationData(Classes, validationData)
         random.shuffle(trainData)
         random.shuffle(validationData)
+        """
 
 
         #for features, label in trainData:
@@ -150,8 +152,6 @@ def generateModel():
             Como el modelo es sobre emociones no hay riesgo de que "olvide" iteraciones anteriores (no varia de una iteracion
             a otra)
         """
-
-        iteration = 0;
 
         gpus = tf.config.list_physical_devices('GPU')
         if gpus:
@@ -182,29 +182,15 @@ def generateModel():
         newModel = keras.Model(inputs=baseInput, outputs=finalOutput)
         newModel.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
-        #iterations = 0
-        batch_size = 10
-        epochs = 10
-
-        print(len(trainData))
-        print(len(validationData))
-
-        epoch_steps = int(len(trainData)/batch_size)/10
-        validation_steps = int(len(validationData)/batch_size)/10
-
-        print(epoch_steps)
-        print(validation_steps)
-
-        #train = chunk(trainData, batch_size)
-        #validation = chunk(validationData, batch_size)
-
-        newModel.fit(chunk(trainData, batch_size), epochs=epochs, steps_per_epoch=epoch_steps)
-                               #validation_data=validation, validation_steps=validation_steps)
-        newModel.save_weights(config.EMOTION_MODEL)
+        newModel.load_weights(config.EMOTION_MODEL)
+        newModel.save("Resources/datasets/Models/FINAL")
 
         gc.collect()
 
-    repeatProcess(10)
+    else:
+        repeatProcess(1)
+
+    exit(0)
 
     #EL YIELD SIGUE DEVOLVIENDO DATOS DESPUES DEL PRIMER EPOCH SIN QUE EMPIECE EL SEGUNDO, LO QUE HACE QUE AL LLEGAR
     #A 7170 (NUMERO DE DATOS EN LA LISTA DE TEST) SE QUEDE SIN DATOS CON LOS QUE TRABAJAR Y PETE

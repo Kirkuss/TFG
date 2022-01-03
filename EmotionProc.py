@@ -8,13 +8,13 @@ import Utilities as Dmanager
 import Performance_stats as perf
 import tensorflow as tf
 #from tensorflow import keras
-
+from Utilities import ModelInterpreter as mi
 
 cap = cv2.VideoCapture(config.PATH_TO_VIDEO)
 js = Dmanager.jsonManager()
-#window = "Postprocesado"
-#cv2.namedWindow(window)
-#cv2.moveWindow(window, 40, 30)
+window = "Postprocesado"
+cv2.namedWindow(window)
+cv2.moveWindow(window, 40, 30)
 cap.set(3, 640)
 cap.set(4, 480)
 
@@ -23,7 +23,7 @@ class ProcessingEngine():
     videoLenght = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
     #if os.path.isfile(config.EMOTION_MODEL):
-    #model = tf.keras.models.load_model(config.EMOTION_MODEL)
+    model = tf.keras.models.load_model("Resources/datasets/Models/FINAL")
 
     def __init__(self):
         pass
@@ -49,21 +49,22 @@ class ProcessingEngine():
                         #print(i)
                         for j in self.faces[i]:
                             if int(j) == iterations:
-                                """
+
                                 cropped = frame[int(self.faces[i][j]["y"]):int(self.faces[i][j]["y"]) + int(self.faces[i][j]["h"]),
                                           int(self.faces[i][j]["x"]):int(self.faces[i][j]["x"])+int(self.faces[i][j]["w"])]
-                                cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
-                                resized = cv2.resize(cropped, (48,48))
-                                resized = np.expand_dims(-1, resized, axis=0)
-                                resized = resized/255
-                                predictions = self.model.predict(resized)
-                                print(predictions[0])
-                                """
+                                #cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
+                                resized = cv2.resize(cropped, (224,224))
+                                resized = np.expand_dims(resized, axis=0)
+                                resized = resized/255.0
+                                predictions = self.model.predict(resized, verbose=0)
+                                pred = mi.getClass(n = np.argmax(predictions))
+                                self.faces[i][j]["pred"] = pred
+                                #print(predictions[0])
                                 cv2.rectangle(frame, (int(self.faces[i][j]["x"]),int(self.faces[i][j]["y"])),
                                               (int(self.faces[i][j]["x"]) + int(self.faces[i][j]["w"]),
                                                int(self.faces[i][j]["y"]) + int(self.faces[i][j]["h"])),
                                               (255, 255, 255), 1)
-                                cv2.putText(frame, "ID " + i,
+                                cv2.putText(frame, "ID " + i + pred,
                                             (int(int(self.faces[i][j]["x"])) + 5, int(self.faces[i][j]["y"]) - 7),
                                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
                     #cv2.imshow(window, frame)
@@ -71,6 +72,9 @@ class ProcessingEngine():
                         break
                 else:
                     break
+
+        js.data = self.faces.copy()
+        js.saveJson("Resources/jsonFiles/PostProcessResults.json")
 
 
 

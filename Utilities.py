@@ -7,6 +7,12 @@ def serializeFace(face, id):
         serialized[str(face.list[k].frame)] = (face.list[k].getSerialized())
     return serialized
 
+class ModelInterpreter():
+    Classes = ["angry", "disgust", "fear", "happy", "neutral", "sad", "surprise"]
+
+    def getClass(n):
+        return ModelInterpreter.Classes[n]
+
 class jsonManager(object):
 
     __instance = None
