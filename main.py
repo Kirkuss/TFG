@@ -167,7 +167,7 @@ while (cap.isOpened()) and not processCollectedData:
 
 if processCollectedData:
     print("Vamos a procesar")
-    dp.startProcessingData()
+    dp.startProcessingData(videoLenght)
     pass
 
 perf.isolation_performance_plot(list_x, list_y, "iterations", "founds", "Performance - isolation")
