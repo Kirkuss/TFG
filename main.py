@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import os.path
+import AIWakeUI
 import sys
 import time
 import cv2
@@ -11,7 +12,8 @@ import variables as config
 import EmotionProc as ep
 import DataProcessor as dp
 import ModelTrainer as mt
-
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow
 
 #mt.generateModel()
 #exit (1)
@@ -42,6 +44,7 @@ list = {}
 postProcessing = False
 processCollectedData = True
 videoLenght = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+config.VIDEO_LENGHT = videoLenght
 
 founds = 0
 iterations = 0
@@ -63,6 +66,15 @@ elif source == "CAM":
 print(" | Data model -> " + model)
 print(" |___________")
 print(" | Processing...")
+
+def window():
+    app = QApplication(sys.argv)
+    win = AIWakeUI.AIWake_UI()
+
+    win.show()
+    sys.exit(app.exec_())
+
+window()
 
 while (cap.isOpened()) and not processCollectedData:
 
