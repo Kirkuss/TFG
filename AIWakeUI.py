@@ -1,31 +1,29 @@
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow
-
+# This Python file uses the following encoding: utf-8
+import os
+from pathlib import Path
 import sys
-import DataProcessor as dp
-import variables as config
+
+from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtCore import QFile
+from PySide6.QtUiTools import QUiLoader
+
 
 class AIWake_UI(QMainWindow):
     def __init__(self):
         super(AIWake_UI, self).__init__()
-        self.setGeometry(0, 0, 600, 600)
-        self.setWindowTitle("AIWake")
-        self.initUI()
+        self.load_ui()
 
-    def initUI(self):
-        self.label = QtWidgets.QLabel(self)
-        self.label.setText("Test")
-        self.move(30, 20)
+    def load_ui(self):
+        loader = QUiLoader()
+        path = os.fspath(Path(__file__).resolve().parent / "AIWake_app.ui")
+        ui_file = QFile(path)
+        ui_file.open(QFile.ReadOnly)
+        loader.load(ui_file, self)
+        ui_file.close()
 
-        self.b1 = QtWidgets.QPushButton(self)
-        self.b1.setText("Testb1")
-        self.b1.move(30, 60)
-        self.b1.clicked.connect(self.b1Click)
 
-    def b1Click(self):
-        dp.startProcessingData(config.VIDEO_LENGHT)
-
-    """
-    def update(self):
-        self.label.adjustSize()
-    """
+if __name__ == "__main__":
+    app = QApplication([])
+    widget = AIWake_UI()
+    widget.show()
+    sys.exit(app.exec_())
