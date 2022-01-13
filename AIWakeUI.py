@@ -1,29 +1,54 @@
-# This Python file uses the following encoding: utf-8
-import os
-from pathlib import Path
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5 import uic
+from PyQt5 import QtGui
+from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtCore import pyqtSlot
+
 import sys
+import DataProcessor as dp
+import variables as config
+import FaceIsolator as fi
 
-from PySide6.QtWidgets import QApplication, QMainWindow
-from PySide6.QtCore import QFile
-from PySide6.QtUiTools import QUiLoader
-
+#faceIsolator = fi.FaceIsolator()
 
 class AIWake_UI(QMainWindow):
     def __init__(self):
         super(AIWake_UI, self).__init__()
-        self.load_ui()
+        uic.loadUi("AIWake_app.ui",self)
+        self.setWindowTitle("AIWake")
 
-    def load_ui(self):
-        loader = QUiLoader()
-        path = os.fspath(Path(__file__).resolve().parent / "AIWake_app.ui")
-        ui_file = QFile(path)
-        ui_file.open(QFile.ReadOnly)
-        loader.load(ui_file, self)
-        ui_file.close()
+        self.thread = {}
+
+        self.initUI()
+
+    def initUI(self):
+        self.bt1.clicked.connect(self.b1Click)
+        self.playBt.clicked.connect(self.playBtClick)
+        self.infoBt.clicked.connect(self.hazAlgo)
+
+    def hazAlgo(self):
+        self.thread[1].hazAlgo()
+
+    def b1Click(self):
+        dp.startProcessingData(config.VIDEO_LENGHT)
+
+    def playBtClick(self):
+        self.thread[1] = fi.FaceIsolator(parent=None)
+        self.thread[1].start()
+        self.thread[1].changePixmap.connect(self.updateVideo)
+
+    def updateVideo(self, frame):
+        self.step1Video.setPixmap(QPixmap.fromImage(frame))
 
 
-if __name__ == "__main__":
-    app = QApplication([])
-    widget = AIWake_UI()
-    widget.show()
-    sys.exit(app.exec_())
+
+    """
+    @pyqtSlot(QImage)
+    def step1UpdateVideo(self, frame):
+        self.step 1Video.setPixmap(QPixmap.fromImage(frame))
+
+    
+    def update(self):
+        self.label.adjustSize()
+    """

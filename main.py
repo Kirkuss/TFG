@@ -9,11 +9,12 @@ import Performance_stats as perf
 import face_DS as DS
 import Utilities as Dmanager
 import variables as config
-import EmotionProc as ep
+#import EmotionProc as ep
 import DataProcessor as dp
-import ModelTrainer as mt
+#import ModelTrainer as mt
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow
+
 
 #mt.generateModel()
 #exit (1)
@@ -42,7 +43,7 @@ cap.set(4,480)
 list = {}
 
 postProcessing = False
-processCollectedData = True
+processCollectedData = False
 videoLenght = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 config.VIDEO_LENGHT = videoLenght
 
@@ -153,6 +154,7 @@ while (cap.isOpened()) and not processCollectedData:
             if show:
                 #cv2.imshow("Gepeto", imgCropped)
                 cv2.imshow(window, frame)
+                AIWakeUI.step1UpdateVideo(frame)
                 pass
             else: pass
 
@@ -171,8 +173,8 @@ while (cap.isOpened()) and not processCollectedData:
     elif not postProcessing and not processCollectedData:
         cv2.destroyAllWindows()
         cap.release()
-        ProcessEP = ep.ProcessingEngine()
-        ProcessEP.startPostProcessing()
+        #ProcessEP = ep.ProcessingEngine()
+        #ProcessEP.startPostProcessing()
         break
 
     else: break
