@@ -26,10 +26,6 @@ path = "video5.mp4"
 model = "Resources/haarcascade_frontalface_default.xml"
 
 faceCascade = cv2.CascadeClassifier(model)
-window = "Preprocesado"
-
-cv2.namedWindow(window)
-cv2.moveWindow(window, 40,30)
 
 if source=="VIDEO":
     cap = cv2.VideoCapture("Resources/" + path)

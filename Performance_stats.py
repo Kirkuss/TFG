@@ -14,3 +14,6 @@ def showStats(iterations, lenght, postProcessing):
     elif not postProcessing:
         perc = (iterations/lenght) * 100
         print('\r', "| Postprocessing... " + str(int(perc)) + "%", end='')
+
+def getVideoProgress(iterations, lenght): return (iterations/lenght) * 100
+

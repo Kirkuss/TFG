@@ -38,8 +38,10 @@ class AIWake_UI(QMainWindow):
         self.thread[1].start()
         self.thread[1].changePixmap.connect(self.updateVideo)
 
-    def updateVideo(self, frame):
+    def updateVideo(self, frame, progress):
         self.step1Video.setPixmap(QPixmap.fromImage(frame))
+        self.step1Pb.setValue(progress)
+
 
 
 
