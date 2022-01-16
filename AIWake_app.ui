@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>783</width>
-    <height>604</height>
+    <width>831</width>
+    <height>603</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -41,7 +41,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>771</width>
+      <width>811</width>
       <height>501</height>
      </rect>
     </property>
@@ -55,14 +55,14 @@
      <widget class="QCheckBox" name="showBoxesCb">
       <property name="geometry">
        <rect>
-        <x>680</x>
-        <y>220</y>
-        <width>76</width>
+        <x>640</x>
+        <y>60</y>
+        <width>161</width>
         <height>20</height>
        </rect>
       </property>
       <property name="text">
-       <string>CheckBox</string>
+       <string>Show detection threshold</string>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -110,17 +110,17 @@
        <string>PLAY</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_4">
+     <widget class="QPushButton" name="pauseBt">
       <property name="geometry">
        <rect>
-        <x>380</x>
+        <x>340</x>
         <y>440</y>
         <width>75</width>
         <height>24</height>
        </rect>
       </property>
       <property name="text">
-       <string>PushButton</string>
+       <string>PAUSE</string>
       </property>
      </widget>
      <widget class="QProgressBar" name="step1Pb">
@@ -136,6 +136,22 @@
        <number>0</number>
       </property>
      </widget>
+     <widget class="QCheckBox" name="showDetailedCb">
+      <property name="geometry">
+       <rect>
+        <x>640</x>
+        <y>40</y>
+        <width>161</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Show detected faces</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="step2Tab">
      <attribute name="title">
@@ -146,7 +162,7 @@
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>360</x>
       <y>520</y>
       <width>461</width>
       <height>41</height>
@@ -191,13 +207,26 @@
      </property>
     </widget>
    </widget>
+   <widget class="QPushButton" name="settingsBt">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>530</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Settings</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>783</width>
+     <width>831</width>
      <height>22</height>
     </rect>
    </property>

@@ -16,13 +16,12 @@ class FaceIsolator(QThread):
         super(FaceIsolator, self).__init__(parent)
         self.pathToVideo = config.PATH_TO_VIDEO
         self.pathToOutput = config.PATH_TO_JSON_PRE
-        self.show = True
-        self.detailed = True
         self.faceCascade = cv2.CascadeClassifier(config.PATH_TO_MODEL)
         self.prop = config.PROP
         self.ratio = config.RATIO
         self.videoLenght = config.VIDEO_LENGHT
         self.js = Dmanager.jsonManager()
+        self.pause = False
 
     def hazAlgo(self):
         print("hola")
@@ -39,6 +38,9 @@ class FaceIsolator(QThread):
 
         while (cap.isOpened()):
             ret, frame = cap.read()
+
+            while self.pause:
+                pass
 
             if iterations == self.videoLenght:
                 cleanList = {}
@@ -83,14 +85,15 @@ class FaceIsolator(QThread):
                         newFace.queue(newFace, None)
                         list[str(founds)] = newFace
 
-                    if newFace.valid:
-                        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 1)
-                        cv2.putText(frame, "Accepted", (int(x + (w * prop)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
-                                    (0, 255, 0), 1, cv2.LINE_AA)
-                    else:
-                        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 1)
-                        cv2.putText(frame, "Rejected", (int(x + (w * prop)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
-                                    (0, 0, 255), 1, cv2.LINE_AA)
+                    if config.DETAILED:
+                        if newFace.valid:
+                            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 1)
+                            cv2.putText(frame, "Accepted", (int(x + (w * prop)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                                        (0, 255, 0), 1, cv2.LINE_AA)
+                        else:
+                            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 1)
+                            cv2.putText(frame, "Rejected", (int(x + (w * prop)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                                        (0, 0, 255), 1, cv2.LINE_AA)
 
                 rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 h, w, ch = rgbImage.shape

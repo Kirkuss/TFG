@@ -9,6 +9,7 @@ import sys
 import DataProcessor as dp
 import variables as config
 import FaceIsolator as fi
+import variables as config
 
 #faceIsolator = fi.FaceIsolator()
 
@@ -25,10 +26,23 @@ class AIWake_UI(QMainWindow):
     def initUI(self):
         self.bt1.clicked.connect(self.b1Click)
         self.playBt.clicked.connect(self.playBtClick)
-        self.infoBt.clicked.connect(self.hazAlgo)
+        self.showBoxesCb.stateChanged.connect(self.previewChange_showHB)
+        self.showDetailedCb.stateChanged.connect(self.previewChange_showDE)
+        self.pauseBt.clicked.connect(self.pauseBtClick_step1)
 
-    def hazAlgo(self):
-        self.thread[1].hazAlgo()
+    def pauseBtClick_step1(self):
+        if self.thread[1].pause:
+            self.thread[1].pause = False
+        else:
+            self.thread[1].pause = True
+
+    def previewChange_showHB(self):
+        if self.showBoxesCb.isChecked(): config.SHOW_HB = True
+        else: config.SHOW_HB = False
+
+    def previewChange_showDE(self):
+        if self.showDetailedCb.isChecked(): config.DETAILED = True
+        else: config.DETAILED = False
 
     def b1Click(self):
         dp.startProcessingData(config.VIDEO_LENGHT)

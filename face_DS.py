@@ -1,4 +1,5 @@
 import cv2
+import variables as config
 
 def noiseOut(list2clear):
     aux = list2clear.copy() #Los diccionarios no funcionan de forma dinamica
@@ -42,8 +43,8 @@ class face:
         ry = range(y2, y1 + 1)
 
         #print(str(x2) + " " + str(y2) + " " + str(x1) + " " + str(y1))
-
-        cv2.rectangle(frame, (x2, y2), (x1, y1), (0, 255, 0), 1)
+        if config.SHOW_HB:
+            cv2.rectangle(frame, (x2, y2), (x1, y1), (0, 255, 0), 1)
 
         if item.x in rx and item.y in ry:
             return True
