@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>831</width>
-    <height>603</height>
+    <width>830</width>
+    <height>688</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,30 +19,21 @@
   <property name="windowTitle">
    <string>AIWake_UI</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>Resources/app_img/icons/pillow.png</normaloff>Resources/app_img/icons/pillow.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="bt1">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>530</y>
-      <width>75</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>TEST</string>
-    </property>
-   </widget>
-   <widget class="QTabWidget" name="processTabView">
+   <widget class="QTabWidget" name="frame_steps">
     <property name="enabled">
      <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>50</y>
       <width>811</width>
-      <height>501</height>
+      <height>541</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -72,7 +63,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>40</y>
         <width>621</width>
         <height>411</height>
        </rect>
@@ -83,51 +74,62 @@
       <property name="scaledContents">
        <bool>true</bool>
       </property>
+      <property name="indent">
+       <number>1</number>
+      </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="selectFile_step1">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>440</y>
+        <x>10</x>
+        <y>10</y>
         <width>75</width>
         <height>24</height>
        </rect>
       </property>
       <property name="text">
-       <string>PushButton</string>
+       <string>Browse</string>
       </property>
      </widget>
      <widget class="QPushButton" name="playBt">
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>440</y>
-        <width>75</width>
+        <x>280</x>
+        <y>480</y>
+        <width>21</width>
         <height>24</height>
        </rect>
       </property>
       <property name="text">
-       <string>PLAY</string>
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>Resources/app_img/icons/play.png</normaloff>Resources/app_img/icons/play.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="pauseBt">
       <property name="geometry">
        <rect>
-        <x>340</x>
-        <y>440</y>
-        <width>75</width>
+        <x>300</x>
+        <y>480</y>
+        <width>21</width>
         <height>24</height>
        </rect>
       </property>
       <property name="text">
-       <string>PAUSE</string>
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>Resources/app_img/icons/pause.png</normaloff>Resources/app_img/icons/pause.png</iconset>
       </property>
      </widget>
      <widget class="QProgressBar" name="step1Pb">
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>410</y>
+        <y>450</y>
         <width>661</width>
         <height>23</height>
        </rect>
@@ -152,6 +154,173 @@
        <bool>true</bool>
       </property>
      </widget>
+     <widget class="QLabel" name="placeholder_step1">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>40</y>
+        <width>621</width>
+        <height>411</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../../../Desktop/TFG - DOCU/Recursos/Imagenes/Analisis/video-placeholder.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+      <property name="indent">
+       <number>0</number>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="pathInText_step1">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>12</y>
+        <width>531</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="placeholderText">
+       <string>Path to video file...</string>
+      </property>
+     </widget>
+     <widget class="QSlider" name="detection_ratio">
+      <property name="geometry">
+       <rect>
+        <x>640</x>
+        <y>120</y>
+        <width>81</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="singleStep">
+       <number>1</number>
+      </property>
+      <property name="sliderPosition">
+       <number>40</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QSlider" name="hb_detection_prop">
+      <property name="geometry">
+       <rect>
+        <x>640</x>
+        <y>180</y>
+        <width>81</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="value">
+       <number>25</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>640</x>
+        <y>100</y>
+        <width>101</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Acceptance value</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>640</x>
+        <y>160</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Threshold size</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="acceptanceLbl">
+      <property name="geometry">
+       <rect>
+        <x>730</x>
+        <y>120</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0.0</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="thresholdLbl">
+      <property name="geometry">
+       <rect>
+        <x>730</x>
+        <y>180</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0.0</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="forwardBt_step1">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>480</y>
+        <width>21</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>Resources/app_img/icons/forward.png</normaloff>Resources/app_img/icons/forward.png</iconset>
+      </property>
+     </widget>
+     <zorder>placeholder_step1</zorder>
+     <zorder>showBoxesCb</zorder>
+     <zorder>selectFile_step1</zorder>
+     <zorder>playBt</zorder>
+     <zorder>pauseBt</zorder>
+     <zorder>step1Pb</zorder>
+     <zorder>showDetailedCb</zorder>
+     <zorder>pathInText_step1</zorder>
+     <zorder>step1Video</zorder>
+     <zorder>detection_ratio</zorder>
+     <zorder>hb_detection_prop</zorder>
+     <zorder>label</zorder>
+     <zorder>label_2</zorder>
+     <zorder>acceptanceLbl</zorder>
+     <zorder>thresholdLbl</zorder>
+     <zorder>forwardBt_step1</zorder>
     </widget>
     <widget class="QWidget" name="step2Tab">
      <attribute name="title">
@@ -163,7 +332,7 @@
     <property name="geometry">
      <rect>
       <x>360</x>
-      <y>520</y>
+      <y>600</y>
       <width>461</width>
       <height>41</height>
      </rect>
@@ -207,18 +376,51 @@
      </property>
     </widget>
    </widget>
-   <widget class="QPushButton" name="settingsBt">
+   <widget class="QFrame" name="frame_2">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>530</y>
-      <width>75</width>
-      <height>24</height>
+      <x>10</x>
+      <y>10</y>
+      <width>811</width>
+      <height>31</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Settings</string>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
     </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QPushButton" name="settingsBt">
+     <property name="geometry">
+      <rect>
+       <x>784</x>
+       <y>0</y>
+       <width>21</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>Resources/app_img/icons/gear.png</normaloff>Resources/app_img/icons/gear.png</iconset>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="bt1">
+     <property name="geometry">
+      <rect>
+       <x>700</x>
+       <y>0</y>
+       <width>75</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TEST</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -226,7 +428,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>831</width>
+     <width>830</width>
      <height>22</height>
     </rect>
    </property>

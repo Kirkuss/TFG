@@ -40,8 +40,6 @@ list = {}
 
 postProcessing = False
 processCollectedData = False
-videoLenght = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-config.VIDEO_LENGHT = videoLenght
 
 founds = 0
 iterations = 0
@@ -77,7 +75,7 @@ while (cap.isOpened()) and not processCollectedData:
 
     ret, frame = cap.read()
 
-    if iterations == videoLenght and not processCollectedData:
+    if iterations == config.VIDEO_LENGHT and not processCollectedData:
         cleanList = {}
         coincidences = 0
         cleanList = DS.noiseOut(list)
@@ -98,7 +96,7 @@ while (cap.isOpened()) and not processCollectedData:
     iterations += 1
 
     if ret and postProcessing and not processCollectedData:
-        perf.showStats(iterations, videoLenght, postProcessing)
+        perf.showStats(iterations, config.VIDEO_LENGHT, postProcessing)
         frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
         GrayFrame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = faceCascade.detectMultiScale(GrayFrame, 1.1, 4)
@@ -177,7 +175,7 @@ while (cap.isOpened()) and not processCollectedData:
 
 if processCollectedData:
     print("Vamos a procesar")
-    dp.startProcessingData(videoLenght)
+    dp.startProcessingData(config.VIDEO_LENGHT)
     pass
 
 perf.isolation_performance_plot(list_x, list_y, "iterations", "founds", "Performance - isolation")

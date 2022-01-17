@@ -1,5 +1,5 @@
 RESOURCES_PATH = "Resources/"
-PATH_TO_VIDEO = RESOURCES_PATH + "video5.mp4"
+PATH_TO_VIDEO = ""
 PATH_TO_MODEL = RESOURCES_PATH + "haarcascade_frontalface_default.xml"
 SOURCE = "VIDEO"
 JSON_PATH_PRE = "jsonFiles/PreProcessResults.json"

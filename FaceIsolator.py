@@ -17,38 +17,30 @@ class FaceIsolator(QThread):
         self.pathToVideo = config.PATH_TO_VIDEO
         self.pathToOutput = config.PATH_TO_JSON_PRE
         self.faceCascade = cv2.CascadeClassifier(config.PATH_TO_MODEL)
-        self.prop = config.PROP
-        self.ratio = config.RATIO
-        self.videoLenght = config.VIDEO_LENGHT
         self.js = Dmanager.jsonManager()
         self.pause = False
-
-    def hazAlgo(self):
-        print("hola")
+        self.jump = False
 
     def run(self):
 
         cap = cv2.VideoCapture(self.pathToVideo)
+        config.VIDEO_LENGHT = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         iterations = 0
         founds = 0
         list = {}
         faceCascade = cv2.CascadeClassifier(config.PATH_TO_MODEL)
-        ratio = 0.4
-        prop = 0.25
 
         while (cap.isOpened()):
             ret, frame = cap.read()
 
-            while self.pause:
+            while self.pause and not self.jump:
                 pass
 
-            if iterations == self.videoLenght:
-                cleanList = {}
+            if iterations == config.VIDEO_LENGHT:
                 coincidences = 0
                 cleanList = DS.noiseOut(list)
                 for k in cleanList:
                     coincidences += 1
-                occRation = (coincidences/founds) * 100
                 self.js.setData(cleanList, "face")
                 self.js.saveJson(config.PATH_TO_JSON_PRE)
                 cleanList.clear()
@@ -71,9 +63,9 @@ class FaceIsolator(QThread):
                         newFace.queue(newFace, None)
                     else:
                         for k, v in list.items():
-                            if newFace.equal(prop, list[k], frame):
+                            if newFace.equal(config.PROP, list[k], frame):
                                 newFace.occurs += list[k].occurs + 1
-                                if newFace.occurs >= int(iterations*ratio): newFace.valid = True
+                                if newFace.occurs >= int(iterations*config.RATIO): newFace.valid = True
                                 else: newFace.valid = False
                                 newFace.queue(newFace, list[k].list)
                                 list[k] = newFace
@@ -88,11 +80,11 @@ class FaceIsolator(QThread):
                     if config.DETAILED:
                         if newFace.valid:
                             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 1)
-                            cv2.putText(frame, "Accepted", (int(x + (w * prop)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                            cv2.putText(frame, "Accepted", (int(x + (w * config.PROP)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                                         (0, 255, 0), 1, cv2.LINE_AA)
                         else:
                             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 1)
-                            cv2.putText(frame, "Rejected", (int(x + (w * prop)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                            cv2.putText(frame, "Rejected", (int(x + (w * config.PROP)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                                         (0, 0, 255), 1, cv2.LINE_AA)
 
                 rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -101,6 +93,8 @@ class FaceIsolator(QThread):
                 convertToQt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
 
                 self.changePixmap.emit(convertToQt, perf.getVideoProgress(iterations,config.VIDEO_LENGHT))
+
+                self.jump = False
 
                 """
                 rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
