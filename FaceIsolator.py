@@ -16,7 +16,7 @@ class FaceIsolator(QThread):
 
     def getTime(self):
         now = datetime.datetime.now()
-        return str(now.hour) + ":" + str(now.minute) + ":" + str(now.second)
+        return "[" + '{:02d}'.format(now.hour) + ":" + '{:02d}'.format(now.minute) + ":" + '{:02d}'.format(now.second) + "]"
 
     def __init__(self, parent=None):
         super(FaceIsolator, self).__init__(parent)
@@ -28,11 +28,9 @@ class FaceIsolator(QThread):
         self.jump = False
         self.frame = ""
         self.faces = ""
-        self.status =  self.getTime() + " | AIWake ...\n" + self.getTime() + \
-                       " | Video source [" + config.PATH_TO_VIDEO + "]\n" + self.getTime() + " | Data model for step 1 ["\
-                       + config.PATH_TO_MODEL + "]\n" + self.getTime() + " |"
-        self.updateTerminal.emit()
-
+        self.status =  self.getTime() + " AIWake ... [STEP 1 - PREPROCESSING - STARTED]\n" + self.getTime() + \
+                       " Video source [" + config.PATH_TO_VIDEO + "]\n" + self.getTime() + " Data model for step 1 ["\
+                       + config.PATH_TO_MODEL + "]"
 
     def updateWithoutProcessing(self):
         pass
@@ -44,9 +42,8 @@ class FaceIsolator(QThread):
         founds = 0
         list = {}
         faceCascade = cv2.CascadeClassifier(config.PATH_TO_MODEL)
-        self.status += "\n" + self.getTime() + " | [" + str(config.VIDEO_LENGHT) + "] detected frames to be procesed\n"\
-                                                                                   + self.getTime() + " |"
-        self.status += "\n" + self.getTime() + " | Processing..."
+        self.status += "\n" + self.getTime() + " [" + str(config.VIDEO_LENGHT) + "] detected frames to be procesed"
+        self.status += "\n" + self.getTime() + " Processing..."
         self.updateTerminal.emit()
 
         while (cap.isOpened()):
@@ -55,7 +52,7 @@ class FaceIsolator(QThread):
 
             while self.pause and not self.jump:
                 if writeOnPause:
-                    self.status += "\n" + self.getTime() + " | Video paused by user at frame [" + str(iterations) + "]"
+                    self.status += "\n" + self.getTime() + " Video paused by user at frame [" + str(iterations) + "]"
                     self.updateTerminal.emit()
                     writeOnPause = False
 
@@ -69,8 +66,9 @@ class FaceIsolator(QThread):
                 cleanList.clear()
                 list.clear()
                 print("done")
-                self.status += "\n" + self.getTime() + " |\n" + self.getTime() + " | Step 1 finished..."
-                self.status += "\n" + self.getTime() + " | Json for step 1 -> " + config.PATH_TO_JSON_PRE
+                self.status += "\n" + self.getTime() + " Step 1 finished..."
+                self.status += "\n" + self.getTime() + " Json for step 1 -> " + config.PATH_TO_JSON_PRE
+                self.status += "\n" + self.getTime() + " AIWake ... [STEP 1 - PREPROCESSING - FINISHED]"
                 self.updateTerminal.emit()
 
             iterations += 1
