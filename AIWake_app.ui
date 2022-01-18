@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>830</width>
-    <height>688</height>
+    <width>835</width>
+    <height>831</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -200,7 +200,7 @@
        <rect>
         <x>640</x>
         <y>120</y>
-        <width>81</width>
+        <width>121</width>
         <height>22</height>
        </rect>
       </property>
@@ -216,13 +216,16 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
+      <property name="tickPosition">
+       <enum>QSlider::TicksBelow</enum>
+      </property>
      </widget>
      <widget class="QSlider" name="hb_detection_prop">
       <property name="geometry">
        <rect>
         <x>640</x>
         <y>180</y>
-        <width>81</width>
+        <width>121</width>
         <height>22</height>
        </rect>
       </property>
@@ -234,6 +237,9 @@
       </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="tickPosition">
+       <enum>QSlider::TicksBelow</enum>
       </property>
      </widget>
      <widget class="QLabel" name="label">
@@ -265,7 +271,7 @@
      <widget class="QLabel" name="acceptanceLbl">
       <property name="geometry">
        <rect>
-        <x>730</x>
+        <x>770</x>
         <y>120</y>
         <width>49</width>
         <height>16</height>
@@ -278,7 +284,7 @@
      <widget class="QLabel" name="thresholdLbl">
       <property name="geometry">
        <rect>
-        <x>730</x>
+        <x>770</x>
         <y>180</y>
         <width>49</width>
         <height>16</height>
@@ -328,54 +334,6 @@
      </attribute>
     </widget>
    </widget>
-   <widget class="QFrame" name="frame">
-    <property name="geometry">
-     <rect>
-      <x>360</x>
-      <y>600</y>
-      <width>461</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <italic>true</italic>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <widget class="QLabel" name="infoL">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>181</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="infoBt">
-     <property name="geometry">
-      <rect>
-       <x>380</x>
-       <y>10</y>
-       <width>75</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>PushButton</string>
-     </property>
-    </widget>
-   </widget>
    <widget class="QFrame" name="frame_2">
     <property name="geometry">
      <rect>
@@ -422,13 +380,48 @@
      </property>
     </widget>
    </widget>
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>590</y>
+      <width>811</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QPlainTextEdit" name="terminalInfo">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>811</width>
+       <height>191</height>
+      </rect>
+     </property>
+     <property name="documentTitle">
+      <string>output</string>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="plainText">
+      <string/>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>830</width>
+     <width>835</width>
      <height>22</height>
     </rect>
    </property>

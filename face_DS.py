@@ -42,14 +42,16 @@ class face:
         rx = range(x2, x1 + 1)
         ry = range(y2, y1 + 1)
 
-        #print(str(x2) + " " + str(y2) + " " + str(x1) + " " + str(y1))
-        if config.SHOW_HB:
-            cv2.rectangle(frame, (x2, y2), (x1, y1), (0, 255, 0), 1)
+        self.paintFrame(frame, x2, y2, x1, y1)
 
         if item.x in rx and item.y in ry:
             return True
         else:
             return False
+
+    def paintFrame(self, frame, x2, y2, x1, y1):
+        if config.SHOW_HB:
+            cv2.rectangle(frame, (x2, y2), (x1, y1), (0, 255, 0), 1)
 
     def toString(self):
         return ("face: (" + str(self.x) + ", " + str(self.y) +

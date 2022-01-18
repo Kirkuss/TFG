@@ -71,10 +71,14 @@ class AIWake_UI(QMainWindow):
         else:
             self.thread[1].start()
             self.thread[1].changePixmap.connect(self.updateVideo)
+            self.thread[1].updateTerminal.connect(self.updateTerminal)
 
     def updateVideo(self, frame, progress):
         self.step1Video.setPixmap(QPixmap.fromImage(frame))
         self.step1Pb.setValue(progress)
+
+    def updateTerminal(self):
+        self.terminalInfo.setPlainText(self.thread[1].status)
 
     def browseStep1Video(self):
         fileName = QFileDialog.getOpenFileName(self, "Choose a video", "C:", "Video Files (*.mp4 *.flv *.mkv)")
