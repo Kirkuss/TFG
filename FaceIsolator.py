@@ -1,22 +1,19 @@
+import Utilities
 import variables as config
 import cv2
 import AIWakeUI
 import face_DS as DS
 import Utilities as Dmanager
 import Performance_stats as perf
-import datetime
 
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtGui import QImage
+from Utilities import timeStamp as ts
 
 class FaceIsolator(QThread):
 
     changePixmap = pyqtSignal(QImage, int)
     updateTerminal = pyqtSignal()
-
-    def getTime(self):
-        now = datetime.datetime.now()
-        return "[" + '{:02d}'.format(now.hour) + ":" + '{:02d}'.format(now.minute) + ":" + '{:02d}'.format(now.second) + "]"
 
     def __init__(self, parent=None):
         super(FaceIsolator, self).__init__(parent)
@@ -28,8 +25,8 @@ class FaceIsolator(QThread):
         self.jump = False
         self.frame = ""
         self.faces = ""
-        self.status =  self.getTime() + " AIWake ... [STEP 1 - PREPROCESSING - STARTED]\n" + self.getTime() + \
-                       " Video source [" + config.PATH_TO_VIDEO + "]\n" + self.getTime() + " Data model for step 1 ["\
+        config.LOG +=  ts.getTime(self) + " AIWake ... [STEP 1 - PREPROCESSING - STARTED]\n" + ts.getTime(self) + \
+                       " Video source [" + config.PATH_TO_VIDEO + "]\n" + ts.getTime(self) + " Data model for step 1 ["\
                        + config.PATH_TO_MODEL + "]"
 
     def updateWithoutProcessing(self):
@@ -42,8 +39,8 @@ class FaceIsolator(QThread):
         founds = 0
         list = {}
         faceCascade = cv2.CascadeClassifier(config.PATH_TO_MODEL)
-        self.status += "\n" + self.getTime() + " [" + str(config.VIDEO_LENGHT) + "] detected frames to be procesed"
-        self.status += "\n" + self.getTime() + " Processing..."
+        config.LOG += "\n" + ts.getTime(self) + " [" + str(config.VIDEO_LENGHT) + "] detected frames to be procesed"
+        config.LOG += "\n" + ts.getTime(self) + " Processing..."
         self.updateTerminal.emit()
 
         while (cap.isOpened()):
@@ -52,7 +49,7 @@ class FaceIsolator(QThread):
 
             while self.pause and not self.jump:
                 if writeOnPause:
-                    self.status += "\n" + self.getTime() + " Video paused by user at frame [" + str(iterations) + "]"
+                    config.LOG += "\n" + ts.getTime(self) + " Video paused by user at frame [" + str(iterations) + "]"
                     self.updateTerminal.emit()
                     writeOnPause = False
 
@@ -66,9 +63,9 @@ class FaceIsolator(QThread):
                 cleanList.clear()
                 list.clear()
                 print("done")
-                self.status += "\n" + self.getTime() + " Step 1 finished..."
-                self.status += "\n" + self.getTime() + " Json for step 1 -> " + config.PATH_TO_JSON_PRE
-                self.status += "\n" + self.getTime() + " AIWake ... [STEP 1 - PREPROCESSING - FINISHED]"
+                config.LOG += "\n" + ts.getTime(self) + " Step 1 finished..."
+                config.LOG += "\n" + ts.getTime(self) + " Json for step 1 -> " + config.PATH_TO_JSON_PRE
+                config.LOG += "\n" + ts.getTime(self) + " AIWake ... [STEP 1 - PREPROCESSING - FINISHED]"
                 self.updateTerminal.emit()
 
             iterations += 1
@@ -121,8 +118,3 @@ class FaceIsolator(QThread):
 
                 self.jump = False
 
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    while True:
-                        if cv2.waitKey(1) & 0xFF == ord('q'):
-                            break
-                    break

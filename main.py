@@ -25,6 +25,8 @@ source = "VIDEO"
 path = "video5.mp4"
 model = "Resources/haarcascade_frontalface_default.xml"
 
+sys.stderr = open("res.txt", "w")
+
 faceCascade = cv2.CascadeClassifier(model)
 
 if source=="VIDEO":

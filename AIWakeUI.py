@@ -3,12 +3,13 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PyQt5 import uic
 from PyQt5 import QtGui
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, QMutex
 
 import sys
 import DataProcessor as dp
 import variables as config
 import FaceIsolator as fi
+import EmotionProc as ep
 import variables as config
 
 #faceIsolator = fi.FaceIsolator()
@@ -35,10 +36,32 @@ class AIWake_UI(QMainWindow):
         self.hb_detection_prop.valueChanged.connect(self.updateThreshold)
         self.thresholdLbl.setText(str(self.hb_detection_prop.value()/100))
         self.forwardBt_step1.clicked.connect(self.forwardVideo_step1)
+        self.playBt_2.clicked.connect(self.playBtClickPost)
+        self.forwardBt_step2.clicked.connect(self.forwardVideo_step2)
+        self.pauseBt_2.clicked.connect(self.pauseBtClick_step2)
+        self.frontTabPanel.currentChanged.connect(self.tabTest)
+
+    def tabTest(self, index):
+        try:
+            if index == 0:
+                if self.thread[2].isRunning():
+                    print("2 running")
+                    self.thread[2].wait(self.mutexTab2)
+            elif index == 1:
+                if self.thread[1].isRunning():
+                    print("1 running")
+                    self.thread[1].wait(self.mutexTab1)
+
+        except Exception as e:
+            print(str(e))
 
     def forwardVideo_step1(self):
         self.thread[1].pause = True
         self.thread[1].jump = True
+
+    def forwardVideo_step2(self):
+        self.thread[2].pause = True
+        self.thread[2].jump = True
 
     def updateThreshold(self):
         value = self.hb_detection_prop.value()
@@ -52,6 +75,9 @@ class AIWake_UI(QMainWindow):
 
     def pauseBtClick_step1(self):
         self.thread[1].pause = True
+
+    def pauseBtClick_step2(self):
+        self.thread[2].pause = True
 
     def previewChange_showHB(self):
         if self.showBoxesCb.isChecked(): config.SHOW_HB = True
@@ -73,18 +99,33 @@ class AIWake_UI(QMainWindow):
             self.thread[1].changePixmap.connect(self.updateVideo)
             self.thread[1].updateTerminal.connect(self.updateTerminal)
 
+    def playBtClickPost(self):
+        if self.thread[2].isRunning():
+            if self.thread[2].pause:
+                self.thread[2].pause = False
+        else:
+            self.thread[2].start()
+            self.thread[2].changePixmap2.connect(self.updatePostVideo)
+            self.thread[2].updateTerminal.connect(self.updateTerminal)
+
     def updateVideo(self, frame, progress):
         self.step1Video.setPixmap(QPixmap.fromImage(frame))
         self.step1Pb.setValue(progress)
 
     def updateTerminal(self):
-        self.terminalInfo.setPlainText(self.thread[1].status)
+        self.terminalInfo.setPlainText(config.LOG)
 
     def browseStep1Video(self):
         fileName = QFileDialog.getOpenFileName(self, "Choose a video", "C:", "Video Files (*.mp4 *.flv *.mkv)")
         config.PATH_TO_VIDEO = fileName[0]
         self.pathInText_step1.insert(str(fileName[0]))
+        self.pathInText_step2.insert(str(fileName[0]))
         self.thread[1] = fi.FaceIsolator(parent=None)
+        self.thread[2] = ep.EmotionProc(parent=None)
+
+    def updatePostVideo(self, frame, progress):
+        self.step2Video.setPixmap(QPixmap.fromImage(frame))
+        self.step2Pb.setValue(progress)
 
 
 

@@ -1,9 +1,12 @@
 RESOURCES_PATH = "Resources/"
 PATH_TO_VIDEO = ""
 PATH_TO_MODEL = RESOURCES_PATH + "haarcascade_frontalface_default.xml"
+PATH_TO_EMODEL = RESOURCES_PATH + "datasets/Models/FINAL"
 SOURCE = "VIDEO"
 JSON_PATH_PRE = "jsonFiles/PreProcessResults.json"
+JSON_PATH_POS = "jsonFiles/PostProcessResults.json"
 PATH_TO_JSON_PRE = RESOURCES_PATH + JSON_PATH_PRE
+PATH_TO_JSON_POS = RESOURCES_PATH + JSON_PATH_POS
 VIDEO_PREVIEW_POS = True
 VIDEO_PREVIEW_PRE = True
 DATA_DIRECTORY = RESOURCES_PATH + "datasets/train"
@@ -15,3 +18,4 @@ RATIO = 0.4
 PROP = 0.25
 DETAILED = True
 SHOW_HB = True
+LOG = ""

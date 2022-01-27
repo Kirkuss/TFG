@@ -1,4 +1,5 @@
 import json
+import datetime
 
 def serializeFace(face, id):
     serialized = {}
@@ -6,6 +7,11 @@ def serializeFace(face, id):
     for k in face.list:
         serialized[str(face.list[k].frame)] = (face.list[k].getSerialized())
     return serialized
+
+class timeStamp():
+    def getTime(self):
+        now = datetime.datetime.now()
+        return "[" + '{:02d}'.format(now.hour) + ":" + '{:02d}'.format(now.minute) + ":" + '{:02d}'.format(now.second) + "]"
 
 class ModelInterpreter():
     Classes = ["angry", "disgust", "fear", "happy", "neutral", "sad", "surprise"]
