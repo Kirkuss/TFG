@@ -6,6 +6,7 @@ import variables as config
 import Utilities as Dmanager
 import Performance_stats as perf
 import tensorflow as tf
+import PostWorker as pw
 import os
 
 #from tensorflow import keras
@@ -24,9 +25,6 @@ class EmotionProc(QThread):
     js = Dmanager.jsonManager()
     faces = {}
 
-    #if os.path.isfile(config.EMOTION_MODEL):
-    #model = tf.keras.models.load_model("Resources/datasets/Models/FINAL")
-
     def __init__(self, parent=None):
         super(EmotionProc, self).__init__(parent)
         self.pathToVideo = config.PATH_TO_VIDEO
@@ -37,6 +35,7 @@ class EmotionProc(QThread):
         self.jump = False
         self.frame = ""
         self.faces = self.js.loadJson(config.PATH_TO_JSON_PRE).copy()
+        self.thread = {}
 
     def threaded_process(self, i, k):
         face = self.faces[i]
@@ -84,9 +83,11 @@ class EmotionProc(QThread):
 
                 if ret:
                     self.frame = cv2.resize(self.frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
-                    for i in self.faces:
+                    for i in range(1, len(self.faces) + 1):
+                            self.thread[i] = pw.PostWorker(self)
+                            self.thread[i].start()
 
-                            p = Process(target=thread_.work, args=(i,))
+                            #p = Process(target=thread_.work, args=(i,))
                             #p.start() esto es una bomba para el pc
 
                             """

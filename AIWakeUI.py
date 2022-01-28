@@ -1,18 +1,11 @@
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QFileDialog
 from PyQt5 import uic
-from PyQt5 import QtGui
-from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtCore import pyqtSlot, QMutex
+from PyQt5.QtGui import QPixmap
 
-import sys
 import DataProcessor as dp
-import variables as config
 import FaceIsolator as fi
 import EmotionProc as ep
 import variables as config
-
-#faceIsolator = fi.FaceIsolator()
 
 class AIWake_UI(QMainWindow):
     def __init__(self):
