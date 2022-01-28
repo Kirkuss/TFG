@@ -1,15 +1,17 @@
 import tensorflow as tf
 import numpy as np
 import cv2
-import os.path
 import json
 import variables as config
 import Utilities as Dmanager
 import Performance_stats as perf
 import tensorflow as tf
+import os
+
 #from tensorflow import keras
 from Utilities import ModelInterpreter as mi
 from Utilities import timeStamp as ts
+from multiprocessing import Process
 
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtGui import QImage
@@ -34,8 +36,29 @@ class EmotionProc(QThread):
         self.pause = False
         self.jump = False
         self.frame = ""
-        self.faces = {}
         self.faces = self.js.loadJson(config.PATH_TO_JSON_PRE).copy()
+
+    def threaded_process(self, i, k):
+        face = self.faces[i]
+        if k in face:
+            print("frame: " + str(k) + " pid" + str(os.getpid()))
+            cropped = self.frame[int(self.faces[i][k]["y"]):int(self.faces[i][k]["y"]) + int(self.faces[i][k]["h"]),
+            int(self.faces[i][k]["x"]):int(self.faces[i][k]["x"]) + int(self.faces[i][k]["w"])]
+            # cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
+            resized = cv2.resize(cropped, (224, 224))
+            resized = np.expand_dims(resized, axis=0)
+            resized = resized / 255.0
+            predictions = self.model.predict(resized, verbose=0)
+            pred = mi.getClass(n=np.argmax(predictions))
+            self.faces[i][k]["pred"] = pred
+            cv2.rectangle(self.frame, (int(self.faces[i][k]["x"]), int(self.faces[i][k]["y"])),
+                (int(self.faces[i][k]["x"]) + int(self.faces[i][k]["w"]),
+                int(self.faces[i][k]["y"]) + int(self.faces[i][k]["h"])),
+                (255, 255, 255), 1)
+            cv2.putText(self.frame, "ID " + i + pred,
+                (int(int(self.faces[i][k]["x"])) + 5, int(self.faces[i][k]["y"]) - 7),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
+        exit(0)
 
     def run(self):
         config.LOG += "\n" + ts.getTime(self) + " AIWake ... [STEP 2 - POSTPROCESSING - STARTED]\n" + ts.getTime(self) + \
@@ -49,7 +72,7 @@ class EmotionProc(QThread):
         if config.PATH_TO_JSON_PRE:
             while (cap.isOpened()):
                 iterations += 1
-                ret, frame = cap.read()
+                ret, self.frame = cap.read()
                 writeOnPause = True
 
                 while self.pause and not self.jump:
@@ -60,10 +83,13 @@ class EmotionProc(QThread):
                         writeOnPause = False
 
                 if ret:
-                    frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
+                    self.frame = cv2.resize(self.frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
                     for i in self.faces:
-                        #print(i)
-                        for j in self.faces[i]:
+
+                            p = Process(target=thread_.work, args=(i,))
+                            #p.start() esto es una bomba para el pc
+
+                            """
                             if int(j) == iterations:
 
                                 cropped = frame[int(self.faces[i][j]["y"]):int(self.faces[i][j]["y"]) + int(self.faces[i][j]["h"]),
@@ -84,7 +110,10 @@ class EmotionProc(QThread):
                                             (int(int(self.faces[i][j]["x"])) + 5, int(self.faces[i][j]["y"]) - 7),
                                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
 
-                    rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                                break #occurrence found, break first j for loop.
+                                """
+
+                    rgbImage = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
                     h, w, ch = rgbImage.shape
                     bytesPerLine = ch * w
                     convertToQt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
@@ -95,6 +124,8 @@ class EmotionProc(QThread):
 
         self.js.data = self.faces.copy()
         self.js.saveJson("Resources/jsonFiles/PostProcessResults.json")
+
+        cap.release()
 
 
 

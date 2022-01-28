@@ -67,6 +67,7 @@ class FaceIsolator(QThread):
                 config.LOG += "\n" + ts.getTime(self) + " Json for step 1 -> " + config.PATH_TO_JSON_PRE
                 config.LOG += "\n" + ts.getTime(self) + " AIWake ... [STEP 1 - PREPROCESSING - FINISHED]"
                 self.updateTerminal.emit()
+                cap.release()
 
             iterations += 1
 

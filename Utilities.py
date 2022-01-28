@@ -60,3 +60,4 @@ class jsonManager(object):
         with open(path, 'w') as outfile:
             json.dump(self.data,outfile, indent=4)
         self.data.clear()
+

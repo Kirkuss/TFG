@@ -46,11 +46,12 @@ class AIWake_UI(QMainWindow):
             if index == 0:
                 if self.thread[2].isRunning():
                     print("2 running")
-                    self.thread[2].wait(self.mutexTab2)
+                    #self.thread[2].wait(self.mutexTab2)
             elif index == 1:
                 if self.thread[1].isRunning():
                     print("1 running")
-                    self.thread[1].wait(self.mutexTab1)
+                    #self.thread[1].wait(self.mutexTab1)
+                else: print("1 finished")
 
         except Exception as e:
             print(str(e))
