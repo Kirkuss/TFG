@@ -1,5 +1,8 @@
 import json
 import datetime
+import time
+
+from PyQt5.QtCore import pyqtSignal, QThread
 
 def serializeFace(face, id):
     serialized = {}
@@ -61,3 +64,71 @@ class jsonManager(object):
             json.dump(self.data,outfile, indent=4)
         self.data.clear()
 
+class threadManager(QThread):
+
+    unlock = pyqtSignal(int)
+    pool = {}
+    iteration = 1
+    result = 0
+    poolSize = 0
+    
+    def __init__(self, parent=None):
+        super(threadManager, self).__init__(parent)
+        self.running = True
+        self.parent = parent
+
+    def stop(self):
+        self.running = False
+
+    def run(self):
+        while self.running:
+            if len(self.pool) < self.poolSize:
+                pass
+            else:
+                pass
+                #self.checkStatus()
+
+    def addToPool(self, worker, i):
+        self.pool[i] = worker
+        if len(self.pool) == self.poolSize:
+            for i in self.pool:
+                self.pool[i].start()
+
+    """
+    def checkStatus(self, id, status, iteration):
+        
+        print("Mensaje recibido de: " + str(id) + " Status: " + str(status) + " en la iteracion: " + str(iteration) + "\n")
+        if status == 1 and iteration == self.iteration:
+            self.result += 1
+
+        if self.result == self.poolSize:
+            self.unlock.emit(1)
+            self.iteration += 1
+    """
+
+
+
+
+"""
+                            if int(j) == iterations:
+
+                                cropped = frame[int(self.faces[i][j]["y"]):int(self.faces[i][j]["y"]) + int(self.faces[i][j]["h"]),
+                                          int(self.faces[i][j]["x"]):int(self.faces[i][j]["x"])+int(self.faces[i][j]["w"])]
+                                #cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
+                                resized = cv2.resize(cropped, (224,224))
+                                resized = np.expand_dims(resized, axis=0)
+                                resized = resized/255.0
+                                predictions = self.model.predict(resized, verbose=0)
+                                pred = mi.getClass(n = np.argmax(predictions))
+                                self.faces[i][j]["pred"] = pred
+                                #print(predictions[0])
+                                cv2.rectangle(frame, (int(self.faces[i][j]["x"]),int(self.faces[i][j]["y"])),
+                                              (int(self.faces[i][j]["x"]) + int(self.faces[i][j]["w"]),
+                                               int(self.faces[i][j]["y"]) + int(self.faces[i][j]["h"])),
+                                              (255, 255, 255), 1)
+                                cv2.putText(frame, "ID " + i + pred,
+                                            (int(int(self.faces[i][j]["x"])) + 5, int(self.faces[i][j]["y"]) - 7),
+                                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
+
+                                break #occurrence found, break first j for loop.
+                                """

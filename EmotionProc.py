@@ -1,3 +1,7 @@
+import queue
+import threading
+import time
+
 import tensorflow as tf
 import numpy as np
 import cv2
@@ -14,6 +18,7 @@ from Utilities import ModelInterpreter as mi
 from Utilities import timeStamp as ts
 from multiprocessing import Process
 
+from multiprocessing.pool import ThreadPool
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtGui import QImage
 
@@ -21,6 +26,7 @@ class EmotionProc(QThread):
 
     changePixmap2 = pyqtSignal(QImage, int)
     updateTerminal = pyqtSignal()
+    unlock = pyqtSignal(int)
 
     js = Dmanager.jsonManager()
     faces = {}
@@ -35,7 +41,10 @@ class EmotionProc(QThread):
         self.jump = False
         self.frame = ""
         self.faces = self.js.loadJson(config.PATH_TO_JSON_PRE).copy()
-        self.thread = {}
+        self.iterations = 1
+        self.test = 0
+        self.workers = {}
+        self.resSum = 0
 
     def threaded_process(self, i, k):
         face = self.faces[i]
@@ -59,6 +68,17 @@ class EmotionProc(QThread):
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
         exit(0)
 
+    def pool_results(self, result):
+        print("Pillao: {}".format(result))
+
+
+    def unlockFunc(self, id, done, it):
+        #print("Mensaje recibido de: " + str(id) + " Status: " + str(done) + " en la iteracion: " + str(it) + "\n")
+        self.resSum += done
+        if self.resSum == 4:
+            self.resSum = 0
+            self.test = 1
+
     def run(self):
         config.LOG += "\n" + ts.getTime(self) + " AIWake ... [STEP 2 - POSTPROCESSING - STARTED]\n" + ts.getTime(self) + \
                       " Video source [" + config.PATH_TO_VIDEO + "]\n" + ts.getTime(self) + " Data model for step 2 [" \
@@ -66,11 +86,17 @@ class EmotionProc(QThread):
         cap = cv2.VideoCapture(config.PATH_TO_VIDEO)
         self.updateTerminal.emit()
         config.VIDEO_LENGHT = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-        iterations = 0
+        iterations = 1
+
+        pool_size = 4
+        #pool = ThreadPool(pool_size)
+        blocker = Dmanager.threadManager(parent=self)
+        blocker.poolSize = pool_size
+        #blocker.unlock.connect(self.unlockFunc)
+        blocker.start()
 
         if config.PATH_TO_JSON_PRE:
             while (cap.isOpened()):
-                iterations += 1
                 ret, self.frame = cap.read()
                 writeOnPause = True
 
@@ -83,43 +109,41 @@ class EmotionProc(QThread):
 
                 if ret:
                     self.frame = cv2.resize(self.frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
-                    for i in range(1, len(self.faces) + 1):
-                            self.thread[i] = pw.PostWorker(self)
-                            self.thread[i].start()
+                    if self.iterations == 1:
+                        for i in range(1, 5): #TESTING PROVISIONAL
+                            postW = pw.PostWorker(i = i, blocker=blocker, iteration=iterations, parent=self)
+                            postW.iterationDone.connect(self.unlockFunc)
+                            blocker.addToPool(postW, i)
+                            #pool.map_async(postW.run, [i], callback=self.pool_results)
+
 
                             #p = Process(target=thread_.work, args=(i,))
                             #p.start() esto es una bomba para el pc
+                    else:
+                        self.unlock.emit(1)
 
-                            """
-                            if int(j) == iterations:
+                    pr = True
 
-                                cropped = frame[int(self.faces[i][j]["y"]):int(self.faces[i][j]["y"]) + int(self.faces[i][j]["h"]),
-                                          int(self.faces[i][j]["x"]):int(self.faces[i][j]["x"])+int(self.faces[i][j]["w"])]
-                                #cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
-                                resized = cv2.resize(cropped, (224,224))
-                                resized = np.expand_dims(resized, axis=0)
-                                resized = resized/255.0
-                                predictions = self.model.predict(resized, verbose=0)
-                                pred = mi.getClass(n = np.argmax(predictions))
-                                self.faces[i][j]["pred"] = pred
-                                #print(predictions[0])
-                                cv2.rectangle(frame, (int(self.faces[i][j]["x"]),int(self.faces[i][j]["y"])),
-                                              (int(self.faces[i][j]["x"]) + int(self.faces[i][j]["w"]),
-                                               int(self.faces[i][j]["y"]) + int(self.faces[i][j]["h"])),
-                                              (255, 255, 255), 1)
-                                cv2.putText(frame, "ID " + i + pred,
-                                            (int(int(self.faces[i][j]["x"])) + 5, int(self.faces[i][j]["y"]) - 7),
-                                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
+                    while self.test == 0:
+                        #self.unlock.emit(1)
+                        if pr:
+                            #print("Hilo principal en espera")
+                            pr = False
 
-                                break #occurrence found, break first j for loop.
-                                """
+                    self.test = 0
+
+                    #print("Continuando...")
+
+                    self.iterations += 1
+
+                    #print(str("ITERATIONS: " + str(self.iterations)))
 
                     rgbImage = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
                     h, w, ch = rgbImage.shape
                     bytesPerLine = ch * w
                     convertToQt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
 
-                    self.changePixmap2.emit(convertToQt, perf.getVideoProgress(iterations, config.VIDEO_LENGHT))
+                    self.changePixmap2.emit(convertToQt, perf.getVideoProgress(self.iterations, config.VIDEO_LENGHT))
                     #perf.getVideoProgress(iterations, config.VIDEO_LENGHT)
                     self.jump = False
 
