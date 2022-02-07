@@ -9,14 +9,14 @@ import json
 import variables as config
 import Utilities as Dmanager
 import Performance_stats as perf
-import tensorflow as tf
 import PostWorker as pw
 import os
 
 #from tensorflow import keras
 from Utilities import ModelInterpreter as mi
 from Utilities import timeStamp as ts
-from multiprocessing import Process
+from multiprocessing import cpu_count
+from tornado import concurrent
 
 from multiprocessing.pool import ThreadPool
 from PyQt5.QtCore import QThread, pyqtSignal
@@ -35,7 +35,6 @@ class EmotionProc(QThread):
         super(EmotionProc, self).__init__(parent)
         self.pathToVideo = config.PATH_TO_VIDEO
         self.pathToOutput = config.JSON_PATH_POS
-        self.model = tf.keras.models.load_model(config.PATH_TO_EMODEL)
         self.js = Dmanager.jsonManager()
         self.pause = False
         self.jump = False
@@ -45,55 +44,67 @@ class EmotionProc(QThread):
         self.test = 0
         self.workers = {}
         self.resSum = 0
+        self.model = tf.keras.models.load_model(config.PATH_TO_EMODEL)
 
-    def threaded_process(self, i, k):
-        face = self.faces[i]
-        if k in face:
-            print("frame: " + str(k) + " pid" + str(os.getpid()))
-            cropped = self.frame[int(self.faces[i][k]["y"]):int(self.faces[i][k]["y"]) + int(self.faces[i][k]["h"]),
-            int(self.faces[i][k]["x"]):int(self.faces[i][k]["x"]) + int(self.faces[i][k]["w"])]
-            # cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
-            resized = cv2.resize(cropped, (224, 224))
-            resized = np.expand_dims(resized, axis=0)
-            resized = resized / 255.0
-            predictions = self.model.predict(resized, verbose=0)
-            pred = mi.getClass(n=np.argmax(predictions))
-            self.faces[i][k]["pred"] = pred
-            cv2.rectangle(self.frame, (int(self.faces[i][k]["x"]), int(self.faces[i][k]["y"])),
-                (int(self.faces[i][k]["x"]) + int(self.faces[i][k]["w"]),
-                int(self.faces[i][k]["y"]) + int(self.faces[i][k]["h"])),
-                (255, 255, 255), 1)
-            cv2.putText(self.frame, "ID " + i + pred,
-                (int(int(self.faces[i][k]["x"])) + 5, int(self.faces[i][k]["y"]) - 7),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
-        exit(0)
-
-    def pool_results(self, result):
-        print("Pillao: {}".format(result))
-
+    def predict(self, resized):
+        return self.model.predict(resized, verbose = 0)
 
     def unlockFunc(self, id, done, it):
         #print("Mensaje recibido de: " + str(id) + " Status: " + str(done) + " en la iteracion: " + str(it) + "\n")
         self.resSum += done
-        if self.resSum == 4:
+        if self.resSum == config.THREAD_POOL_SIZE:
             self.resSum = 0
             self.test = 1
+
+    def getChunk(self, len, pool_size):
+        chunk_size = len//pool_size
+        mod = len%pool_size
+        print("LEN: " + str(chunk_size) + " MOD: " + str(mod))
+        pointers = {}
+        list = []
+        if chunk_size == 0:
+            config.THREAD_POOL_SIZE = 1
+        else:
+            counter = 0
+            itCounter = 0
+            threadId = 1
+
+            if mod != 0: equilibrate = True
+            else: equilibrate = False
+
+            for k in self.faces:
+                counter += 1
+                itCounter += 1
+                list.append(k)
+                if counter == chunk_size and not equilibrate:
+                    pointers[threadId] = list.copy()
+                    list.clear()
+                    counter = 0
+                    threadId += 1
+                    if mod != 0: equilibrate = True
+                elif counter == chunk_size and equilibrate:
+                    mod -= 1
+                    counter -= 1
+                    equilibrate = False
+        print(str(pointers))
+        return pointers
 
     def run(self):
         config.LOG += "\n" + ts.getTime(self) + " AIWake ... [STEP 2 - POSTPROCESSING - STARTED]\n" + ts.getTime(self) + \
                       " Video source [" + config.PATH_TO_VIDEO + "]\n" + ts.getTime(self) + " Data model for step 2 [" \
-                      + config.PATH_TO_EMODEL + "]"
+                      + config.PATH_TO_EMODEL + "]\n" + ts.getTime(self) + " Available CPUs: [" + str(cpu_count()) + "]"
         cap = cv2.VideoCapture(config.PATH_TO_VIDEO)
         self.updateTerminal.emit()
         config.VIDEO_LENGHT = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         iterations = 1
 
-        pool_size = 4
+        pool_size = config.THREAD_POOL_SIZE
+        facesLen = len(self.faces)
         #pool = ThreadPool(pool_size)
         blocker = Dmanager.threadManager(parent=self)
         blocker.poolSize = pool_size
         #blocker.unlock.connect(self.unlockFunc)
-        blocker.start()
+        pointers = self.getChunk(facesLen, pool_size)
 
         if config.PATH_TO_JSON_PRE:
             while (cap.isOpened()):
@@ -109,16 +120,30 @@ class EmotionProc(QThread):
 
                 if ret:
                     self.frame = cv2.resize(self.frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
+                    pr2 = True
                     if self.iterations == 1:
-                        for i in range(1, 5): #TESTING PROVISIONAL
-                            postW = pw.PostWorker(i = i, blocker=blocker, iteration=iterations, parent=self)
+                        futures = []
+                        with concurrent.futures.ThreadPoolExecutor(max_workers=config.THREAD_POOL_SIZE) as executor:
+                            for i in pointers:
+                                postW = pw.PostWorker(i=i, blocker=blocker, iteration=iterations, chunk=pointers[i],
+                                                      parent=self)
+                                postW.iterationDone.connect(self.unlockFunc)
+                                print("bucle " + str(i))
+                                future = executor.submit(postW.run(), i)
+                                futures.append(future)
+
+                        for future in futures:
+                            result = future.result()
+                            print(result)
+                        """
+                        for i in range(1, config.THREAD_POOL_SIZE + 1): #TESTING PROVISIONAL
+                            postW = pw.PostWorker(i = i, blocker=blocker, iteration=iterations, chunk = pointers[i], parent=self)
                             postW.iterationDone.connect(self.unlockFunc)
                             blocker.addToPool(postW, i)
                             #pool.map_async(postW.run, [i], callback=self.pool_results)
-
-
                             #p = Process(target=thread_.work, args=(i,))
                             #p.start() esto es una bomba para el pc
+                        """
                     else:
                         self.unlock.emit(1)
 

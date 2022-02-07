@@ -18,4 +18,5 @@ RATIO = 0.4
 PROP = 0.25
 DETAILED = True
 SHOW_HB = True
+THREAD_POOL_SIZE = 4
 LOG = ""

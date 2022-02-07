@@ -76,23 +76,12 @@ class threadManager(QThread):
         super(threadManager, self).__init__(parent)
         self.running = True
         self.parent = parent
-
-    def stop(self):
-        self.running = False
-
-    def run(self):
-        while self.running:
-            if len(self.pool) < self.poolSize:
-                pass
-            else:
-                pass
-                #self.checkStatus()
+        self.pool = {}
 
     def addToPool(self, worker, i):
         self.pool[i] = worker
-        if len(self.pool) == self.poolSize:
-            for i in self.pool:
-                self.pool[i].start()
+        self.pool[i].start()
+
 
     """
     def checkStatus(self, id, status, iteration):
