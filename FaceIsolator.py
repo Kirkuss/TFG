@@ -9,6 +9,7 @@ import Performance_stats as perf
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtGui import QImage
 from Utilities import timeStamp as ts
+from cryptography.fernet import Fernet
 
 class FaceIsolator(QThread):
 
@@ -25,6 +26,9 @@ class FaceIsolator(QThread):
         self.jump = False
         self.frame = ""
         self.faces = ""
+        self.key = Fernet.generate_key()
+        self.fernet = Fernet(self.key)
+        config.IMG_KEY = self.key
         config.LOG +=  ts.getTime(self) + " AIWake ... [STEP 1 - PREPROCESSING - STARTED]\n" + ts.getTime(self) + \
                        " Video source [" + config.PATH_TO_VIDEO + "]\n" + ts.getTime(self) + " Data model for step 1 ["\
                        + config.PATH_TO_MODEL + "]"
@@ -78,7 +82,7 @@ class FaceIsolator(QThread):
                 faces = faceCascade.detectMultiScale(GrayFrame, 1.1, 4)
 
                 for (x, y, w, h) in faces:
-                    newFace = DS.face(x, y, w, h, iterations)
+                    newFace = DS.face(x, y, w, h, iterations, frame.copy(), self.fernet)
                     newFound = True
                     if len(list) == 0:
                         founds += 1

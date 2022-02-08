@@ -20,3 +20,4 @@ DETAILED = True
 SHOW_HB = True
 THREAD_POOL_SIZE = 4
 LOG = ""
+IMG_KEY = ""

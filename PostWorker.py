@@ -30,6 +30,7 @@ class PostWorker(QThread):
             strIt = str(self.iteration)
             for f in self.chunk:
                 if strIt in self.parent.faces[f]:
+                    #MARCADO PARA MORIR
                     cropped = self.parent.frame[
                               int(self.parent.faces[f][strIt]["y"]):int(self.parent.faces[f][strIt]["y"]) + int(self.parent.faces[f][strIt]["h"]),
                               int(self.parent.faces[f][strIt]["x"]):int(self.parent.faces[f][strIt]["x"]) + int(self.parent.faces[f][strIt]["w"])]
@@ -37,7 +38,9 @@ class PostWorker(QThread):
                     resized = cv2.resize(cropped, (224, 224))
                     resized = np.expand_dims(resized, axis=0)
                     resized = resized / 255.0
+                    #MARCADO PARA MORIR
                     predictions = self.parent.model.predict(resized)
+                    print(self.parent.frame)
                     pred = mi.getClass(n=np.argmax(predictions)) #sacar esto?
                     print("PRED (" + str(self.i) + "): " + str(pred) + "\n")
                     self.parent.faces[f][strIt]["pred"] = pred
