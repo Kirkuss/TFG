@@ -3,6 +3,7 @@ import datetime
 import time
 
 from PyQt5.QtCore import pyqtSignal, QThread
+from cryptography.fernet import Fernet
 
 def serializeFace(face, id):
     serialized = {}
@@ -21,6 +22,27 @@ class ModelInterpreter():
 
     def getClass(n):
         return ModelInterpreter.Classes[n]
+
+class ImgManager():
+
+    def __init__(self, key=None):
+        self.key = key
+        self.create(key)
+
+    def create(self, key = None):
+        if key is None:
+            self.key = Fernet.generate_key()
+            self.fernet = Fernet(self.key)
+        else:
+            self.fernet = Fernet(self.key)
+
+    def encrypt(self, toEncrypt):
+        encrypted = self.fernet.encrypt(str(toEncrypt).encode())
+        return encrypted
+
+    def decrypt(self, toDecrypt):
+        decrypted = self.fernet.decrypt(toDecrypt[2:-1].encode())
+        return decrypted
 
 class jsonManager(object):
 

@@ -10,9 +10,9 @@ import variables as config
 import Utilities as Dmanager
 import Performance_stats as perf
 import PostWorker as pw
+import EmotionImgWorker as ew
 import os
 
-#from tensorflow import keras
 from Utilities import ModelInterpreter as mi
 from Utilities import timeStamp as ts
 from multiprocessing import cpu_count
@@ -46,8 +46,8 @@ class EmotionProc(QThread):
         self.resSum = 0
         self.model = tf.keras.models.load_model(config.PATH_TO_EMODEL)
 
-    def predict(self, resized):
-        return self.model.predict(resized, verbose = 0)
+    #def predict(self, resized):
+    #   return self.model.predict(resized, verbose = 0)
 
     def unlockFunc(self, id, done, it):
         #print("Mensaje recibido de: " + str(id) + " Status: " + str(done) + " en la iteracion: " + str(it) + "\n")
@@ -107,7 +107,8 @@ class EmotionProc(QThread):
         pointers = self.getChunk(facesLen, pool_size)
 
         if config.PATH_TO_JSON_PRE:
-            while (cap.isOpened()):
+            temp = 0
+            while temp < 1:
                 ret, self.frame = cap.read()
                 writeOnPause = True
 
@@ -125,16 +126,11 @@ class EmotionProc(QThread):
                         futures = []
                         with concurrent.futures.ThreadPoolExecutor(max_workers=config.THREAD_POOL_SIZE) as executor:
                             for i in pointers:
-                                postW = pw.PostWorker(i=i, blocker=blocker, iteration=iterations, chunk=pointers[i],
-                                                      parent=self)
-                                postW.iterationDone.connect(self.unlockFunc)
-                                print("bucle " + str(i))
+                                postW = ew.EmotionWorker(chunk=pointers[i], faces=self.faces, parent=self)
+                                #postW.iterationDone.connect(self.unlockFunc)
                                 future = executor.submit(postW.run(), i)
                                 futures.append(future)
 
-                        for future in futures:
-                            result = future.result()
-                            print(result)
                         """
                         for i in range(1, config.THREAD_POOL_SIZE + 1): #TESTING PROVISIONAL
                             postW = pw.PostWorker(i = i, blocker=blocker, iteration=iterations, chunk = pointers[i], parent=self)
@@ -171,6 +167,8 @@ class EmotionProc(QThread):
                     self.changePixmap2.emit(convertToQt, perf.getVideoProgress(self.iterations, config.VIDEO_LENGHT))
                     #perf.getVideoProgress(iterations, config.VIDEO_LENGHT)
                     self.jump = False
+
+                    temp += 1
 
         self.js.data = self.faces.copy()
         self.js.saveJson("Resources/jsonFiles/PostProcessResults.json")

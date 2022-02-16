@@ -1,0 +1,2 @@
+\b\s+\b -> detecta donde poner las comas en el str array
+\]\s*\[ -> detecta donde poner mas comas

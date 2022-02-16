@@ -1,5 +1,6 @@
 import base64
 import hashlib
+import json
 import time
 
 import matplotlib.image as mpimg
@@ -85,9 +86,13 @@ class face:
         serialized["y"] = str(self.y)
         serialized["w"] = str(self.w)
         serialized["h"] = str(self.h)
-        #faceEnc = base64.b64encode(self.frameMat)
-        faceEnc = self.fernet.encrypt(str(self.frameMat).encode())
-        serialized["frame"] = str(faceEnc)
+        #np.savez_compressed("frames.npz", frame=self.frameMat)
+        #faceEnc = self.fernet.encrypt(np.array2string(self.frameMat).encode())
+        #print(faceEnc)
+        #serialized["frame"] = str(faceEnc)
+        #faceb64 = base64.b64encode(self.frameMat)
+        #serialized["frame"] = str(faceEnc)
+        #print(str(self.frameMat))
 
         """
         faceDec = base64.decodebytes(faceEnc)

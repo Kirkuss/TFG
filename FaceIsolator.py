@@ -26,7 +26,7 @@ class FaceIsolator(QThread):
         self.jump = False
         self.frame = ""
         self.faces = ""
-        self.key = Fernet.generate_key()
+        self.key = b'6cOMmRQnESKFNYyU2rD6uD-GvWVAMKibEkX4ws7-NwA='
         self.fernet = Fernet(self.key)
         config.IMG_KEY = self.key
         config.LOG +=  ts.getTime(self) + " AIWake ... [STEP 1 - PREPROCESSING - STARTED]\n" + ts.getTime(self) + \

@@ -115,7 +115,7 @@ class AIWake_UI(QMainWindow):
         self.pathInText_step1.insert(str(fileName[0]))
         self.pathInText_step2.insert(str(fileName[0]))
         self.thread[1] = fi.FaceIsolator(parent=None)
-        #self.thread[2] = ep.EmotionProc(parent=None)
+        self.thread[2] = ep.EmotionProc(parent=None)
 
     def updatePostVideo(self, frame, progress):
         self.step2Video.setPixmap(QPixmap.fromImage(frame))
