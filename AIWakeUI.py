@@ -33,6 +33,11 @@ class AIWake_UI(QMainWindow):
         self.forwardBt_step2.clicked.connect(self.forwardVideo_step2)
         self.pauseBt_2.clicked.connect(self.pauseBtClick_step2)
         self.frontTabPanel.currentChanged.connect(self.tabTest)
+        self.FacePicker.currentIndexChanged.connect(self.testeo)
+
+    def testeo(self, i):
+        print ("Index: " + str(self.FacePicker.currentText()))
+        config.SELECTED_FACE = int(self.FacePicker.currentText())
 
     def tabTest(self, index):
         try:
@@ -92,6 +97,17 @@ class AIWake_UI(QMainWindow):
             self.thread[1].start()
             self.thread[1].changePixmap.connect(self.updateVideo)
             self.thread[1].updateTerminal.connect(self.updateTerminal)
+            self.thread[1].setPicker.connect(self.setPicker)
+            self.thread[1].changePixmap_pick.connect(self.setPreview)
+
+    def setPreview(self, cropped, info):
+        self.PreviewFaceLbl.setPixmap(QPixmap.fromImage(cropped))
+        infoText = info[0]
+        self.imgText.setPlainText(infoText)
+
+    def setPicker(self, idList):
+        self.FacePicker.addItems(idList)
+        idList.clear()
 
     def playBtClickPost(self):
         if self.thread[2].isRunning():

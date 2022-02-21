@@ -15,6 +15,8 @@ class FaceIsolator(QThread):
 
     changePixmap = pyqtSignal(QImage, int)
     updateTerminal = pyqtSignal()
+    setPicker = pyqtSignal(list)
+    changePixmap_pick = pyqtSignal(QImage, list)
 
     def __init__(self, parent=None):
         super(FaceIsolator, self).__init__(parent)
@@ -35,6 +37,11 @@ class FaceIsolator(QThread):
 
     def updateWithoutProcessing(self):
         pass
+
+    def getFaceIds(self, k):
+        idList = []
+        idList.append(k)
+        return idList
 
     def run(self):
         cap = cv2.VideoCapture(self.pathToVideo)
@@ -88,6 +95,7 @@ class FaceIsolator(QThread):
                         founds += 1
                         list[str(founds)] = newFace
                         newFace.queue(newFace, None)
+                        self.setPicker.emit(self.getFaceIds(str(founds)))
                     else:
                         for k, v in list.items():
                             if newFace.equal(config.PROP, list[k], frame):
@@ -103,6 +111,16 @@ class FaceIsolator(QThread):
                         founds += 1
                         newFace.queue(newFace, None)
                         list[str(founds)] = newFace
+                        self.setPicker.emit(self.getFaceIds(str(founds)))
+
+                    if config.SELECTED_FACE >= 0:
+                        aux_face = list[str(config.SELECTED_FACE)]
+                        cropped = frame[aux_face.y : (aux_face.y + aux_face.h), aux_face.x : (aux_face.x + aux_face.w)]
+                        rgbImage = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
+                        h, w, ch = rgbImage.shape
+                        bytesPerLine = ch * w
+                        cropped2Qt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
+                        self.changePixmap_pick.emit(cropped2Qt)
 
                     if config.DETAILED:
                         if newFace.valid:
