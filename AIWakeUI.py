@@ -34,10 +34,18 @@ class AIWake_UI(QMainWindow):
         self.pauseBt_2.clicked.connect(self.pauseBtClick_step2)
         self.frontTabPanel.currentChanged.connect(self.tabTest)
         self.FacePicker.currentIndexChanged.connect(self.testeo)
+        self.deleteBt.clicked.connect(self.deleteFace)
+        self.statusText.setStyleSheet("background-color: yellow;")
+
+    def deleteFace(self):
+        self.FacePicker.clear()
+        self.thread[1].deleteFace()
 
     def testeo(self, i):
-        print ("Index: " + str(self.FacePicker.currentText()))
-        config.SELECTED_FACE = int(self.FacePicker.currentText())
+        if i >= 0:
+            print ("Index: " + str(self.FacePicker.currentText()))
+            config.SELECTED_FACE = int(self.FacePicker.currentText())
+            self.thread[1].sig = False
 
     def tabTest(self, index):
         try:
@@ -102,7 +110,7 @@ class AIWake_UI(QMainWindow):
 
     def setPreview(self, cropped, info):
         self.PreviewFaceLbl.setPixmap(QPixmap.fromImage(cropped))
-        infoText = info[0]
+        infoText = info[0] + "\n" + info[1] + "\n" + info[2] + "\n" + info[3]
         self.imgText.setPlainText(infoText)
 
     def setPicker(self, idList):

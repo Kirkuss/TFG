@@ -27,7 +27,9 @@ class FaceIsolator(QThread):
         self.pause = False
         self.jump = False
         self.frame = ""
+        self.list = {}
         self.faces = ""
+        self.sig = False
         self.key = b'6cOMmRQnESKFNYyU2rD6uD-GvWVAMKibEkX4ws7-NwA='
         self.fernet = Fernet(self.key)
         config.IMG_KEY = self.key
@@ -38,21 +40,39 @@ class FaceIsolator(QThread):
     def updateWithoutProcessing(self):
         pass
 
-    def getFaceIds(self, k):
+    def getFaceIds(self, k, delete):
         idList = []
-        idList.append(k)
+        if delete:
+            for k, v in self.list.items():
+                idList.append(k)
+        else:
+            idList.append(k)
         return idList
+
+    def generateFaceInfo(self, face, iterations, id):
+        info = []
+        info.append("Face id: " + str(id))
+        if face.valid: info.append("Status: Accepted")
+        else: info.append("Status: Rejected")
+        info.append("Appeared in " + str(int(face.occurs)) + " frames")
+        info.append("Ratio: " + str(int((face.occurs/iterations)*100)) + "%")
+        return info
+
+    def deleteFace(self):
+        deleted = self.list.pop(str(config.SELECTED_FACE))
+        print("Deleted face: " + str(deleted))
+        self.setPicker.emit(self.getFaceIds("0", True))
 
     def run(self):
         cap = cv2.VideoCapture(self.pathToVideo)
         config.VIDEO_LENGHT = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         iterations = 0
         founds = 0
-        list = {}
         faceCascade = cv2.CascadeClassifier(config.PATH_TO_MODEL)
         config.LOG += "\n" + ts.getTime(self) + " [" + str(config.VIDEO_LENGHT) + "] detected frames to be procesed"
         config.LOG += "\n" + ts.getTime(self) + " Processing..."
         self.updateTerminal.emit()
+        lastFrame = ""
 
         while (cap.isOpened()):
             ret, frame = cap.read()
@@ -66,13 +86,25 @@ class FaceIsolator(QThread):
 
             if iterations == config.VIDEO_LENGHT:
                 coincidences = 0
-                cleanList = DS.noiseOut(list)
+                finished = False
+                while not finished:
+                    if config.SELECTED_FACE >= 0 and not self.sig:
+                        aux_face = self.list[str(config.SELECTED_FACE)]
+                        cropped = lastFrame[aux_face.y : (aux_face.y + aux_face.h), aux_face.x : (aux_face.x + aux_face.w)]
+                        rgbImage = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
+                        h, w, ch = rgbImage.shape
+                        bytesPerLine = ch * w
+                        cropped2Qt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
+                        self.changePixmap_pick.emit(cropped2Qt, self.generateFaceInfo(aux_face, iterations, config.SELECTED_FACE))
+                        self.sig = True
+                    pass
+                cleanList = DS.noiseOut(self.list)
                 for k in cleanList:
                     coincidences += 1
                 self.js.setData(cleanList, "face")
                 self.js.saveJson(config.PATH_TO_JSON_PRE)
                 cleanList.clear()
-                list.clear()
+                self.list.clear()
                 print("done")
                 config.LOG += "\n" + ts.getTime(self) + " Step 1 finished..."
                 config.LOG += "\n" + ts.getTime(self) + " Json for step 1 -> " + config.PATH_TO_JSON_PRE
@@ -84,6 +116,8 @@ class FaceIsolator(QThread):
 
             if ret:
                 frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
+                if iterations == config.VIDEO_LENGHT - 1:
+                    lastFrame = frame.copy()
                 #self.frame = frame.copy()
                 GrayFrame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 faces = faceCascade.detectMultiScale(GrayFrame, 1.1, 4)
@@ -91,36 +125,36 @@ class FaceIsolator(QThread):
                 for (x, y, w, h) in faces:
                     newFace = DS.face(x, y, w, h, iterations, frame.copy(), self.fernet)
                     newFound = True
-                    if len(list) == 0:
+                    if len(self.list) == 0:
                         founds += 1
-                        list[str(founds)] = newFace
+                        self.list[str(founds)] = newFace
                         newFace.queue(newFace, None)
-                        self.setPicker.emit(self.getFaceIds(str(founds)))
+                        self.setPicker.emit(self.getFaceIds(str(founds), False))
                     else:
-                        for k, v in list.items():
-                            if newFace.equal(config.PROP, list[k], frame):
-                                newFace.occurs += list[k].occurs + 1
+                        for k, v in self.list.items():
+                            if newFace.equal(config.PROP, self.list[k], frame):
+                                newFace.occurs += self.list[k].occurs + 1
                                 if newFace.occurs >= int(iterations*config.RATIO): newFace.valid = True
                                 else: newFace.valid = False
-                                newFace.queue(newFace, list[k].list)
-                                list[k] = newFace
+                                newFace.queue(newFace, self.list[k].list)
+                                self.list[k] = newFace
                                 newFound = False
                                 break
 
-                    if newFound and len(list) > 0:
+                    if newFound and len(self.list) > 0:
                         founds += 1
                         newFace.queue(newFace, None)
-                        list[str(founds)] = newFace
-                        self.setPicker.emit(self.getFaceIds(str(founds)))
+                        self.list[str(founds)] = newFace
+                        self.setPicker.emit(self.getFaceIds(str(founds), False))
 
                     if config.SELECTED_FACE >= 0:
-                        aux_face = list[str(config.SELECTED_FACE)]
+                        aux_face = self.list[str(config.SELECTED_FACE)]
                         cropped = frame[aux_face.y : (aux_face.y + aux_face.h), aux_face.x : (aux_face.x + aux_face.w)]
                         rgbImage = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
                         h, w, ch = rgbImage.shape
                         bytesPerLine = ch * w
                         cropped2Qt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-                        self.changePixmap_pick.emit(cropped2Qt)
+                        self.changePixmap_pick.emit(cropped2Qt, self.generateFaceInfo(aux_face, iterations, config.SELECTED_FACE))
 
                     if config.DETAILED:
                         if newFace.valid:

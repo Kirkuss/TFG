@@ -142,7 +142,7 @@
        <rect>
         <x>0</x>
         <y>450</y>
-        <width>621</width>
+        <width>661</width>
         <height>23</height>
        </rect>
       </property>
@@ -326,8 +326,8 @@
      <widget class="QLabel" name="PreviewFaceLbl">
       <property name="geometry">
        <rect>
-        <x>640</x>
-        <y>310</y>
+        <x>810</x>
+        <y>120</y>
         <width>151</width>
         <height>141</height>
        </rect>
@@ -342,8 +342,8 @@
      <widget class="QLabel" name="label_16">
       <property name="geometry">
        <rect>
-        <x>640</x>
-        <y>310</y>
+        <x>810</x>
+        <y>120</y>
         <width>151</width>
         <height>141</height>
        </rect>
@@ -361,8 +361,8 @@
      <widget class="QLabel" name="label_17">
       <property name="geometry">
        <rect>
-        <x>640</x>
-        <y>280</y>
+        <x>810</x>
+        <y>90</y>
         <width>49</width>
         <height>16</height>
        </rect>
@@ -374,8 +374,8 @@
      <widget class="QPushButton" name="deleteBt">
       <property name="geometry">
        <rect>
-        <x>710</x>
-        <y>450</y>
+        <x>880</x>
+        <y>260</y>
         <width>75</width>
         <height>24</height>
        </rect>
@@ -387,8 +387,8 @@
      <widget class="QComboBox" name="FacePicker">
       <property name="geometry">
        <rect>
-        <x>710</x>
-        <y>280</y>
+        <x>880</x>
+        <y>90</y>
         <width>81</width>
         <height>22</height>
        </rect>
@@ -432,8 +432,8 @@
      <widget class="QPushButton" name="deleteBt_2">
       <property name="geometry">
        <rect>
-        <x>640</x>
-        <y>450</y>
+        <x>810</x>
+        <y>260</y>
         <width>75</width>
         <height>24</height>
        </rect>
@@ -445,8 +445,8 @@
      <widget class="QPlainTextEdit" name="imgText">
       <property name="geometry">
        <rect>
-        <x>790</x>
-        <y>310</y>
+        <x>960</x>
+        <y>120</y>
         <width>131</width>
         <height>141</height>
        </rect>
@@ -456,6 +456,51 @@
       </property>
       <property name="overwriteMode">
        <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="showDetailedCb_2">
+      <property name="geometry">
+       <rect>
+        <x>810</x>
+        <y>40</y>
+        <width>221</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Show only accepted faces on picker</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="showDetailedCb_3">
+      <property name="geometry">
+       <rect>
+        <x>810</x>
+        <y>60</y>
+        <width>221</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Delete all rejected faces automatically</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="startPostProcessBt">
+      <property name="geometry">
+       <rect>
+        <x>980</x>
+        <y>260</y>
+        <width>75</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Process data</string>
       </property>
      </widget>
      <zorder>label_16</zorder>
@@ -483,6 +528,9 @@
      <zorder>deleteBt_2</zorder>
      <zorder>PreviewFaceLbl</zorder>
      <zorder>imgText</zorder>
+     <zorder>showDetailedCb_2</zorder>
+     <zorder>showDetailedCb_3</zorder>
+     <zorder>startPostProcessBt</zorder>
     </widget>
     <widget class="QWidget" name="step2Tab">
      <attribute name="title">
@@ -1180,6 +1228,38 @@
       <string/>
      </property>
     </widget>
+   </widget>
+   <widget class="QLabel" name="label_19">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>790</y>
+      <width>49</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>STATUS:</string>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::RichText</enum>
+    </property>
+    <property name="scaledContents">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="statusText">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>790</y>
+      <width>1201</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Waiting for video source...</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
