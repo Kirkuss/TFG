@@ -96,84 +96,23 @@ class EmotionProc(QThread):
         cap = cv2.VideoCapture(config.PATH_TO_VIDEO)
         self.updateTerminal.emit()
         config.VIDEO_LENGHT = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-        iterations = 1
 
         pool_size = config.THREAD_POOL_SIZE
         facesLen = len(self.faces)
-        #pool = ThreadPool(pool_size)
         blocker = Dmanager.threadManager(parent=self)
         blocker.poolSize = pool_size
-        #blocker.unlock.connect(self.unlockFunc)
         pointers = self.getChunk(facesLen, pool_size)
 
         if config.PATH_TO_JSON_PRE:
-            temp = 0
-            while temp < 1:
-                ret, self.frame = cap.read()
-                writeOnPause = True
+            futures = []
+            with concurrent.futures.ThreadPoolExecutor(max_workers=config.THREAD_POOL_SIZE) as executor:
+                for i in pointers:
+                    postW = ew.EmotionWorker(chunk=pointers[i], faces=self.faces, parent=self)
+                    future = executor.submit(postW.run(), i)
+                    futures.append(future)
 
-                while self.pause and not self.jump:
-                    if writeOnPause:
-                        config.LOG += "\n" + ts.getTime(self) + " Video paused by user at frame [" + str(
-                            iterations) + "]"
-                        self.updateTerminal.emit()
-                        writeOnPause = False
-
-                if ret:
-                    self.frame = cv2.resize(self.frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
-                    pr2 = True
-                    if self.iterations == 1:
-                        futures = []
-                        with concurrent.futures.ThreadPoolExecutor(max_workers=config.THREAD_POOL_SIZE) as executor:
-                            for i in pointers:
-                                postW = ew.EmotionWorker(chunk=pointers[i], faces=self.faces, parent=self)
-                                #postW.iterationDone.connect(self.unlockFunc)
-                                future = executor.submit(postW.run(), i)
-                                futures.append(future)
-
-                        """
-                        for i in range(1, config.THREAD_POOL_SIZE + 1): #TESTING PROVISIONAL
-                            postW = pw.PostWorker(i = i, blocker=blocker, iteration=iterations, chunk = pointers[i], parent=self)
-                            postW.iterationDone.connect(self.unlockFunc)
-                            blocker.addToPool(postW, i)
-                            #pool.map_async(postW.run, [i], callback=self.pool_results)
-                            #p = Process(target=thread_.work, args=(i,))
-                            #p.start() esto es una bomba para el pc
-                        """
-                    else:
-                        self.unlock.emit(1)
-
-                    pr = True
-
-                    while self.test == 0:
-                        #self.unlock.emit(1)
-                        if pr:
-                            #print("Hilo principal en espera")
-                            pr = False
-
-                    self.test = 0
-
-                    #print("Continuando...")
-
-                    self.iterations += 1
-
-                    #print(str("ITERATIONS: " + str(self.iterations)))
-
-                    rgbImage = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
-                    h, w, ch = rgbImage.shape
-                    bytesPerLine = ch * w
-                    convertToQt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-
-                    self.changePixmap2.emit(convertToQt, perf.getVideoProgress(self.iterations, config.VIDEO_LENGHT))
-                    #perf.getVideoProgress(iterations, config.VIDEO_LENGHT)
-                    self.jump = False
-
-                    temp += 1
-
-        self.js.data = self.faces.copy()
-        self.js.saveJson("Resources/jsonFiles/PostProcessResults.json")
-
-        cap.release()
+        #self.js.data = self.faces.copy()
+        #self.js.saveJson("Resources/jsonFiles/PostProcessResults.json")
 
 
 

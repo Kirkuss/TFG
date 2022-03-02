@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QDialog
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
 
@@ -6,6 +6,7 @@ import DataProcessor as dp
 import FaceIsolator as fi
 import EmotionProc as ep
 import variables as config
+import PostDialog as pd
 
 class AIWake_UI(QMainWindow):
     def __init__(self):
@@ -36,6 +37,11 @@ class AIWake_UI(QMainWindow):
         self.FacePicker.currentIndexChanged.connect(self.testeo)
         self.deleteBt.clicked.connect(self.deleteFace)
         self.statusText.setStyleSheet("background-color: yellow;")
+        self.startPostProcessBt.clicked.connect(self.startPostProcessing)
+
+    def startPostProcessing(self):
+        dialog = pd.PostDialog()
+        dialog.show()
 
     def deleteFace(self):
         self.FacePicker.clear()
@@ -139,7 +145,7 @@ class AIWake_UI(QMainWindow):
         self.pathInText_step1.insert(str(fileName[0]))
         self.pathInText_step2.insert(str(fileName[0]))
         self.thread[1] = fi.FaceIsolator(parent=None)
-        self.thread[2] = ep.EmotionProc(parent=None)
+        #self.thread[2] = ep.EmotionProc(parent=None)
 
     def updatePostVideo(self, frame, progress):
         self.step2Video.setPixmap(QPixmap.fromImage(frame))
