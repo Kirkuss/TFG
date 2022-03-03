@@ -12,11 +12,13 @@ import Performance_stats as perf
 import PostWorker as pw
 import EmotionImgWorker as ew
 import os
+import threading
+import Utilities
 
 from Utilities import ModelInterpreter as mi
 from Utilities import timeStamp as ts
 from multiprocessing import cpu_count
-from tornado import concurrent
+from concurrent.futures import ThreadPoolExecutor
 
 from multiprocessing.pool import ThreadPool
 from PyQt5.QtCore import QThread, pyqtSignal
@@ -27,6 +29,7 @@ class EmotionProc(QThread):
     changePixmap2 = pyqtSignal(QImage, int)
     updateTerminal = pyqtSignal()
     unlock = pyqtSignal(int)
+    postPbValue = pyqtSignal(int)
 
     js = Dmanager.jsonManager()
     faces = {}
@@ -48,6 +51,12 @@ class EmotionProc(QThread):
 
     #def predict(self, resized):
     #   return self.model.predict(resized, verbose = 0)
+
+    def getTotalFaces(self):
+        count = 0
+        for k in self.faces:
+            count += len(self.faces[k])
+        return count
 
     def unlockFunc(self, id, done, it):
         #print("Mensaje recibido de: " + str(id) + " Status: " + str(done) + " en la iteracion: " + str(it) + "\n")
@@ -86,8 +95,18 @@ class EmotionProc(QThread):
                     mod -= 1
                     counter -= 1
                     equilibrate = False
-        print(str(pointers))
+        #print(str(pointers))
         return pointers
+
+    def test(self, h):
+        print("done {}".format(h))
+
+    def crop(self, frame, x, y, w, h):
+        cropped = frame[int(y) : (int(y) + int(h)), int(x) : (int(x) + int(w))]
+        resized = cv2.resize(cropped, (224, 224))
+        resized = np.expand_dims(resized, axis=0)
+        resized = resized / 255.0
+        return resized
 
     def run(self):
         config.LOG += "\n" + ts.getTime(self) + " AIWake ... [STEP 2 - POSTPROCESSING - STARTED]\n" + ts.getTime(self) + \
@@ -97,22 +116,52 @@ class EmotionProc(QThread):
         self.updateTerminal.emit()
         config.VIDEO_LENGHT = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
+        totalFaces = self.getTotalFaces()
         pool_size = config.THREAD_POOL_SIZE
         facesLen = len(self.faces)
         blocker = Dmanager.threadManager(parent=self)
         blocker.poolSize = pool_size
         pointers = self.getChunk(facesLen, pool_size)
+        while (cap.isOpened()):
 
+            if self.iterations == config.VIDEO_LENGHT: cap.release()
+
+            ret, frame = cap.read()
+            if ret:
+                for k in self.faces:
+                    if str(self.iterations) in self.faces[k]:
+                        faceMat = self.crop(frame, self.faces[k][str(self.iterations)]["x"],
+                                            self.faces[k][str(self.iterations)]["y"],
+                                            self.faces[k][str(self.iterations)]["w"],
+                                            self.faces[k][str(self.iterations)]["h"])
+                        predictions = self.model.predict(faceMat)
+                        pred = Utilities.ModelInterpreter.getClass(n=np.argmax(predictions))  # sacar esto?
+                        print(str(k) + "/" + str(self.iterations) + " WORKER [" + str(os.getpid()) + "]: " + str(pred))
+                        # print("FACE: " + str(i) + "/" + str(self.iteration) + "\n" + str(faceMat))
+                self.iterations += 1
+                self.postPbValue.emit(perf.getVideoProgress(self.iterations, config.VIDEO_LENGHT))
+
+
+        """
         if config.PATH_TO_JSON_PRE:
             futures = []
-            with concurrent.futures.ThreadPoolExecutor(max_workers=config.THREAD_POOL_SIZE) as executor:
+            with ThreadPoolExecutor(config.THREAD_POOL_SIZE) as th_exec:
                 for i in pointers:
                     postW = ew.EmotionWorker(chunk=pointers[i], faces=self.faces, parent=self)
-                    future = executor.submit(postW.run(), i)
-                    futures.append(future)
+                    print("HOLA1")
+                    th_future = th_exec.submit(postW.run())
+                    print("HOLA2")
+                    th_future.add_done_callback(self.test)
+                    print("HOLA3")
+        print("ADIOS")
+
+        while config.PROCESSED_FACES < totalFaces:
+            print("processed: " + str(config.PROCESSED_FACES) + "/" + str(totalFaces))
+            self.postPbValue.emit(perf.getVideoProgress(config.PROCESSED_FACES, totalFaces))
 
         #self.js.data = self.faces.copy()
         #self.js.saveJson("Resources/jsonFiles/PostProcessResults.json")
+        """
 
 
 

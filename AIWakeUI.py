@@ -40,8 +40,14 @@ class AIWake_UI(QMainWindow):
         self.startPostProcessBt.clicked.connect(self.startPostProcessing)
 
     def startPostProcessing(self):
-        dialog = pd.PostDialog()
-        dialog.show()
+        #dialog = pd.PostDialog()
+        #dialog.show()
+        self.thread[2] = ep.EmotionProc(parent=None)
+        self.thread[2].postPbValue.connect(self.setPostProgress)
+        self.thread[2].run()
+
+    def setPostProgress(self, progress):
+        self.postPb.setValue(progress)
 
     def deleteFace(self):
         self.FacePicker.clear()
@@ -111,8 +117,17 @@ class AIWake_UI(QMainWindow):
             self.thread[1].start()
             self.thread[1].changePixmap.connect(self.updateVideo)
             self.thread[1].updateTerminal.connect(self.updateTerminal)
+            self.thread[1].updateStatus.connect(self.updateStatus)
             self.thread[1].setPicker.connect(self.setPicker)
             self.thread[1].changePixmap_pick.connect(self.setPreview)
+
+    def updateStatus(self, text, color):
+        if color == 1: self.statusText.setStyleSheet("background-color: green;")
+        elif color == 2: self.statusText.setStyleSheet("background-color: yellow;")
+        elif color == 3: self.statusText.setStyleSheet("background-color: red;")
+
+        self.statusText.setText(text[0])
+
 
     def setPreview(self, cropped, info):
         self.PreviewFaceLbl.setPixmap(QPixmap.fromImage(cropped))

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 6.0.1, 2022-03-02T23:47:24. -->
+<!-- Written by QtCreator 6.0.1, 2022-03-03T20:42:46. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -85,10 +85,6 @@
     <valuelist type="QVariantList" key="ClangTools.SuppressedDiagnostics"/>
     <value type="bool" key="ClangTools.UseGlobalSettings">true</value>
    </valuemap>
-   <valuemap type="QVariantMap" key="CppEditor.QuickFix">
-    <value type="bool" key="UseGlobalSettings">true</value>
-   </valuemap>
-   <valuelist type="QVariantList" key="ProjectExplorer.Project.Environment"/>
   </valuemap>
  </data>
  <data>
@@ -122,16 +118,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/elalu/Documents/GitHub/TFG/AIWakeUI.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/elalu/Documents/GitHub/TFG/AIWakeUI.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/elalu/Documents/GitHub/TFG/AIWakeUI.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/elalu/Documents/GitHub/TFG/Post_process_info/PostProcessWindow.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/elalu/Documents/GitHub/TFG/Post_process_info/PostProcessWindow.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/elalu/Documents/GitHub/TFG/Post_process_info/PostProcessWindow.py</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{ddb0b104-e14c-4d18-b436-48fb89e1b37e}</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\elalu\Documents\GitHub\TFG\AIWakeUI.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\elalu\Documents\GitHub\TFG\Post_process_info\PostProcessWindow.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/elalu/Documents/GitHub/TFG</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/elalu/Documents/GitHub/TFG/Post_process_info</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

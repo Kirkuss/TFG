@@ -17,6 +17,7 @@ class FaceIsolator(QThread):
     updateTerminal = pyqtSignal()
     setPicker = pyqtSignal(list)
     changePixmap_pick = pyqtSignal(QImage, list)
+    updateStatus = pyqtSignal(list, int)
 
     def __init__(self, parent=None):
         super(FaceIsolator, self).__init__(parent)
@@ -58,12 +59,18 @@ class FaceIsolator(QThread):
         info.append("Ratio: " + str(int((face.occurs/iterations)*100)) + "%")
         return info
 
+    def setStatusText(self, text):
+        status = []
+        status.append(text)
+        return status
+
     def deleteFace(self):
         deleted = self.list.pop(str(config.SELECTED_FACE))
         print("Deleted face: " + str(deleted))
         self.setPicker.emit(self.getFaceIds("0", True))
 
     def run(self):
+        self.updateStatus.emit(self.setStatusText("Preparing pre-process"), 1)
         cap = cv2.VideoCapture(self.pathToVideo)
         config.VIDEO_LENGHT = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         iterations = 0
@@ -81,12 +88,14 @@ class FaceIsolator(QThread):
             while self.pause and not self.jump:
                 if writeOnPause:
                     config.LOG += "\n" + ts.getTime(self) + " Video paused by user at frame [" + str(iterations) + "]"
+                    self.updateStatus.emit(self.setStatusText("Preview paused at frame [" + str(iterations) + "]"), 2)
                     self.updateTerminal.emit()
                     writeOnPause = False
 
             if iterations == config.VIDEO_LENGHT:
                 coincidences = 0
                 finished = False
+                self.updateStatus.emit(self.setStatusText("Waiting for user to review obtained data"), 1)
                 while not finished:
                     if config.SELECTED_FACE >= 0 and not self.sig:
                         aux_face = self.list[str(config.SELECTED_FACE)]
@@ -115,6 +124,7 @@ class FaceIsolator(QThread):
             iterations += 1
 
             if ret:
+                self.updateStatus.emit(self.setStatusText("Obtaining faces in video frame: [" + str(iterations) + "]"), 1)
                 frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
                 if iterations == config.VIDEO_LENGHT - 1:
                     lastFrame = frame.copy()

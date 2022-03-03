@@ -40,9 +40,10 @@ class EmotionWorker():
                                             self.faces[str(i)][str(self.iteration)]["h"])
                         predictions = self.parent.model.predict(faceMat)
                         pred = Utilities.ModelInterpreter.getClass(n=np.argmax(predictions))  # sacar esto?
-                        print(str(i) + "/" + str(self.iteration) + " WORKER [" + str(os.getpid()) + "]: " + str(pred))
+                        #print(str(i) + "/" + str(self.iteration) + " WORKER [" + str(os.getpid()) + "]: " + str(pred))
                         #print("FACE: " + str(i) + "/" + str(self.iteration) + "\n" + str(faceMat))
             self.iteration += 1
+            config.PROCESSED_FACES += 1
 
 
 
