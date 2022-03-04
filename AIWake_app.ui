@@ -137,19 +137,6 @@
         <normaloff>Resources/app_img/icons/pause.png</normaloff>Resources/app_img/icons/pause.png</iconset>
       </property>
      </widget>
-     <widget class="QProgressBar" name="step1Pb">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>450</y>
-        <width>661</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-     </widget>
      <widget class="QCheckBox" name="showDetailedCb">
       <property name="geometry">
        <rect>
@@ -503,13 +490,47 @@
        <string>Process data</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="finishStep1Bt">
+      <property name="geometry">
+       <rect>
+        <x>840</x>
+        <y>320</y>
+        <width>75</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>test finish</string>
+      </property>
+     </widget>
+     <widget class="QSlider" name="frameSelector">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>450</y>
+        <width>621</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>262</number>
+      </property>
+      <property name="pageStep">
+       <number>0</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
      <zorder>label_16</zorder>
      <zorder>placeholder_step1</zorder>
      <zorder>showBoxesCb</zorder>
      <zorder>selectFile_step1</zorder>
      <zorder>playBt</zorder>
      <zorder>pauseBt</zorder>
-     <zorder>step1Pb</zorder>
      <zorder>showDetailedCb</zorder>
      <zorder>pathInText_step1</zorder>
      <zorder>step1Video</zorder>
@@ -531,6 +552,8 @@
      <zorder>showDetailedCb_2</zorder>
      <zorder>showDetailedCb_3</zorder>
      <zorder>startPostProcessBt</zorder>
+     <zorder>finishStep1Bt</zorder>
+     <zorder>frameSelector</zorder>
     </widget>
     <widget class="QWidget" name="step2Tab">
      <attribute name="title">
@@ -1229,11 +1252,27 @@
      </property>
     </widget>
    </widget>
+   <widget class="QProgressBar" name="postPb">
+    <property name="geometry">
+     <rect>
+      <x>860</x>
+      <y>10</y>
+      <width>371</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>0</number>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
    <widget class="QLabel" name="label_19">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>790</y>
+      <x>860</x>
+      <y>40</y>
       <width>49</width>
       <height>16</height>
      </rect>
@@ -1251,9 +1290,9 @@
    <widget class="QLabel" name="statusText">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>790</y>
-      <width>1201</width>
+      <x>940</x>
+      <y>40</y>
+      <width>291</width>
       <height>16</height>
      </rect>
     </property>
@@ -1261,20 +1300,17 @@
      <string>Waiting for video source...</string>
     </property>
    </widget>
-   <widget class="QProgressBar" name="postPb">
+   <widget class="QLabel" name="statusColor">
     <property name="geometry">
      <rect>
-      <x>840</x>
-      <y>30</y>
-      <width>371</width>
-      <height>23</height>
+      <x>910</x>
+      <y>40</y>
+      <width>21</width>
+      <height>20</height>
      </rect>
     </property>
-    <property name="value">
-     <number>0</number>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>

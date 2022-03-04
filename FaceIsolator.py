@@ -18,6 +18,7 @@ class FaceIsolator(QThread):
     setPicker = pyqtSignal(list)
     changePixmap_pick = pyqtSignal(QImage, list)
     updateStatus = pyqtSignal(list, int)
+    updateFrameSelector = pyqtSignal(int)
 
     def __init__(self, parent=None):
         super(FaceIsolator, self).__init__(parent)
@@ -31,12 +32,19 @@ class FaceIsolator(QThread):
         self.list = {}
         self.faces = ""
         self.sig = False
+        self.selectedFrame = 0
+        self.finished = False
+        self.selecting = False
+        self.done = False
         self.key = b'6cOMmRQnESKFNYyU2rD6uD-GvWVAMKibEkX4ws7-NwA='
         self.fernet = Fernet(self.key)
         config.IMG_KEY = self.key
         config.LOG +=  ts.getTime(self) + " AIWake ... [STEP 1 - PREPROCESSING - STARTED]\n" + ts.getTime(self) + \
                        " Video source [" + config.PATH_TO_VIDEO + "]\n" + ts.getTime(self) + " Data model for step 1 ["\
                        + config.PATH_TO_MODEL + "]"
+        cap = cv2.VideoCapture(self.pathToVideo)
+        config.VIDEO_LENGHT = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        cap.release()
 
     def updateWithoutProcessing(self):
         pass
@@ -82,6 +90,7 @@ class FaceIsolator(QThread):
         lastFrame = ""
 
         while (cap.isOpened()):
+
             ret, frame = cap.read()
             writeOnPause = True
 
@@ -94,9 +103,20 @@ class FaceIsolator(QThread):
 
             if iterations == config.VIDEO_LENGHT:
                 coincidences = 0
-                finished = False
+                self.done = True
                 self.updateStatus.emit(self.setStatusText("Waiting for user to review obtained data"), 1)
-                while not finished:
+                while not self.finished:
+                    if self.selecting and self.done:
+                        cap.set(1, self.selectedFrame)
+                        ret, frame = cap.read()
+                        rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                        h, w, ch = rgbImage.shape
+                        bytesPerLine = ch * w
+                        convertToQt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
+                        print("emit " + str(self.selectedFrame))
+                        self.changePixmap.emit(convertToQt, perf.getVideoProgress(iterations, config.VIDEO_LENGHT))
+                        #self.selecting = False
+
                     if config.SELECTED_FACE >= 0 and not self.sig:
                         aux_face = self.list[str(config.SELECTED_FACE)]
                         cropped = lastFrame[aux_face.y : (aux_face.y + aux_face.h), aux_face.x : (aux_face.x + aux_face.w)]
@@ -182,6 +202,7 @@ class FaceIsolator(QThread):
                 convertToQt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
 
                 self.changePixmap.emit(convertToQt, perf.getVideoProgress(iterations,config.VIDEO_LENGHT))
+                self.updateFrameSelector.emit(iterations)
 
                 self.jump = False
 

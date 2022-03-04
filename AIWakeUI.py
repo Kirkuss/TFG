@@ -36,8 +36,22 @@ class AIWake_UI(QMainWindow):
         self.frontTabPanel.currentChanged.connect(self.tabTest)
         self.FacePicker.currentIndexChanged.connect(self.testeo)
         self.deleteBt.clicked.connect(self.deleteFace)
-        self.statusText.setStyleSheet("background-color: yellow;")
+        self.statusColor.setStyleSheet("background-color: yellow;")
         self.startPostProcessBt.clicked.connect(self.startPostProcessing)
+        self.finishStep1Bt.clicked.connect(self.finishStep1)
+        self.frameSelector.sliderReleased.connect(self.sliderReleased)
+        self.frameSelector.valueChanged.connect(self.testSlider)
+
+    def testSlider(self):
+        if self.thread[1].done:
+            self.thread[1].selectedFrame = self.frameSelector.value()
+            print("Released" + str(self.frameSelector.value()))
+
+    def sliderReleased(self):
+        self.thread[1].selecting = True
+
+    def finishStep1(self):
+        self.thread[1].finished = True
 
     def startPostProcessing(self):
         #dialog = pd.PostDialog()
@@ -115,16 +129,21 @@ class AIWake_UI(QMainWindow):
                 self.thread[1].pause = False
         else:
             self.thread[1].start()
+            self.thread[1].updateFrameSelector.connect(self.updateFrameSelector)
             self.thread[1].changePixmap.connect(self.updateVideo)
             self.thread[1].updateTerminal.connect(self.updateTerminal)
             self.thread[1].updateStatus.connect(self.updateStatus)
             self.thread[1].setPicker.connect(self.setPicker)
             self.thread[1].changePixmap_pick.connect(self.setPreview)
+            self.frameSelector.setMaximum(config.VIDEO_LENGHT)
+
+    def updateFrameSelector(self, frame):
+        self.frameSelector.setValue(frame)
 
     def updateStatus(self, text, color):
-        if color == 1: self.statusText.setStyleSheet("background-color: green;")
-        elif color == 2: self.statusText.setStyleSheet("background-color: yellow;")
-        elif color == 3: self.statusText.setStyleSheet("background-color: red;")
+        if color == 1: self.statusColor.setStyleSheet("background-color: green;")
+        elif color == 2: self.statusColor.setStyleSheet("background-color: yellow;")
+        elif color == 3: self.statusColor.setStyleSheet("background-color: red;")
 
         self.statusText.setText(text[0])
 
@@ -149,7 +168,7 @@ class AIWake_UI(QMainWindow):
 
     def updateVideo(self, frame, progress):
         self.step1Video.setPixmap(QPixmap.fromImage(frame))
-        self.step1Pb.setValue(progress)
+        self.postPb.setValue(progress)
 
     def updateTerminal(self):
         self.terminalInfo.setPlainText(config.LOG)
