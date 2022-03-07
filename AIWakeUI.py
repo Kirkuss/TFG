@@ -45,7 +45,6 @@ class AIWake_UI(QMainWindow):
     def testSlider(self):
         if self.thread[1].done:
             self.thread[1].selectedFrame = self.frameSelector.value()
-            print("Released" + str(self.frameSelector.value()))
 
     def sliderReleased(self):
         self.thread[1].selecting = True

@@ -77,6 +77,33 @@ class FaceIsolator(QThread):
         print("Deleted face: " + str(deleted))
         self.setPicker.emit(self.getFaceIds("0", True))
 
+    def drawFaces(self, valid, frame, x, y , w, h, selected):
+        test = 1
+        if config.DETAILED:
+            if valid == "True":
+                if selected:
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 255), 2)
+                    cv2.rectangle(frame, (x * test, y * test), (x * test + w * test, y * test + h * test), (0, 255, 0), 1)
+                    cv2.putText(frame, "Selected", (int(x + (w * config.PROP)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX,
+                                0.5,
+                                (0, 255, 0), 1, cv2.LINE_AA)
+                else:
+                    cv2.rectangle(frame, (x * test, y * test), (x * test + w * test, y * test + h * test), (0, 255, 0),
+                                  1)
+                    cv2.putText(frame, "Accepted", (int(x * test + (w * test * config.PROP)) + 5, y * test - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                            (0, 255, 0), 1, cv2.LINE_AA)
+            else:
+                if selected:
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 255), 2)
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 1)
+                    cv2.putText(frame, "Selected", (int(x + (w * config.PROP)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX,
+                                0.5,
+                                (0, 0, 255), 1, cv2.LINE_AA)
+                else:
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 1)
+                    cv2.putText(frame, "Rejected", (int(x + (w * config.PROP)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                            (0, 0, 255), 1, cv2.LINE_AA)
+
     def run(self):
         self.updateStatus.emit(self.setStatusText("Preparing pre-process"), 1)
         cap = cv2.VideoCapture(self.pathToVideo)
@@ -104,16 +131,41 @@ class FaceIsolator(QThread):
             if iterations == config.VIDEO_LENGHT:
                 coincidences = 0
                 self.done = True
+                self.updateStatus.emit(self.setStatusText("Generating preview data..."), 1)
+                self.js.setData(self.list, "face")
+                self.js.saveJson(config.PATH_TO_JSON_TEMP)
+                previewData = self.js.loadJson(config.PATH_TO_JSON_TEMP)
                 self.updateStatus.emit(self.setStatusText("Waiting for user to review obtained data"), 1)
                 while not self.finished:
                     if self.selecting and self.done:
                         cap.set(1, self.selectedFrame)
                         ret, frame = cap.read()
+                        frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
+                        for k in previewData:
+                            if str(self.selectedFrame) in previewData[k]:
+                                if config.SELECTED_FACE >= 0:
+                                    if k == str(config.SELECTED_FACE):
+                                        self.drawFaces(previewData[k][str(self.selectedFrame)]["valid"], frame,
+                                                       int(previewData[k][str(self.selectedFrame)]["x"]),
+                                                       int(previewData[k][str(self.selectedFrame)]["y"]),
+                                                       int(previewData[k][str(self.selectedFrame)]["w"]),
+                                                       int(previewData[k][str(self.selectedFrame)]["h"]), True)
+                                    else:
+                                        self.drawFaces(previewData[k][str(self.selectedFrame)]["valid"], frame,
+                                                       int(previewData[k][str(self.selectedFrame)]["x"]),
+                                                       int(previewData[k][str(self.selectedFrame)]["y"]),
+                                                       int(previewData[k][str(self.selectedFrame)]["w"]),
+                                                       int(previewData[k][str(self.selectedFrame)]["h"]), False)
+                                else:
+                                    self.drawFaces(previewData[k][str(self.selectedFrame)]["valid"], frame,
+                                                   int(previewData[k][str(self.selectedFrame)]["x"]),
+                                                   int(previewData[k][str(self.selectedFrame)]["y"]),
+                                                   int(previewData[k][str(self.selectedFrame)]["w"]),
+                                                   int(previewData[k][str(self.selectedFrame)]["h"]), False)
                         rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                         h, w, ch = rgbImage.shape
                         bytesPerLine = ch * w
                         convertToQt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-                        print("emit " + str(self.selectedFrame))
                         self.changePixmap.emit(convertToQt, perf.getVideoProgress(iterations, config.VIDEO_LENGHT))
                         #self.selecting = False
 
@@ -153,7 +205,7 @@ class FaceIsolator(QThread):
                 faces = faceCascade.detectMultiScale(GrayFrame, 1.1, 4)
 
                 for (x, y, w, h) in faces:
-                    newFace = DS.face(x, y, w, h, iterations, frame.copy(), self.fernet)
+                    newFace = DS.face(x, y, w, h, iterations, self.fernet)
                     newFound = True
                     if len(self.list) == 0:
                         founds += 1

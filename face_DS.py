@@ -21,7 +21,7 @@ def noiseOut(list2clear):
     return aux
 
 class face:
-    def __init__(self, x, y, w, h, frame, frameMat, fernet, occurs = 0, valid = False):
+    def __init__(self, x, y, w, h, frame, fernet, occurs = 0, valid = False):
         self.list = {}
         self.x = x
         self.y = y
@@ -31,7 +31,6 @@ class face:
         self.frame = frame
         self.occurs = occurs
         self.valid = valid
-        self.frameMat = self.crop(frameMat)
         # self.visited = False ?
 
     #Metodo equal:
@@ -39,19 +38,19 @@ class face:
     # con el area del punto de la cara anterior
     # la cara es la misma y actualiza el estado
 
-    def crop(self, frame):
-        cropped = frame[self.y : (self.y + self.h), self.x : (self.x + self.w)]
-        resized = cv2.resize(cropped, (224, 224))
-        resized = np.expand_dims(resized, axis=0)
-        resized = resized / 255.0
-        return resized
-
     def queue(self, face, queue):
+        if queue is not None:
+            self.list = queue
+        else:
+            pass
+        self.list[face.frame] = face
+        """
         if self.valid:
             if queue is not None: self.list = queue
             else: pass
             self.list[face.frame] = face
         else: self.list = None
+        """
 
     def equal(self, conf, item, frame):
         x1, y1 = int(self.x + (self.w * conf)),int(self.y + (self.h * conf))
@@ -86,6 +85,7 @@ class face:
         serialized["y"] = str(self.y)
         serialized["w"] = str(self.w)
         serialized["h"] = str(self.h)
+        serialized["valid"] = str(self.valid)
         #np.savez_compressed("frames.npz", frame=self.frameMat)
         #faceEnc = self.fernet.encrypt(np.array2string(self.frameMat).encode())
         #print(faceEnc)
