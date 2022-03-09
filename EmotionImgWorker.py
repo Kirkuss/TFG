@@ -31,6 +31,7 @@ class EmotionWorker():
             if self.iteration == config.VIDEO_LENGHT: cap.release()
 
             ret, frame = cap.read()
+            frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
             if ret:
                 for i in self.chunk:
                     if str(self.iteration) in self.faces[str(i)]:

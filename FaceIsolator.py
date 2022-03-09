@@ -25,14 +25,17 @@ class FaceIsolator(QThread):
         self.pathToVideo = config.PATH_TO_VIDEO
         self.pathToOutput = config.PATH_TO_JSON_PRE
         self.faceCascade = cv2.CascadeClassifier(config.PATH_TO_MODEL)
+        self.previewData = {}
         self.js = Dmanager.jsonManager()
         self.pause = False
         self.jump = False
         self.frame = ""
+        self.showOnlySelected = False
         self.list = {}
         self.faces = ""
         self.sig = False
         self.selectedFrame = 0
+        self.deleteAuto = False
         self.finished = False
         self.selecting = False
         self.done = False
@@ -49,10 +52,10 @@ class FaceIsolator(QThread):
     def updateWithoutProcessing(self):
         pass
 
-    def getFaceIds(self, k, delete):
+    def getFaceIds(self, faceList, k, delete):
         idList = []
         if delete:
-            for k, v in self.list.items():
+            for k, v in faceList.items():
                 idList.append(k)
         else:
             idList.append(k)
@@ -74,35 +77,57 @@ class FaceIsolator(QThread):
 
     def deleteFace(self):
         deleted = self.list.pop(str(config.SELECTED_FACE))
+        self.updateStatus.emit(self.setStatusText("Generating preview data..."), 1)
+        self.js.setData(self.list, "face")
+        self.js.saveJson(config.PATH_TO_JSON_TEMP)
+        self.previewData = self.js.loadJson(config.PATH_TO_JSON_TEMP)
         print("Deleted face: " + str(deleted))
-        self.setPicker.emit(self.getFaceIds("0", True))
+        self.setPicker.emit(self.getFaceIds(self.list, "0", True))
+        self.updateStatus.emit(self.setStatusText("Waiting for user to review obtained data"), 1)
 
-    def drawFaces(self, valid, frame, x, y , w, h, selected):
+    def drawFaces(self, id, valid, frame, x, y , w, h, selected):
         test = 1
         if config.DETAILED:
             if valid == "True":
                 if selected:
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 255), 2)
                     cv2.rectangle(frame, (x * test, y * test), (x * test + w * test, y * test + h * test), (0, 255, 0), 1)
-                    cv2.putText(frame, "Selected", (int(x + (w * config.PROP)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX,
+                    cv2.putText(frame, id + " Selected", (int(x + (w * config.PROP)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX,
                                 0.5,
                                 (0, 255, 0), 1, cv2.LINE_AA)
-                else:
+                elif not self.showOnlySelected:
                     cv2.rectangle(frame, (x * test, y * test), (x * test + w * test, y * test + h * test), (0, 255, 0),
                                   1)
-                    cv2.putText(frame, "Accepted", (int(x * test + (w * test * config.PROP)) + 5, y * test - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                    cv2.putText(frame, id + " Accepted", (int(x * test + (w * test * config.PROP)) + 5, y * test - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                             (0, 255, 0), 1, cv2.LINE_AA)
             else:
                 if selected:
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 255), 2)
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 1)
-                    cv2.putText(frame, "Selected", (int(x + (w * config.PROP)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX,
+                    cv2.putText(frame, id + " Selected", (int(x + (w * config.PROP)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX,
                                 0.5,
                                 (0, 0, 255), 1, cv2.LINE_AA)
-                else:
+                elif not self.showOnlySelected:
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 1)
-                    cv2.putText(frame, "Rejected", (int(x + (w * config.PROP)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                    cv2.putText(frame, id + " Rejected", (int(x + (w * config.PROP)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                             (0, 0, 255), 1, cv2.LINE_AA)
+
+    def deleteAllRejected(self):
+        cleanList = DS.noiseOut(self.list)
+        self.list = cleanList
+        self.setPicker.emit(self.getFaceIds(cleanList, "0", True))
+
+    def deleteFaceFrame(self):
+        print("deleting face frame")
+        if str(config.SELECTED_FACE) in self.previewData:
+            if str(self.selectedFrame) in self.previewData[str(config.SELECTED_FACE)]:
+                del self.previewData[str(config.SELECTED_FACE)][str(self.selectedFrame)]
+                self.updateStatus.emit(self.setStatusText("Generating preview data..."), 1)
+                self.js.setData(self.list, "face")
+                self.js.saveJson(config.PATH_TO_JSON_TEMP)
+                self.previewData = self.js.loadJson(config.PATH_TO_JSON_TEMP)
+                print("Deleted face frame: " + str(self.selectedFrame)) #LO HACE A MEDIAS, seguir con esto mañana
+                self.updateStatus.emit(self.setStatusText("Waiting for user to review obtained data"), 1)
 
     def run(self):
         self.updateStatus.emit(self.setStatusText("Preparing pre-process"), 1)
@@ -131,54 +156,56 @@ class FaceIsolator(QThread):
             if iterations == config.VIDEO_LENGHT:
                 coincidences = 0
                 self.done = True
+                if self.deleteAuto:
+                    cleanList = DS.noiseOut(self.list)
+                    self.list = cleanList
+                    self.setPicker.emit(self.getFaceIds(cleanList ,"0" ,True))
+
                 self.updateStatus.emit(self.setStatusText("Generating preview data..."), 1)
                 self.js.setData(self.list, "face")
                 self.js.saveJson(config.PATH_TO_JSON_TEMP)
-                previewData = self.js.loadJson(config.PATH_TO_JSON_TEMP)
+                self.previewData = self.js.loadJson(config.PATH_TO_JSON_TEMP)
                 self.updateStatus.emit(self.setStatusText("Waiting for user to review obtained data"), 1)
+
                 while not self.finished:
                     if self.selecting and self.done:
                         cap.set(1, self.selectedFrame)
                         ret, frame = cap.read()
                         frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
-                        for k in previewData:
-                            if str(self.selectedFrame) in previewData[k]:
+
+                        for k in self.previewData:
+                            if str(self.selectedFrame) in self.previewData[k]:
+
+                                valid = self.previewData[k][str(self.selectedFrame)]["valid"]
+                                x = int(self.previewData[k][str(self.selectedFrame)]["x"])
+                                y = int(self.previewData[k][str(self.selectedFrame)]["y"])
+                                w = int(self.previewData[k][str(self.selectedFrame)]["w"])
+                                h = int(self.previewData[k][str(self.selectedFrame)]["h"])
+
                                 if config.SELECTED_FACE >= 0:
                                     if k == str(config.SELECTED_FACE):
-                                        self.drawFaces(previewData[k][str(self.selectedFrame)]["valid"], frame,
-                                                       int(previewData[k][str(self.selectedFrame)]["x"]),
-                                                       int(previewData[k][str(self.selectedFrame)]["y"]),
-                                                       int(previewData[k][str(self.selectedFrame)]["w"]),
-                                                       int(previewData[k][str(self.selectedFrame)]["h"]), True)
-                                    else:
-                                        self.drawFaces(previewData[k][str(self.selectedFrame)]["valid"], frame,
-                                                       int(previewData[k][str(self.selectedFrame)]["x"]),
-                                                       int(previewData[k][str(self.selectedFrame)]["y"]),
-                                                       int(previewData[k][str(self.selectedFrame)]["w"]),
-                                                       int(previewData[k][str(self.selectedFrame)]["h"]), False)
-                                else:
-                                    self.drawFaces(previewData[k][str(self.selectedFrame)]["valid"], frame,
-                                                   int(previewData[k][str(self.selectedFrame)]["x"]),
-                                                   int(previewData[k][str(self.selectedFrame)]["y"]),
-                                                   int(previewData[k][str(self.selectedFrame)]["w"]),
-                                                   int(previewData[k][str(self.selectedFrame)]["h"]), False)
+                                        if k in self.list:
+                                            cropped = frame[y: (y + h), x: (x + w)]
+                                            rgbImage = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
+                                            hs, ws, ch = rgbImage.shape
+                                            bytesPerLine = ch * ws
+                                            cropped2Qt = QImage(rgbImage.data, ws, hs, bytesPerLine, QImage.Format_RGB888)
+                                            aux_face = self.list[str(config.SELECTED_FACE)]
+                                            self.changePixmap_pick.emit(cropped2Qt,
+                                                                        self.generateFaceInfo(aux_face, iterations,
+                                                                                              config.SELECTED_FACE))
+                                        self.drawFaces(k, valid, frame, x, y, w, h, True)
+                                    elif k != str(config.SELECTED_FACE) and not self.showOnlySelected:
+                                        self.drawFaces(k, valid, frame, x, y, w, h, False)
+                                elif not self.showOnlySelected:
+                                    self.drawFaces(k, valid, frame, x, y, w, h, False)
+
                         rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                         h, w, ch = rgbImage.shape
                         bytesPerLine = ch * w
                         convertToQt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
                         self.changePixmap.emit(convertToQt, perf.getVideoProgress(iterations, config.VIDEO_LENGHT))
-                        #self.selecting = False
 
-                    if config.SELECTED_FACE >= 0 and not self.sig:
-                        aux_face = self.list[str(config.SELECTED_FACE)]
-                        cropped = lastFrame[aux_face.y : (aux_face.y + aux_face.h), aux_face.x : (aux_face.x + aux_face.w)]
-                        rgbImage = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
-                        h, w, ch = rgbImage.shape
-                        bytesPerLine = ch * w
-                        cropped2Qt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-                        self.changePixmap_pick.emit(cropped2Qt, self.generateFaceInfo(aux_face, iterations, config.SELECTED_FACE))
-                        self.sig = True
-                    pass
                 cleanList = DS.noiseOut(self.list)
                 for k in cleanList:
                     coincidences += 1
@@ -211,7 +238,7 @@ class FaceIsolator(QThread):
                         founds += 1
                         self.list[str(founds)] = newFace
                         newFace.queue(newFace, None)
-                        self.setPicker.emit(self.getFaceIds(str(founds), False))
+                        self.setPicker.emit(self.getFaceIds(self.list ,str(founds), False))
                     else:
                         for k, v in self.list.items():
                             if newFace.equal(config.PROP, self.list[k], frame):
@@ -227,16 +254,7 @@ class FaceIsolator(QThread):
                         founds += 1
                         newFace.queue(newFace, None)
                         self.list[str(founds)] = newFace
-                        self.setPicker.emit(self.getFaceIds(str(founds), False))
-
-                    if config.SELECTED_FACE >= 0:
-                        aux_face = self.list[str(config.SELECTED_FACE)]
-                        cropped = frame[aux_face.y : (aux_face.y + aux_face.h), aux_face.x : (aux_face.x + aux_face.w)]
-                        rgbImage = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
-                        h, w, ch = rgbImage.shape
-                        bytesPerLine = ch * w
-                        cropped2Qt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-                        self.changePixmap_pick.emit(cropped2Qt, self.generateFaceInfo(aux_face, iterations, config.SELECTED_FACE))
+                        self.setPicker.emit(self.getFaceIds(self.list, str(founds), False))
 
                     if config.DETAILED:
                         if newFace.valid:

@@ -127,6 +127,7 @@ class EmotionProc(QThread):
             if self.iterations == config.VIDEO_LENGHT: cap.release()
 
             ret, frame = cap.read()
+            frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
             if ret:
                 for k in self.faces:
                     if str(self.iterations) in self.faces[k]:

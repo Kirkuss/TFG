@@ -419,7 +419,7 @@
      <widget class="QPushButton" name="deleteBt_2">
       <property name="geometry">
        <rect>
-        <x>810</x>
+        <x>800</x>
         <y>260</y>
         <width>75</width>
         <height>24</height>
@@ -461,7 +461,7 @@
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QCheckBox" name="showDetailedCb_3">
+     <widget class="QCheckBox" name="deleteAutomatCb">
       <property name="geometry">
        <rect>
         <x>810</x>
@@ -480,8 +480,8 @@
      <widget class="QPushButton" name="startPostProcessBt">
       <property name="geometry">
        <rect>
-        <x>980</x>
-        <y>260</y>
+        <x>640</x>
+        <y>280</y>
         <width>75</width>
         <height>24</height>
        </rect>
@@ -493,8 +493,8 @@
      <widget class="QPushButton" name="finishStep1Bt">
       <property name="geometry">
        <rect>
-        <x>840</x>
-        <y>320</y>
+        <x>1010</x>
+        <y>260</y>
         <width>75</width>
         <height>24</height>
        </rect>
@@ -538,6 +538,32 @@
        <string>Only show selected face</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="deleteAllRejected">
+      <property name="geometry">
+       <rect>
+        <x>840</x>
+        <y>350</y>
+        <width>91</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Delete rejected</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="deleteFaceFrameBt">
+      <property name="geometry">
+       <rect>
+        <x>880</x>
+        <y>280</y>
+        <width>111</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Delete (frame only)</string>
+      </property>
+     </widget>
      <zorder>label_16</zorder>
      <zorder>placeholder_step1</zorder>
      <zorder>showBoxesCb</zorder>
@@ -563,11 +589,13 @@
      <zorder>PreviewFaceLbl</zorder>
      <zorder>imgText</zorder>
      <zorder>showDetailedCb_2</zorder>
-     <zorder>showDetailedCb_3</zorder>
+     <zorder>deleteAutomatCb</zorder>
      <zorder>startPostProcessBt</zorder>
      <zorder>finishStep1Bt</zorder>
      <zorder>frameSelector</zorder>
      <zorder>showSelectedOnlyCb</zorder>
+     <zorder>deleteAllRejected</zorder>
+     <zorder>deleteFaceFrameBt</zorder>
     </widget>
     <widget class="QWidget" name="step2Tab">
      <attribute name="title">

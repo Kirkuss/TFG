@@ -41,6 +41,31 @@ class AIWake_UI(QMainWindow):
         self.finishStep1Bt.clicked.connect(self.finishStep1)
         self.frameSelector.sliderReleased.connect(self.sliderReleased)
         self.frameSelector.valueChanged.connect(self.testSlider)
+        self.showSelectedOnlyCb.stateChanged.connect(self.showOnlySelected)
+        self.deleteAutomatCb.stateChanged.connect(self.deleteAllAutomatically)
+        self.deleteAllRejected.clicked.connect(self.deleteAll)
+        self.deleteFaceFrameBt.clicked.connect(self.deleteFaceFrame)
+
+    def deleteFaceFrame(self):
+        self.thread[1].deleteFaceFrame()
+
+    def deleteAll(self):
+        if self.thread[1].done:
+            self.FacePicker.clear()
+        self.thread[1].deleteAllRejected()
+
+    def deleteAllAutomatically(self, state):
+        if state == 2:
+            self.thread[1].deleteAuto = True
+        else:
+            self.thread[1].deleteAuto = False
+
+    def showOnlySelected(self, state):
+        if config.SELECTED_FACE > 0:
+            if state == 2:
+                self.thread[1].showOnlySelected = True
+            else:
+                self.thread[1].showOnlySelected = False
 
     def testSlider(self):
         if self.thread[1].done:
@@ -153,6 +178,8 @@ class AIWake_UI(QMainWindow):
         self.imgText.setPlainText(infoText)
 
     def setPicker(self, idList):
+        if self.thread[1].done and self.thread[1].deleteAuto:
+            self.FacePicker.clear()
         self.FacePicker.addItems(idList)
         idList.clear()
 
