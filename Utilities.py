@@ -62,6 +62,9 @@ class jsonManager(object):
 
         self.data = aux.copy()
 
+    def setDataSerialized(self, data):
+        self.data = data.copy()
+
     def loadJson(self, path):
         """
         Aqui se leeran los archivos que se vayan guardando y se devolvera un diccionario para procesarlos, la idea

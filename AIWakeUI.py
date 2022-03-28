@@ -6,6 +6,7 @@ import DataProcessor as dp
 import FaceIsolator as fi
 import EmotionProc as ep
 import variables as config
+import postPreview as pp
 import PostDialog as pd
 
 class AIWake_UI(QMainWindow):
@@ -82,7 +83,14 @@ class AIWake_UI(QMainWindow):
         #dialog.show()
         self.thread[2] = ep.EmotionProc(parent=None)
         self.thread[2].postPbValue.connect(self.setPostProgress)
-        self.thread[2].run()
+        self.thread[2].done.connect(self.startPostPreview)
+        self.thread[2].start()
+
+    def startPostPreview(self):
+        self.thread[3] = pp.postPreview(parent=None)
+        self.thread[3].changePixmap_preview.connect(self.updateVideo)
+        self.thread[3].changePixmap_pick.connect(self.setPreview)
+        self.thread[3].start()
 
     def setPostProgress(self, progress):
         self.postPb.setValue(progress)
@@ -174,7 +182,8 @@ class AIWake_UI(QMainWindow):
 
     def setPreview(self, cropped, info):
         self.PreviewFaceLbl.setPixmap(QPixmap.fromImage(cropped))
-        infoText = info[0] + "\n" + info[1] + "\n" + info[2] + "\n" + info[3]
+        #infoText = info[0] + "\n" + info[1] + "\n" + info[2] + "\n" + info[3]
+        infoText = "Test"
         self.imgText.setPlainText(infoText)
 
     def setPicker(self, idList):

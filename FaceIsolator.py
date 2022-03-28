@@ -76,11 +76,11 @@ class FaceIsolator(QThread):
         return status
 
     def deleteFace(self):
-        deleted = self.list.pop(str(config.SELECTED_FACE))
         self.updateStatus.emit(self.setStatusText("Generating preview data..."), 1)
-        self.js.setData(self.list, "face")
+        deleted = self.list.pop(str(config.SELECTED_FACE))
+        del self.previewData[str(config.SELECTED_FACE)]
+        self.js.setDataSerialized(self.previewData)
         self.js.saveJson(config.PATH_TO_JSON_TEMP)
-        self.previewData = self.js.loadJson(config.PATH_TO_JSON_TEMP)
         print("Deleted face: " + str(deleted))
         self.setPicker.emit(self.getFaceIds(self.list, "0", True))
         self.updateStatus.emit(self.setStatusText("Waiting for user to review obtained data"), 1)
@@ -115,6 +115,17 @@ class FaceIsolator(QThread):
     def deleteAllRejected(self):
         cleanList = DS.noiseOut(self.list)
         self.list = cleanList
+        self.updateStatus.emit(self.setStatusText("Generating preview data..."), 1)
+
+        aux = self.previewData.copy()
+        for k in aux:
+            if k not in self.list:
+                del self.previewData[k]
+        del aux
+
+        self.js.setDataSerialized(self.previewData)
+        self.js.saveJson(config.PATH_TO_JSON_TEMP)
+        self.updateStatus.emit(self.setStatusText("Waiting for user to review obtained data"), 1)
         self.setPicker.emit(self.getFaceIds(cleanList, "0", True))
 
     def deleteFaceFrame(self):
@@ -122,12 +133,9 @@ class FaceIsolator(QThread):
         if str(config.SELECTED_FACE) in self.previewData:
             if str(self.selectedFrame) in self.previewData[str(config.SELECTED_FACE)]:
                 del self.previewData[str(config.SELECTED_FACE)][str(self.selectedFrame)]
-                self.updateStatus.emit(self.setStatusText("Generating preview data..."), 1)
-                self.js.setData(self.list, "face")
+                self.js.setDataSerialized(self.previewData)
                 self.js.saveJson(config.PATH_TO_JSON_TEMP)
-                self.previewData = self.js.loadJson(config.PATH_TO_JSON_TEMP)
-                print("Deleted face frame: " + str(self.selectedFrame)) #LO HACE A MEDIAS, seguir con esto mañana
-                self.updateStatus.emit(self.setStatusText("Waiting for user to review obtained data"), 1)
+                print("Deleted face frame: " + str(self.selectedFrame))
 
     def run(self):
         self.updateStatus.emit(self.setStatusText("Preparing pre-process"), 1)
@@ -169,49 +177,49 @@ class FaceIsolator(QThread):
 
                 while not self.finished:
                     if self.selecting and self.done:
-                        cap.set(1, self.selectedFrame)
-                        ret, frame = cap.read()
-                        frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
+                        if self.selectedFrame < config.VIDEO_LENGHT:
+                            cap.set(1, self.selectedFrame)
+                            ret, frame = cap.read()
+                            frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
 
-                        for k in self.previewData:
-                            if str(self.selectedFrame) in self.previewData[k]:
+                            for k in self.previewData:
+                                if str(self.selectedFrame) in self.previewData[k]:
 
-                                valid = self.previewData[k][str(self.selectedFrame)]["valid"]
-                                x = int(self.previewData[k][str(self.selectedFrame)]["x"])
-                                y = int(self.previewData[k][str(self.selectedFrame)]["y"])
-                                w = int(self.previewData[k][str(self.selectedFrame)]["w"])
-                                h = int(self.previewData[k][str(self.selectedFrame)]["h"])
+                                    valid = self.previewData[k][str(self.selectedFrame)]["valid"]
+                                    x = int(self.previewData[k][str(self.selectedFrame)]["x"])
+                                    y = int(self.previewData[k][str(self.selectedFrame)]["y"])
+                                    w = int(self.previewData[k][str(self.selectedFrame)]["w"])
+                                    h = int(self.previewData[k][str(self.selectedFrame)]["h"])
 
-                                if config.SELECTED_FACE >= 0:
-                                    if k == str(config.SELECTED_FACE):
-                                        if k in self.list:
-                                            cropped = frame[y: (y + h), x: (x + w)]
-                                            rgbImage = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
-                                            hs, ws, ch = rgbImage.shape
-                                            bytesPerLine = ch * ws
-                                            cropped2Qt = QImage(rgbImage.data, ws, hs, bytesPerLine, QImage.Format_RGB888)
-                                            aux_face = self.list[str(config.SELECTED_FACE)]
-                                            self.changePixmap_pick.emit(cropped2Qt,
-                                                                        self.generateFaceInfo(aux_face, iterations,
-                                                                                              config.SELECTED_FACE))
-                                        self.drawFaces(k, valid, frame, x, y, w, h, True)
-                                    elif k != str(config.SELECTED_FACE) and not self.showOnlySelected:
+                                    if config.SELECTED_FACE >= 0:
+                                        if k == str(config.SELECTED_FACE):
+                                            if k in self.previewData:
+                                                cropped = frame[y: (y + h), x: (x + w)]
+                                                rgbImage = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
+                                                hs, ws, ch = rgbImage.shape
+                                                bytesPerLine = ch * ws
+                                                cropped2Qt = QImage(rgbImage.data, ws, hs, bytesPerLine, QImage.Format_RGB888)
+                                                aux_face = self.list[str(config.SELECTED_FACE)]
+                                                self.changePixmap_pick.emit(cropped2Qt,
+                                                                            self.generateFaceInfo(aux_face, iterations,
+                                                                                                  config.SELECTED_FACE))
+                                            self.drawFaces(k, valid, frame, x, y, w, h, True)
+                                        elif k != str(config.SELECTED_FACE) and not self.showOnlySelected:
+                                            self.drawFaces(k, valid, frame, x, y, w, h, False)
+                                    elif not self.showOnlySelected:
                                         self.drawFaces(k, valid, frame, x, y, w, h, False)
-                                elif not self.showOnlySelected:
-                                    self.drawFaces(k, valid, frame, x, y, w, h, False)
 
-                        rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                        h, w, ch = rgbImage.shape
-                        bytesPerLine = ch * w
-                        convertToQt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-                        self.changePixmap.emit(convertToQt, perf.getVideoProgress(iterations, config.VIDEO_LENGHT))
+                            rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                            h, w, ch = rgbImage.shape
+                            bytesPerLine = ch * w
+                            convertToQt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
+                            self.changePixmap.emit(convertToQt, perf.getVideoProgress(iterations, config.VIDEO_LENGHT))
 
-                cleanList = DS.noiseOut(self.list)
-                for k in cleanList:
+                for k in self.previewData:
                     coincidences += 1
-                self.js.setData(cleanList, "face")
+                self.js.setDataSerialized(self.previewData)
                 self.js.saveJson(config.PATH_TO_JSON_PRE)
-                cleanList.clear()
+                del self.previewData
                 self.list.clear()
                 print("done")
                 config.LOG += "\n" + ts.getTime(self) + " Step 1 finished..."
@@ -219,6 +227,7 @@ class FaceIsolator(QThread):
                 config.LOG += "\n" + ts.getTime(self) + " AIWake ... [STEP 1 - PREPROCESSING - FINISHED]"
                 self.updateTerminal.emit()
                 cap.release()
+                ret = False
 
             iterations += 1
 
