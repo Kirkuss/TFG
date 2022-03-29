@@ -12,6 +12,7 @@ class postPreview(QThread):
     changePixmap_preview = pyqtSignal(QImage, int)
     updateStatus_preview = pyqtSignal(list, int)
     changePixmap_pick = pyqtSignal(QImage, list)
+    updateFrameSelector = pyqtSignal(int)
 
     def __init__(self, parent=None):
         super(postPreview, self).__init__(parent)
@@ -20,6 +21,10 @@ class postPreview(QThread):
         self.facesInfo = self.js.loadJson(config.PATH_TO_JSON_POS)
         self.iterations = 1
         self.showOnlySelected = False
+        self.finished = False
+        self.pause = False
+        self.writeOnPause = True
+        self.newIterations = 1
 
     def generateFaceInfo(self, sample):
         list = []
@@ -45,7 +50,22 @@ class postPreview(QThread):
         cap = cv2.VideoCapture(self.pathToVideo)
 
         while (cap.isOpened()):
+
+            self.iterations = self.newIterations
+            #if self.iterations == config.VIDEO_LENGHT:
+            #   self.pause = True
+
+            while self.pause:
+                self.iterations = self.newIterations
+                if self.writeOnPause:
+                    print("Video paused at frame: " + str(self.iterations))
+                    self.writeOnPause = False
+
+            self.writeOnPause = True
+
+            cap.set(1, self.iterations)
             ret, frame = cap.read()
+
             if ret:
                 #status
                 frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
@@ -86,4 +106,7 @@ class postPreview(QThread):
                 self.changePixmap_preview.emit(convertToQt, 0)
 
                 self.iterations += 1
-                time.sleep(0.04)
+                self.newIterations += 1
+                #time.sleep(0.04)
+
+            self.updateFrameSelector.emit(self.iterations)

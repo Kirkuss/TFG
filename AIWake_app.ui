@@ -548,6 +548,23 @@
        <string>Delete (frame only)</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="start3Test">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>480</y>
+        <width>21</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>Resources/app_img/icons/gear.png</normaloff>Resources/app_img/icons/gear.png</iconset>
+      </property>
+     </widget>
      <zorder>label_16</zorder>
      <zorder>placeholder_step1</zorder>
      <zorder>showBoxesCb</zorder>
@@ -579,6 +596,7 @@
      <zorder>showSelectedOnlyCb</zorder>
      <zorder>deleteAllRejected</zorder>
      <zorder>deleteFaceFrameBt</zorder>
+     <zorder>start3Test</zorder>
     </widget>
     <widget class="QWidget" name="step2Tab">
      <attribute name="title">

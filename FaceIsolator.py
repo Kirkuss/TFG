@@ -34,7 +34,6 @@ class FaceIsolator(QThread):
         self.list = {}
         self.faces = ""
         self.sig = False
-        self.selectedFrame = 0
         self.deleteAuto = False
         self.finished = False
         self.selecting = False
@@ -131,11 +130,11 @@ class FaceIsolator(QThread):
     def deleteFaceFrame(self):
         print("deleting face frame")
         if str(config.SELECTED_FACE) in self.previewData:
-            if str(self.selectedFrame) in self.previewData[str(config.SELECTED_FACE)]:
-                del self.previewData[str(config.SELECTED_FACE)][str(self.selectedFrame)]
+            if str(config.SELECTED_FRAME) in self.previewData[str(config.SELECTED_FACE)]:
+                del self.previewData[str(config.SELECTED_FACE)][str(config.SELECTED_FRAME)]
                 self.js.setDataSerialized(self.previewData)
                 self.js.saveJson(config.PATH_TO_JSON_TEMP)
-                print("Deleted face frame: " + str(self.selectedFrame))
+                print("Deleted face frame: " + str(config.SELECTED_FRAME))
 
     def run(self):
         self.updateStatus.emit(self.setStatusText("Preparing pre-process"), 1)
@@ -177,19 +176,19 @@ class FaceIsolator(QThread):
 
                 while not self.finished:
                     if self.selecting and self.done:
-                        if self.selectedFrame < config.VIDEO_LENGHT:
-                            cap.set(1, self.selectedFrame)
+                        if config.SELECTED_FRAME < config.VIDEO_LENGHT:
+                            cap.set(1, config.SELECTED_FRAME)
                             ret, frame = cap.read()
                             frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
 
                             for k in self.previewData:
-                                if str(self.selectedFrame) in self.previewData[k]:
+                                if str(config.SELECTED_FRAME) in self.previewData[k]:
 
-                                    valid = self.previewData[k][str(self.selectedFrame)]["valid"]
-                                    x = int(self.previewData[k][str(self.selectedFrame)]["x"])
-                                    y = int(self.previewData[k][str(self.selectedFrame)]["y"])
-                                    w = int(self.previewData[k][str(self.selectedFrame)]["w"])
-                                    h = int(self.previewData[k][str(self.selectedFrame)]["h"])
+                                    valid = self.previewData[k][str(config.SELECTED_FRAME)]["valid"]
+                                    x = int(self.previewData[k][str(config.SELECTED_FRAME)]["x"])
+                                    y = int(self.previewData[k][str(config.SELECTED_FRAME)]["y"])
+                                    w = int(self.previewData[k][str(config.SELECTED_FRAME)]["w"])
+                                    h = int(self.previewData[k][str(config.SELECTED_FRAME)]["h"])
 
                                     if config.SELECTED_FACE >= 0:
                                         if k == str(config.SELECTED_FACE):

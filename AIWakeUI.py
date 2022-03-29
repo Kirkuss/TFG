@@ -15,6 +15,7 @@ class AIWake_UI(QMainWindow):
         uic.loadUi("AIWake_app.ui",self)
         self.setWindowTitle("AIWake")
 
+        self.testing = True
         self.thread = {}
 
         self.initUI()
@@ -46,6 +47,14 @@ class AIWake_UI(QMainWindow):
         self.deleteAutomatCb.stateChanged.connect(self.deleteAllAutomatically)
         self.deleteAllRejected.clicked.connect(self.deleteAll)
         self.deleteFaceFrameBt.clicked.connect(self.deleteFaceFrame)
+        self.start3Test.clicked.connect(self.startTest)
+
+    def startTest(self):
+        self.thread[3] = pp.postPreview(parent=None)
+        self.thread[3].changePixmap_preview.connect(self.updateVideo)
+        self.thread[3].changePixmap_pick.connect(self.setPreview)
+        self.thread[3].updateFrameSelector.connect(self.updateFrameSelector)
+        self.thread[3].start()
 
     def deleteFaceFrame(self):
         self.thread[1].deleteFaceFrame()
@@ -69,8 +78,9 @@ class AIWake_UI(QMainWindow):
                 self.thread[1].showOnlySelected = False
 
     def testSlider(self):
-        if self.thread[1].done:
-            self.thread[1].selectedFrame = self.frameSelector.value()
+        config.SELECTED_FRAME = self.frameSelector.value()
+        if self.thread[3].isRunning():
+            self.thread[3].newIterations = config.SELECTED_FRAME
 
     def sliderReleased(self):
         self.thread[1].selecting = True
@@ -81,15 +91,17 @@ class AIWake_UI(QMainWindow):
     def startPostProcessing(self):
         #dialog = pd.PostDialog()
         #dialog.show()
-        self.thread[2] = ep.EmotionProc(parent=None)
-        self.thread[2].postPbValue.connect(self.setPostProgress)
-        self.thread[2].done.connect(self.startPostPreview)
-        self.thread[2].start()
+        if not self.testing:
+            self.thread[2] = ep.EmotionProc(parent=None)
+            self.thread[2].postPbValue.connect(self.setPostProgress)
+            self.thread[2].done.connect(self.startPostPreview)
+            self.thread[2].start()
 
     def startPostPreview(self):
         self.thread[3] = pp.postPreview(parent=None)
         self.thread[3].changePixmap_preview.connect(self.updateVideo)
         self.thread[3].changePixmap_pick.connect(self.setPreview)
+        self.thread[3].updateFrameSelector.connect(self.updateFrameSelector)
         self.thread[3].start()
 
     def setPostProgress(self, progress):
@@ -140,6 +152,8 @@ class AIWake_UI(QMainWindow):
 
     def pauseBtClick_step1(self):
         self.thread[1].pause = True
+        if self.thread[3].isRunning():
+            self.thread[3].pause = True
 
     def pauseBtClick_step2(self):
         self.thread[2].pause = True
@@ -160,14 +174,18 @@ class AIWake_UI(QMainWindow):
             if self.thread[1].pause:
                 self.thread[1].pause = False
         else:
-            self.thread[1].start()
-            self.thread[1].updateFrameSelector.connect(self.updateFrameSelector)
-            self.thread[1].changePixmap.connect(self.updateVideo)
-            self.thread[1].updateTerminal.connect(self.updateTerminal)
-            self.thread[1].updateStatus.connect(self.updateStatus)
-            self.thread[1].setPicker.connect(self.setPicker)
-            self.thread[1].changePixmap_pick.connect(self.setPreview)
-            self.frameSelector.setMaximum(config.VIDEO_LENGHT)
+            if not self.testing:
+                self.thread[1].start()
+                self.thread[1].updateFrameSelector.connect(self.updateFrameSelector)
+                self.thread[1].changePixmap.connect(self.updateVideo)
+                self.thread[1].updateTerminal.connect(self.updateTerminal)
+                self.thread[1].updateStatus.connect(self.updateStatus)
+                self.thread[1].setPicker.connect(self.setPicker)
+                self.thread[1].changePixmap_pick.connect(self.setPreview)
+                self.frameSelector.setMaximum(config.VIDEO_LENGHT)
+
+        if self.thread[3].isRunning():
+            self.thread[3].pause = False
 
     def updateFrameSelector(self, frame):
         self.frameSelector.setValue(frame)
