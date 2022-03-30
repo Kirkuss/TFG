@@ -17,11 +17,11 @@ class AIWake_UI(QMainWindow):
 
         self.testing = True
         self.thread = {}
+        self.currentThread = [True, False, False]
 
         self.initUI()
 
     def initUI(self):
-        self.bt1.clicked.connect(self.b1Click)
         self.playBt.clicked.connect(self.playBtClick)
         self.showBoxesCb.stateChanged.connect(self.previewChange_showHB)
         self.showDetailedCb.stateChanged.connect(self.previewChange_showDE)
@@ -43,11 +43,16 @@ class AIWake_UI(QMainWindow):
         self.finishStep1Bt.clicked.connect(self.finishStep1)
         self.frameSelector.sliderReleased.connect(self.sliderReleased)
         self.frameSelector.valueChanged.connect(self.testSlider)
+        self.frameSelector.sliderPressed.connect(self.sliderPressed)
         self.showSelectedOnlyCb.stateChanged.connect(self.showOnlySelected)
         self.deleteAutomatCb.stateChanged.connect(self.deleteAllAutomatically)
         self.deleteAllRejected.clicked.connect(self.deleteAll)
         self.deleteFaceFrameBt.clicked.connect(self.deleteFaceFrame)
         self.start3Test.clicked.connect(self.startTest)
+
+    def sliderPressed(self):
+        if self.currentThread[2]:
+            self.thread[3].pause = True
 
     def startTest(self):
         self.thread[3] = pp.postPreview(parent=None)
@@ -79,25 +84,26 @@ class AIWake_UI(QMainWindow):
 
     def testSlider(self):
         config.SELECTED_FRAME = self.frameSelector.value()
-        if self.thread[3].isRunning():
-            self.thread[3].newIterations = config.SELECTED_FRAME
 
     def sliderReleased(self):
         self.thread[1].selecting = True
+        if self.currentThread[2]:
+            self.thread[3].barReleased = True
 
     def finishStep1(self):
         self.thread[1].finished = True
 
     def startPostProcessing(self):
-        #dialog = pd.PostDialog()
-        #dialog.show()
-        if not self.testing:
-            self.thread[2] = ep.EmotionProc(parent=None)
-            self.thread[2].postPbValue.connect(self.setPostProgress)
-            self.thread[2].done.connect(self.startPostPreview)
-            self.thread[2].start()
+        self.currentThread[0] = False
+        self.currentThread[1] = True
+        self.thread[2] = ep.EmotionProc(parent=None)
+        self.thread[2].postPbValue.connect(self.setPostProgress)
+        self.thread[2].done.connect(self.startPostPreview)
+        self.thread[2].start()
 
     def startPostPreview(self):
+        self.currentThread[1] = False
+        self.currentThread[2] = True
         self.thread[3] = pp.postPreview(parent=None)
         self.thread[3].changePixmap_preview.connect(self.updateVideo)
         self.thread[3].changePixmap_pick.connect(self.setPreview)
@@ -151,9 +157,10 @@ class AIWake_UI(QMainWindow):
         config.RATIO = value/100
 
     def pauseBtClick_step1(self):
-        self.thread[1].pause = True
-        if self.thread[3].isRunning():
+        if self.currentThread[2]:
             self.thread[3].pause = True
+        elif self.currentThread[0]:
+            self.thread[1].pause = True
 
     def pauseBtClick_step2(self):
         self.thread[2].pause = True
@@ -170,11 +177,10 @@ class AIWake_UI(QMainWindow):
         dp.startProcessingData(config.VIDEO_LENGHT)
 
     def playBtClick(self):
-        if self.thread[1].isRunning():
-            if self.thread[1].pause:
+        if self.currentThread[0]:
+            if self.thread[1].isRunning():
                 self.thread[1].pause = False
-        else:
-            if not self.testing:
+            else:
                 self.thread[1].start()
                 self.thread[1].updateFrameSelector.connect(self.updateFrameSelector)
                 self.thread[1].changePixmap.connect(self.updateVideo)
@@ -183,8 +189,7 @@ class AIWake_UI(QMainWindow):
                 self.thread[1].setPicker.connect(self.setPicker)
                 self.thread[1].changePixmap_pick.connect(self.setPreview)
                 self.frameSelector.setMaximum(config.VIDEO_LENGHT)
-
-        if self.thread[3].isRunning():
+        elif self.currentThread[2]:
             self.thread[3].pause = False
 
     def updateFrameSelector(self, frame):
@@ -211,7 +216,7 @@ class AIWake_UI(QMainWindow):
         idList.clear()
 
     def playBtClickPost(self):
-        if self.thread[2].isRunning():
+        if self.currentThread[1]:
             if self.thread[2].pause:
                 self.thread[2].pause = False
         else:
@@ -224,7 +229,8 @@ class AIWake_UI(QMainWindow):
         self.postPb.setValue(progress)
 
     def updateTerminal(self):
-        self.terminalInfo.setPlainText(config.LOG)
+        pass
+        #self.terminalInfo.setPlainText(config.LOG)
 
     def browseStep1Video(self):
         fileName = QFileDialog.getOpenFileName(self, "Choose a video", "C:", "Video Files (*.mp4 *.flv *.mkv)")

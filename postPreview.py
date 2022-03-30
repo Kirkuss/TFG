@@ -24,7 +24,7 @@ class postPreview(QThread):
         self.finished = False
         self.pause = False
         self.writeOnPause = True
-        self.newIterations = 1
+        self.barReleased = False
 
     def generateFaceInfo(self, sample):
         list = []
@@ -51,19 +51,21 @@ class postPreview(QThread):
 
         while (cap.isOpened()):
 
-            self.iterations = self.newIterations
             #if self.iterations == config.VIDEO_LENGHT:
             #   self.pause = True
 
             while self.pause:
-                self.iterations = self.newIterations
                 if self.writeOnPause:
                     print("Video paused at frame: " + str(self.iterations))
                     self.writeOnPause = False
 
+            if self.barReleased:
+                cap.set(1, config.SELECTED_FRAME)
+                self.iterations = config.SELECTED_FRAME
+                self.barReleased = False
+
             self.writeOnPause = True
 
-            cap.set(1, self.iterations)
             ret, frame = cap.read()
 
             if ret:
@@ -106,7 +108,6 @@ class postPreview(QThread):
                 self.changePixmap_preview.emit(convertToQt, 0)
 
                 self.iterations += 1
-                self.newIterations += 1
-                #time.sleep(0.04)
+                time.sleep(0.04)
 
             self.updateFrameSelector.emit(self.iterations)
