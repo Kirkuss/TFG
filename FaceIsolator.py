@@ -19,6 +19,7 @@ class FaceIsolator(QThread):
     changePixmap_pick = pyqtSignal(QImage, list)
     updateStatus = pyqtSignal(list, int)
     updateFrameSelector = pyqtSignal(int)
+    preprocessDone = pyqtSignal()
 
     def __init__(self, parent=None):
         super(FaceIsolator, self).__init__(parent)
@@ -214,13 +215,15 @@ class FaceIsolator(QThread):
                             convertToQt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
                             self.changePixmap.emit(convertToQt, perf.getVideoProgress(iterations, config.VIDEO_LENGHT))
 
+                self.updateStatus.emit(self.setStatusText("Saving JSON file for pre-processing data..."), 2)
+
                 for k in self.previewData:
                     coincidences += 1
                 self.js.setDataSerialized(self.previewData)
                 self.js.saveJson(config.PATH_TO_JSON_PRE)
                 del self.previewData
                 self.list.clear()
-                print("done")
+                self.updateStatus.emit(self.setStatusText("JSON file saved: " + config.PATH_TO_JSON_PRE), 1)
                 config.LOG += "\n" + ts.getTime(self) + " Step 1 finished..."
                 config.LOG += "\n" + ts.getTime(self) + " Json for step 1 -> " + config.PATH_TO_JSON_PRE
                 config.LOG += "\n" + ts.getTime(self) + " AIWake ... [STEP 1 - PREPROCESSING - FINISHED]"
@@ -283,4 +286,7 @@ class FaceIsolator(QThread):
                 self.updateFrameSelector.emit(iterations)
 
                 self.jump = False
+
+        self.updateStatus.emit(self.setStatusText("Starting post-processing..."), 2)
+        self.preprocessDone.emit()
 

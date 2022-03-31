@@ -53,15 +53,15 @@
     </property>
     <widget class="QWidget" name="step1Tab">
      <attribute name="title">
-      <string>Step 1</string>
+      <string>File</string>
      </attribute>
      <widget class="QFrame" name="frame_4">
       <property name="geometry">
        <rect>
         <x>690</x>
-        <y>10</y>
+        <y>120</y>
         <width>441</width>
-        <height>131</height>
+        <height>191</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -105,8 +105,8 @@
       <widget class="QLabel" name="label">
        <property name="geometry">
         <rect>
-         <x>250</x>
-         <y>20</y>
+         <x>30</x>
+         <y>90</y>
          <width>101</width>
          <height>16</height>
         </rect>
@@ -118,8 +118,8 @@
       <widget class="QLabel" name="acceptanceLbl">
        <property name="geometry">
         <rect>
-         <x>380</x>
-         <y>40</y>
+         <x>160</x>
+         <y>110</y>
          <width>49</width>
          <height>16</height>
         </rect>
@@ -131,8 +131,8 @@
       <widget class="QSlider" name="detection_ratio">
        <property name="geometry">
         <rect>
-         <x>250</x>
-         <y>40</y>
+         <x>30</x>
+         <y>110</y>
          <width>121</width>
          <height>22</height>
         </rect>
@@ -156,8 +156,8 @@
       <widget class="QLabel" name="thresholdLbl">
        <property name="geometry">
         <rect>
-         <x>380</x>
-         <y>90</y>
+         <x>370</x>
+         <y>110</y>
          <width>49</width>
          <height>16</height>
         </rect>
@@ -169,8 +169,8 @@
       <widget class="QSlider" name="hb_detection_prop">
        <property name="geometry">
         <rect>
-         <x>250</x>
-         <y>90</y>
+         <x>240</x>
+         <y>110</y>
          <width>121</width>
          <height>22</height>
         </rect>
@@ -191,8 +191,8 @@
       <widget class="QLabel" name="label_2">
        <property name="geometry">
         <rect>
-         <x>250</x>
-         <y>70</y>
+         <x>240</x>
+         <y>90</y>
          <width>81</width>
          <height>16</height>
         </rect>
@@ -204,8 +204,8 @@
       <widget class="QPushButton" name="finishStep1Bt">
        <property name="geometry">
         <rect>
-         <x>30</x>
-         <y>90</y>
+         <x>130</x>
+         <y>150</y>
          <width>75</width>
          <height>24</height>
         </rect>
@@ -233,8 +233,8 @@
       <widget class="QPushButton" name="deleteAllRejected">
        <property name="geometry">
         <rect>
-         <x>110</x>
-         <y>90</y>
+         <x>210</x>
+         <y>150</y>
          <width>91</width>
          <height>24</height>
         </rect>
@@ -244,181 +244,11 @@
        </property>
       </widget>
      </widget>
-     <widget class="QFrame" name="frame_5">
-      <property name="geometry">
-       <rect>
-        <x>690</x>
-        <y>160</y>
-        <width>441</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::Box</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QPushButton" name="startPostProcessBt">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>10</y>
-         <width>75</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Process data</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QFrame" name="frame_6">
-      <property name="geometry">
-       <rect>
-        <x>1150</x>
-        <y>10</y>
-        <width>441</width>
-        <height>191</height>
-       </rect>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::Box</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QLabel" name="PreviewFaceLbl">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>151</width>
-         <height>141</height>
-        </rect>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="scaledContents">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QPlainTextEdit" name="imgText">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>10</y>
-         <width>131</width>
-         <height>141</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-       <property name="plainText">
-        <string/>
-       </property>
-       <property name="overwriteMode">
-        <bool>true</bool>
-       </property>
-       <property name="backgroundVisible">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_17">
-       <property name="geometry">
-        <rect>
-         <x>300</x>
-         <y>10</y>
-         <width>49</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Face ID:</string>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="FacePicker">
-       <property name="geometry">
-        <rect>
-         <x>350</x>
-         <y>10</y>
-         <width>81</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="currentText">
-        <string/>
-       </property>
-       <property name="placeholderText">
-        <string>Choose...</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="showSelectedOnlyCb">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>160</y>
-         <width>151</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Only show selected face</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="deleteFaceFrameBt">
-       <property name="geometry">
-        <rect>
-         <x>300</x>
-         <y>40</y>
-         <width>111</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Delete (frame only)</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="deleteBt_2">
-       <property name="geometry">
-        <rect>
-         <x>300</x>
-         <y>70</y>
-         <width>75</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Accept</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="deleteBt">
-       <property name="geometry">
-        <rect>
-         <x>300</x>
-         <y>100</y>
-         <width>75</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Delete</string>
-       </property>
-      </widget>
-     </widget>
      <widget class="QFrame" name="frame_7">
       <property name="geometry">
        <rect>
         <x>690</x>
-        <y>220</y>
+        <y>10</y>
         <width>901</width>
         <height>101</height>
        </rect>
@@ -511,7 +341,7 @@
         <rect>
          <x>90</x>
          <y>70</y>
-         <width>291</width>
+         <width>801</width>
          <height>16</height>
         </rect>
        </property>
@@ -677,134 +507,394 @@
        </property>
       </widget>
      </widget>
-    </widget>
-    <widget class="QWidget" name="step2Tab">
-     <attribute name="title">
-      <string>Step 2</string>
-     </attribute>
-     <widget class="QLineEdit" name="pathInText_step2">
+     <widget class="QTabWidget" name="tabWidget">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>611</width>
-        <height>20</height>
+        <x>690</x>
+        <y>320</y>
+        <width>451</width>
+        <height>221</height>
        </rect>
       </property>
-      <property name="readOnly">
-       <bool>true</bool>
+      <property name="tabShape">
+       <enum>QTabWidget::Rounded</enum>
       </property>
-      <property name="placeholderText">
-       <string>Path to video file...</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="placeholder_step1_2">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>40</y>
-        <width>621</width>
-        <height>411</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap>../../../Desktop/TFG - DOCU/Recursos/Imagenes/Analisis/video-placeholder.jpg</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-      <property name="indent">
-       <number>0</number>
-      </property>
-     </widget>
-     <widget class="QLabel" name="step2Video">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>40</y>
-        <width>621</width>
-        <height>411</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-      <property name="indent">
+      <property name="currentIndex">
        <number>1</number>
       </property>
-     </widget>
-     <widget class="QProgressBar" name="step2Pb">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>450</y>
-        <width>661</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="playBt_2">
-      <property name="geometry">
-       <rect>
-        <x>280</x>
-        <y>480</y>
-        <width>21</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>Resources/app_img/icons/play.png</normaloff>Resources/app_img/icons/play.png</iconset>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pauseBt_2">
-      <property name="geometry">
-       <rect>
-        <x>300</x>
-        <y>480</y>
-        <width>21</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>Resources/app_img/icons/pause.png</normaloff>Resources/app_img/icons/pause.png</iconset>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="forwardBt_step2">
-      <property name="geometry">
-       <rect>
-        <x>330</x>
-        <y>480</y>
-        <width>21</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>Resources/app_img/icons/forward.png</normaloff>Resources/app_img/icons/forward.png</iconset>
-      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Faces</string>
+       </attribute>
+       <widget class="QFrame" name="frame_6">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>441</width>
+          <height>191</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="PreviewFaceLbl">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>151</width>
+           <height>141</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QPlainTextEdit" name="imgText">
+         <property name="geometry">
+          <rect>
+           <x>160</x>
+           <y>10</y>
+           <width>131</width>
+           <height>141</height>
+          </rect>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="plainText">
+          <string/>
+         </property>
+         <property name="overwriteMode">
+          <bool>true</bool>
+         </property>
+         <property name="backgroundVisible">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_17">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>10</y>
+           <width>49</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Face ID:</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="FacePicker">
+         <property name="geometry">
+          <rect>
+           <x>350</x>
+           <y>10</y>
+           <width>81</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="currentText">
+          <string/>
+         </property>
+         <property name="placeholderText">
+          <string>Choose...</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="showSelectedOnlyCb">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>160</y>
+           <width>151</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Only show selected face</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="deleteFaceFrameBt">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>110</y>
+           <width>61</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Delete</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="deleteBt_2">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>40</y>
+           <width>61</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Accept all</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="deleteBt">
+         <property name="geometry">
+          <rect>
+           <x>360</x>
+           <y>40</y>
+           <width>61</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Delete all</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_20">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>90</y>
+           <width>131</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Frame actions</string>
+         </property>
+        </widget>
+        <widget class="Line" name="line_4">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>70</y>
+           <width>131</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Moods</string>
+       </attribute>
+       <widget class="QFrame" name="frame_10">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>441</width>
+          <height>191</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="PreviewFaceLbl_3">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>151</width>
+           <height>141</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QPlainTextEdit" name="imgText_3">
+         <property name="geometry">
+          <rect>
+           <x>160</x>
+           <y>10</y>
+           <width>131</width>
+           <height>141</height>
+          </rect>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="plainText">
+          <string/>
+         </property>
+         <property name="overwriteMode">
+          <bool>true</bool>
+         </property>
+         <property name="backgroundVisible">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_21">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>10</y>
+           <width>49</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Face ID:</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="FacePicker_pos">
+         <property name="geometry">
+          <rect>
+           <x>350</x>
+           <y>10</y>
+           <width>81</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="currentText">
+          <string/>
+         </property>
+         <property name="placeholderText">
+          <string>Choose...</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="showSelectedOnly_pos">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>160</y>
+           <width>151</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Only show selected face</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="deleteFaceFrameMood">
+         <property name="geometry">
+          <rect>
+           <x>360</x>
+           <y>90</y>
+           <width>61</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Delete</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_22">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>40</y>
+           <width>131</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Current mood (frame):</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="updateMoodFrame">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>90</y>
+           <width>61</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Update</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="moodSelector">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>60</y>
+           <width>131</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="currentText">
+          <string/>
+         </property>
+         <property name="placeholderText">
+          <string>MAX</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="updateMoodAll">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>130</y>
+           <width>61</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Update all</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="deleteMoodAll">
+         <property name="geometry">
+          <rect>
+           <x>360</x>
+           <y>130</y>
+           <width>61</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Delete all</string>
+         </property>
+        </widget>
+        <widget class="Line" name="line_5">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>110</y>
+           <width>131</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </widget>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="optionsTab">
@@ -1197,7 +1287,7 @@
        <string>Prediction tags</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_5">
+     <widget class="QLineEdit" name="moodOptions">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -1307,7 +1397,7 @@
      <zorder>lineEdit_4</zorder>
      <zorder>BrowseFaceModelBt_4</zorder>
      <zorder>label_15</zorder>
-     <zorder>lineEdit_5</zorder>
+     <zorder>moodOptions</zorder>
      <zorder>BrowseFaceModelBt_5</zorder>
     </widget>
    </widget>

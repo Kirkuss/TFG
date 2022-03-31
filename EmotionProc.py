@@ -32,6 +32,7 @@ class EmotionProc(QThread):
     unlock = pyqtSignal(int)
     postPbValue = pyqtSignal(int)
     done = pyqtSignal()
+    updateStatus = pyqtSignal(list, int)
 
     js = Dmanager.jsonManager()
     faces = {}
@@ -103,6 +104,11 @@ class EmotionProc(QThread):
     def test(self, h):
         print("done {}".format(h))
 
+    def setStatusText(self, text):
+        status = []
+        status.append(text)
+        return status
+
     def crop(self, frame, x, y, w, h):
         cropped = frame[int(y) : (int(y) + int(h)), int(x) : (int(x) + int(w))]
         resized = cv2.resize(cropped, (224, 224))
@@ -121,6 +127,7 @@ class EmotionProc(QThread):
                       + config.PATH_TO_EMODEL + "]\n" + ts.getTime(self) + " Available CPUs: [" + str(cpu_count()) + "]"
         cap = cv2.VideoCapture(config.PATH_TO_VIDEO)
         self.updateTerminal.emit()
+        self.updateStatus.emit(self.setStatusText("Initializing process..."), 1)
         config.VIDEO_LENGHT = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
         pool_size = config.THREAD_POOL_SIZE
@@ -143,17 +150,20 @@ class EmotionProc(QThread):
                         pred = Utilities.ModelInterpreter.getClass(n=np.argmax(predictions))  # sacar esto?
                         self.faces[k][str(self.iterations)]["prediction"] = pred
                         #print(str(k) + "/" + str(self.iterations) + " WORKER [" + str(os.getpid()) + "]: " + str(pred))
+                        self.updateStatus.emit(self.setStatusText("Analyzing face at frame [" + str(self.iterations) + "] face id [" + str(k) + "] prediction [" + pred + "]"), 1)
 
                 self.postPbValue.emit(perf.getVideoProgress(self.iterations, config.VIDEO_LENGHT))
 
             if self.iterations == config.VIDEO_LENGHT:
-                print("Processing done")
+                self.updateStatus.emit(self.setStatusText("Face analisys done..."), 1)
                 cap.release()
                 break
 
             self.iterations += 1
 
+        self.updateStatus.emit(self.setStatusText("Saving analisys data to JSON..."), 2)
         self.saveProcessedFaces()
+        self.updateStatus.emit(self.setStatusText("JSON file saved: " + config.PATH_TO_JSON_POS), 1)
         self.done.emit()
 
 

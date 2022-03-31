@@ -22,6 +22,9 @@ class AIWake_UI(QMainWindow):
         self.initUI()
 
     def initUI(self):
+
+        #self.moodOpts = ["angry", "disgust", "fear", "happy", "neutral", "sad", "surprise"]
+
         self.playBt.clicked.connect(self.playBtClick)
         self.showBoxesCb.stateChanged.connect(self.previewChange_showHB)
         self.showDetailedCb.stateChanged.connect(self.previewChange_showDE)
@@ -39,7 +42,7 @@ class AIWake_UI(QMainWindow):
         self.FacePicker.currentIndexChanged.connect(self.testeo)
         self.deleteBt.clicked.connect(self.deleteFace)
         self.statusColor.setStyleSheet("background-color: yellow;")
-        self.startPostProcessBt.clicked.connect(self.startPostProcessing)
+        #self.startPostProcessBt.clicked.connect(self.startPostProcessing)
         self.finishStep1Bt.clicked.connect(self.finishStep1)
         self.frameSelector.sliderReleased.connect(self.sliderReleased)
         self.frameSelector.valueChanged.connect(self.testSlider)
@@ -49,6 +52,11 @@ class AIWake_UI(QMainWindow):
         self.deleteAllRejected.clicked.connect(self.deleteAll)
         self.deleteFaceFrameBt.clicked.connect(self.deleteFaceFrame)
         self.start3Test.clicked.connect(self.startTest)
+
+    def getMoodOptions(self):
+        moods = self.moodOptions.text()
+        print(moods)
+        return moods.replace(" ","").split(",")
 
     def sliderPressed(self):
         if self.currentThread[2]:
@@ -99,15 +107,18 @@ class AIWake_UI(QMainWindow):
         self.thread[2] = ep.EmotionProc(parent=None)
         self.thread[2].postPbValue.connect(self.setPostProgress)
         self.thread[2].done.connect(self.startPostPreview)
+        self.thread[2].updateStatus.connect(self.updateStatus)
         self.thread[2].start()
 
     def startPostPreview(self):
         self.currentThread[1] = False
         self.currentThread[2] = True
+        self.moodSelector.addItems(self.getMoodOptions())
         self.thread[3] = pp.postPreview(parent=None)
         self.thread[3].changePixmap_preview.connect(self.updateVideo)
         self.thread[3].changePixmap_pick.connect(self.setPreview)
         self.thread[3].updateFrameSelector.connect(self.updateFrameSelector)
+        self.thread[3].updateStatus.connect(self.updateStatus)
         self.thread[3].start()
 
     def setPostProgress(self, progress):
@@ -188,6 +199,7 @@ class AIWake_UI(QMainWindow):
                 self.thread[1].updateStatus.connect(self.updateStatus)
                 self.thread[1].setPicker.connect(self.setPicker)
                 self.thread[1].changePixmap_pick.connect(self.setPreview)
+                self.thread[1].preprocessDone.connect(self.startPostProcessing)
                 self.frameSelector.setMaximum(config.VIDEO_LENGHT)
         elif self.currentThread[2]:
             self.thread[3].pause = False
@@ -212,7 +224,9 @@ class AIWake_UI(QMainWindow):
     def setPicker(self, idList):
         if self.thread[1].done and self.thread[1].deleteAuto:
             self.FacePicker.clear()
+            self.FacePicker_pos.clear()
         self.FacePicker.addItems(idList)
+        self.FacePicker_pos.addItems(idList)
         idList.clear()
 
     def playBtClickPost(self):

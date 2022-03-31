@@ -13,6 +13,7 @@ class postPreview(QThread):
     updateStatus_preview = pyqtSignal(list, int)
     changePixmap_pick = pyqtSignal(QImage, list)
     updateFrameSelector = pyqtSignal(int)
+    updateStatus = pyqtSignal(list, int)
 
     def __init__(self, parent=None):
         super(postPreview, self).__init__(parent)
@@ -46,8 +47,15 @@ class postPreview(QThread):
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                             (0, 255, 0), 1, cv2.LINE_AA)
 
+    def setStatusText(self, text):
+        status = []
+        status.append(text)
+        return status
+
     def run(self):
+        self.updateStatus.emit(self.setStatusText("Starting post-processing preview..."), 2)
         cap = cv2.VideoCapture(self.pathToVideo)
+        self.updateStatus.emit(self.setStatusText("Waiting for user to review obtained data"), 1)
 
         while (cap.isOpened()):
 
