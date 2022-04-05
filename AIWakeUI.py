@@ -35,11 +35,9 @@ class AIWake_UI(QMainWindow):
         self.hb_detection_prop.valueChanged.connect(self.updateThreshold)
         self.thresholdLbl.setText(str(self.hb_detection_prop.value()/100))
         self.forwardBt_step1.clicked.connect(self.forwardVideo_step1)
-        self.playBt_2.clicked.connect(self.playBtClickPost)
-        self.forwardBt_step2.clicked.connect(self.forwardVideo_step2)
-        self.pauseBt_2.clicked.connect(self.pauseBtClick_step2)
         self.frontTabPanel.currentChanged.connect(self.tabTest)
         self.FacePicker.currentIndexChanged.connect(self.testeo)
+        self.FacePicker_pos.currentIndexChanged.connect(self.testeo)
         self.deleteBt.clicked.connect(self.deleteFace)
         self.statusColor.setStyleSheet("background-color: yellow;")
         #self.startPostProcessBt.clicked.connect(self.startPostProcessing)
@@ -69,12 +67,16 @@ class AIWake_UI(QMainWindow):
         self.thread[3].updateFrameSelector.connect(self.updateFrameSelector)
         self.thread[3].start()
 
+    def setPickerMood(self, mood):
+        self.moodSelector.setCurrentText(mood[0])
+
     def deleteFaceFrame(self):
         self.thread[1].deleteFaceFrame()
 
     def deleteAll(self):
         if self.thread[1].done:
             self.FacePicker.clear()
+            self.FacePicker_pos.clear()
         self.thread[1].deleteAllRejected()
 
     def deleteAllAutomatically(self, state):
@@ -119,6 +121,7 @@ class AIWake_UI(QMainWindow):
         self.thread[3].changePixmap_pick.connect(self.setPreview)
         self.thread[3].updateFrameSelector.connect(self.updateFrameSelector)
         self.thread[3].updateStatus.connect(self.updateStatus)
+        self.thread[3].setPickerMood.connect(self.setPickerMood)
         self.thread[3].start()
 
     def setPostProgress(self, progress):
@@ -126,12 +129,15 @@ class AIWake_UI(QMainWindow):
 
     def deleteFace(self):
         self.FacePicker.clear()
+        self.FacePicker_pos.clear()
         self.thread[1].deleteFace()
 
     def testeo(self, i):
         if i >= 0:
-            print ("Index: " + str(self.FacePicker.currentText()))
-            config.SELECTED_FACE = int(self.FacePicker.currentText())
+            self.FacePicker_pos.setCurrentIndex(i)
+            self.FacePicker.setCurrentIndex(i)
+            print ("Index: " + str(i))
+            config.SELECTED_FACE = int(self.FacePicker_pos.currentText())
             self.thread[1].sig = False
 
     def tabTest(self, index):
@@ -217,6 +223,7 @@ class AIWake_UI(QMainWindow):
 
     def setPreview(self, cropped, info):
         self.PreviewFaceLbl.setPixmap(QPixmap.fromImage(cropped))
+        self.PreviewFaceLblMood.setPixmap(QPixmap.fromImage(cropped))
         #infoText = info[0] + "\n" + info[1] + "\n" + info[2] + "\n" + info[3]
         infoText = "Test"
         self.imgText.setPlainText(infoText)
@@ -250,7 +257,6 @@ class AIWake_UI(QMainWindow):
         fileName = QFileDialog.getOpenFileName(self, "Choose a video", "C:", "Video Files (*.mp4 *.flv *.mkv)")
         config.PATH_TO_VIDEO = fileName[0]
         self.pathInText_step1.insert(str(fileName[0]))
-        self.pathInText_step2.insert(str(fileName[0]))
         self.thread[1] = fi.FaceIsolator(parent=None)
         #self.thread[2] = ep.EmotionProc(parent=None)
 

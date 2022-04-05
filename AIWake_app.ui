@@ -713,7 +713,7 @@
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QLabel" name="PreviewFaceLbl_3">
+        <widget class="QLabel" name="PreviewFaceLblMood">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -895,6 +895,22 @@
         </widget>
        </widget>
       </widget>
+     </widget>
+     <widget class="QFrame" name="frame">
+      <property name="geometry">
+       <rect>
+        <x>1150</x>
+        <y>120</y>
+        <width>441</width>
+        <height>421</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Box</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="optionsTab">

@@ -14,6 +14,7 @@ class postPreview(QThread):
     changePixmap_pick = pyqtSignal(QImage, list)
     updateFrameSelector = pyqtSignal(int)
     updateStatus = pyqtSignal(list, int)
+    setPickerMood = pyqtSignal(list)
 
     def __init__(self, parent=None):
         super(postPreview, self).__init__(parent)
@@ -51,6 +52,16 @@ class postPreview(QThread):
         status = []
         status.append(text)
         return status
+
+    def setFaceFrameMood(self, mood):
+        self.facesInfo[str(config.SELECTED_FACE)][str(self.iterations)]["prediction"] = mood
+
+    def deleteFaceFrameMood(self):
+        del self.facesInfo[str(config.SELECTED_FACE)][str(self.iterations)]
+
+    def setFaceFrameMoodAll(self, mood):
+        for k in self.facesInfo[str(config.SELECTED_FACE)]:
+            self.facesInfo[str(config.SELECTED_FACE)][k]["prediction"] = mood
 
     def run(self):
         self.updateStatus.emit(self.setStatusText("Starting post-processing preview..."), 2)
@@ -98,6 +109,7 @@ class postPreview(QThread):
                                     bytesPerLine = ch * ws
                                     cropped2Qt = QImage(rgbImage.data, ws, hs, bytesPerLine, QImage.Format_RGB888)
                                     #aux_face = self.list[str(config.SELECTED_FACE)]
+                                    self.setPickerMood.emit([prediction])
                                     self.changePixmap_pick.emit(cropped2Qt, self.generateFaceInfo("Test"))
                                 self.drawFaceInfo(k, frame, x, y, w, h, True, prediction)
                             elif k != str(config.SELECTED_FACE) and not self.showOnlySelected:
