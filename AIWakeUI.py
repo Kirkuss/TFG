@@ -46,10 +46,36 @@ class AIWake_UI(QMainWindow):
         self.frameSelector.valueChanged.connect(self.testSlider)
         self.frameSelector.sliderPressed.connect(self.sliderPressed)
         self.showSelectedOnlyCb.stateChanged.connect(self.showOnlySelected)
+        self.showSelectedOnly_pos.stateChanged.connect(self.showOnlySelected)
         self.deleteAutomatCb.stateChanged.connect(self.deleteAllAutomatically)
         self.deleteAllRejected.clicked.connect(self.deleteAll)
         self.deleteFaceFrameBt.clicked.connect(self.deleteFaceFrame)
         self.start3Test.clicked.connect(self.startTest)
+        self.updateMoodFrame.clicked.connect(self.updateMoodFrame_ck)
+        self.deleteFaceFrameMood.clicked.connect(self.deleteFaceFrameMood_ck)
+        self.updateMoodAll.clicked.connect(self.updateMoodAll_ck)
+        self.VideoSpeed.addItems(["High detail", "Detail", "Fast", "Very fast"])
+        self.VideoSpeed.setCurrentText("High detail")
+        self.deleteMoodAll.clicked.connect(self.deleteAllFaceFrameMood_ck)
+
+    def deleteAllFaceFrameMood_ck(self):
+        self.thread[3].deleteAll()
+        self.thread[3].firstTime = True
+
+    def updateMoodAll_ck(self):
+        if self.currentThread[2]:
+            self.thread[3].setFaceFrameMoodAll(self.moodSelector.currentText())
+            self.thread[3].firstTime = True
+
+    def deleteFaceFrameMood_ck(self):
+        if self.currentThread[2]:
+            self.thread[3].deleteFaceFrameMood()
+            self.thread[3].firstTime = True
+
+    def updateMoodFrame_ck(self):
+        if self.currentThread[2]:
+            self.thread[3].setFaceFrameMood(self.moodSelector.currentText())
+            self.thread[3].firstTime = True
 
     def getMoodOptions(self):
         moods = self.moodOptions.text()
@@ -88,12 +114,21 @@ class AIWake_UI(QMainWindow):
     def showOnlySelected(self, state):
         if config.SELECTED_FACE > 0:
             if state == 2:
-                self.thread[1].showOnlySelected = True
+                if self.currentThread[3]:
+                    self.thread[3].showOnlySelected = True
+                else:
+                    self.thread[1].showOnlySelected = True
             else:
-                self.thread[1].showOnlySelected = False
+                if self.currentThread[3]:
+                    self.thread[3].showOnlySelected = False
+                else:
+                    self.thread[1].showOnlySelected = False
 
     def testSlider(self):
         config.SELECTED_FRAME = self.frameSelector.value()
+        if self.currentThread[2]:
+            print("ALGO VA MAL")
+            self.thread[3].firstTime = True
 
     def sliderReleased(self):
         self.thread[1].selecting = True
@@ -122,6 +157,7 @@ class AIWake_UI(QMainWindow):
         self.thread[3].updateFrameSelector.connect(self.updateFrameSelector)
         self.thread[3].updateStatus.connect(self.updateStatus)
         self.thread[3].setPickerMood.connect(self.setPickerMood)
+        self.thread[3].setPicker.connect(self.setPicker)
         self.thread[3].start()
 
     def setPostProgress(self, progress):
@@ -232,6 +268,10 @@ class AIWake_UI(QMainWindow):
         if self.thread[1].done and self.thread[1].deleteAuto:
             self.FacePicker.clear()
             self.FacePicker_pos.clear()
+        elif self.currentThread[2]:
+            self.FacePicker.clear()
+            self.FacePicker_pos.clear()
+        print("seteando el picker")
         self.FacePicker.addItems(idList)
         self.FacePicker_pos.addItems(idList)
         idList.clear()

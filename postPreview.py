@@ -15,6 +15,7 @@ class postPreview(QThread):
     updateFrameSelector = pyqtSignal(int)
     updateStatus = pyqtSignal(list, int)
     setPickerMood = pyqtSignal(list)
+    setPicker = pyqtSignal(list)
 
     def __init__(self, parent=None):
         super(postPreview, self).__init__(parent)
@@ -26,7 +27,17 @@ class postPreview(QThread):
         self.finished = False
         self.pause = False
         self.writeOnPause = True
+        self.firstTime = True
         self.barReleased = False
+
+    def getFaceIds(self, faceList, k, delete):
+        idList = []
+        if delete:
+            for k, v in faceList.items():
+                idList.append(k)
+        else:
+            idList.append(k)
+        return idList
 
     def generateFaceInfo(self, sample):
         list = []
@@ -47,6 +58,7 @@ class postPreview(QThread):
                 cv2.putText(frame, id + " " + pred, (int(x + (w * config.PROP)) + 5, y - 5),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                             (0, 255, 0), 1, cv2.LINE_AA)
+        return frame
 
     def setStatusText(self, text):
         status = []
@@ -63,6 +75,44 @@ class postPreview(QThread):
         for k in self.facesInfo[str(config.SELECTED_FACE)]:
             self.facesInfo[str(config.SELECTED_FACE)][k]["prediction"] = mood
 
+    def deleteAll(self):
+        if config.SELECTED_FACE > 0:
+            del self.facesInfo[str(config.SELECTED_FACE)]
+            self.setPicker.emit(self.getFaceIds(self.facesInfo, "0", True))
+
+    def processFaces(self, frame):
+        if frame is not None:
+            for k in self.facesInfo:
+                if str(self.iterations) in self.facesInfo[k]:
+                    prediction = self.facesInfo[k][str(self.iterations)]["prediction"]
+                    x = int(self.facesInfo[k][str(self.iterations)]["x"])
+                    y = int(self.facesInfo[k][str(self.iterations)]["y"])
+                    w = int(self.facesInfo[k][str(self.iterations)]["w"])
+                    h = int(self.facesInfo[k][str(self.iterations)]["h"])
+
+                    if config.SELECTED_FACE >= 0:
+                        if k == str(config.SELECTED_FACE):
+                            if k in self.facesInfo:
+                                cropped = frame[y: (y + h), x: (x + w)]
+                                rgbImage = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
+                                hs, ws, ch = rgbImage.shape
+                                bytesPerLine = ch * ws
+                                cropped2Qt = QImage(rgbImage.data, ws, hs, bytesPerLine, QImage.Format_RGB888)
+                                # aux_face = self.list[str(config.SELECTED_FACE)]
+                                if self.firstTime:
+                                    self.setPickerMood.emit([prediction])
+                                    self.firstTime = False
+                                self.changePixmap_pick.emit(cropped2Qt, self.generateFaceInfo("Test"))
+                            frame = self.drawFaceInfo(k, frame, x, y, w, h, True, prediction)
+                        elif k != str(config.SELECTED_FACE) and not self.showOnlySelected:
+                            frame = self.drawFaceInfo(k, frame, x, y, w, h, False, prediction)
+                    elif not self.showOnlySelected:
+                        frame = self.drawFaceInfo(k, frame, x, y, w, h, False, prediction)
+                    #else:
+                    #    self.drawFaceInfo(k, frame, x, y, w, h, False, prediction)
+
+            print("[" + str(self.iterations) + "] Frame procesado: " + str(id(frame)))
+
     def run(self):
         self.updateStatus.emit(self.setStatusText("Starting post-processing preview..."), 2)
         cap = cv2.VideoCapture(self.pathToVideo)
@@ -74,14 +124,36 @@ class postPreview(QThread):
             #   self.pause = True
 
             while self.pause:
+                if config.SELECTED_FRAME < config.VIDEO_LENGHT and config.SELECTED_FRAME > 0:
+                    cap.set(1, config.SELECTED_FRAME)
+                    self.iterations = config.SELECTED_FRAME
+                    ret, frame = cap.read()
+                    if frame is not None:
+                        frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
+                        print("[" + str(self.iterations) + "] Frame antes: " + str(id(frame)))
+                        print(str(self.iterations))
+                        self.processFaces(frame)
+                        print("frame pocho")
+                        rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                        h, w, ch = rgbImage.shape
+                        bytesPerLine = ch * w
+                        convertToQt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
+                        # print(str(convertToQt))
+                        self.changePixmap_preview.emit(convertToQt, 0)
                 if self.writeOnPause:
                     print("Video paused at frame: " + str(self.iterations))
                     self.writeOnPause = False
+                print("Pausa")
 
             if self.barReleased:
-                cap.set(1, config.SELECTED_FRAME)
+                print("Bar released")
+                #cap.set(1, config.SELECTED_FRAME)
                 self.iterations = config.SELECTED_FRAME
                 self.barReleased = False
+
+            if self.iterations == config.VIDEO_LENGHT:
+                config.SELECTED_FRAME = config.VIDEO_LENGHT - 1
+                self.pause = True
 
             self.writeOnPause = True
 
@@ -92,42 +164,15 @@ class postPreview(QThread):
                 frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
 
                 #FRAME TREATMENT
-                for k in self.facesInfo:
-                    if str(self.iterations) in self.facesInfo[k]:
-                        prediction = self.facesInfo[k][str(self.iterations)]["prediction"]
-                        x = int(self.facesInfo[k][str(self.iterations)]["x"])
-                        y = int(self.facesInfo[k][str(self.iterations)]["y"])
-                        w = int(self.facesInfo[k][str(self.iterations)]["w"])
-                        h = int(self.facesInfo[k][str(self.iterations)]["h"])
-
-                        if config.SELECTED_FACE >= 0:
-                            if k == str(config.SELECTED_FACE):
-                                if k in self.facesInfo:
-                                    cropped = frame[y: (y + h), x: (x + w)]
-                                    rgbImage = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
-                                    hs, ws, ch = rgbImage.shape
-                                    bytesPerLine = ch * ws
-                                    cropped2Qt = QImage(rgbImage.data, ws, hs, bytesPerLine, QImage.Format_RGB888)
-                                    #aux_face = self.list[str(config.SELECTED_FACE)]
-                                    self.setPickerMood.emit([prediction])
-                                    self.changePixmap_pick.emit(cropped2Qt, self.generateFaceInfo("Test"))
-                                self.drawFaceInfo(k, frame, x, y, w, h, True, prediction)
-                            elif k != str(config.SELECTED_FACE) and not self.showOnlySelected:
-                                self.drawFaceInfo(k, frame, x, y, w, h, False, prediction)
-                        elif not self.showOnlySelected:
-                            self.drawFaceInfo(k, frame, x, y, w, h, False, prediction)
-
-                        self.drawFaceInfo(k, frame, x, y, w, h, False, prediction)
-                #FRAME TREATMENT
-
+                print("SI VES ESTO ALGO PASA")
+                self.processFaces(frame)
                 rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 h, w, ch = rgbImage.shape
                 bytesPerLine = ch * w
                 convertToQt = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-
+                # print(str(convertToQt))
                 self.changePixmap_preview.emit(convertToQt, 0)
 
                 self.iterations += 1
-                time.sleep(0.04)
 
             self.updateFrameSelector.emit(self.iterations)
