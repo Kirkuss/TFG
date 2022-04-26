@@ -431,74 +431,6 @@
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QPushButton" name="start3Test">
-       <property name="geometry">
-        <rect>
-         <x>280</x>
-         <y>490</y>
-         <width>21</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>Resources/app_img/icons/gear.png</normaloff>Resources/app_img/icons/gear.png</iconset>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="forwardBt_step1">
-       <property name="geometry">
-        <rect>
-         <x>350</x>
-         <y>490</y>
-         <width>21</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>Resources/app_img/icons/forward.png</normaloff>Resources/app_img/icons/forward.png</iconset>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="pauseBt">
-       <property name="geometry">
-        <rect>
-         <x>320</x>
-         <y>490</y>
-         <width>21</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>Resources/app_img/icons/pause.png</normaloff>Resources/app_img/icons/pause.png</iconset>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="playBt">
-       <property name="geometry">
-        <rect>
-         <x>300</x>
-         <y>490</y>
-         <width>21</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>Resources/app_img/icons/play.png</normaloff>Resources/app_img/icons/play.png</iconset>
-       </property>
-      </widget>
       <widget class="QLineEdit" name="pathInText_step1">
        <property name="geometry">
         <rect>
@@ -527,6 +459,153 @@
        <property name="text">
         <string>Browse</string>
        </property>
+      </widget>
+      <widget class="QFrame" name="frame_5">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>480</y>
+         <width>621</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QPushButton" name="forwardBt_to_processed">
+        <property name="geometry">
+         <rect>
+          <x>350</x>
+          <y>0</y>
+          <width>21</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>Resources/app_img/icons/70082.png</normaloff>Resources/app_img/icons/70082.png</iconset>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="playBt">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>0</y>
+          <width>21</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>Resources/app_img/icons/play.png</normaloff>Resources/app_img/icons/play.png</iconset>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="backwardBt_to_processed">
+        <property name="geometry">
+         <rect>
+          <x>250</x>
+          <y>0</y>
+          <width>21</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>Resources/app_img/icons/backwards_black.png</normaloff>Resources/app_img/icons/backwards_black.png</iconset>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="forwardBt_step1">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>0</y>
+          <width>21</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>Resources/app_img/icons/forward.png</normaloff>Resources/app_img/icons/forward.png</iconset>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="backwardBt">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>0</y>
+          <width>21</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>Resources/app_img/icons/backwards.png</normaloff>Resources/app_img/icons/backwards.png</iconset>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pauseBt">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>0</y>
+          <width>21</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>Resources/app_img/icons/pause.png</normaloff>Resources/app_img/icons/pause.png</iconset>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="start3Test">
+        <property name="geometry">
+         <rect>
+          <x>590</x>
+          <y>0</y>
+          <width>21</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>Resources/app_img/icons/gear.png</normaloff>Resources/app_img/icons/gear.png</iconset>
+        </property>
+       </widget>
       </widget>
      </widget>
      <widget class="QTabWidget" name="tabWidget">

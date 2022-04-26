@@ -20,6 +20,7 @@ class FaceIsolator(QThread):
     updateStatus = pyqtSignal(list, int)
     updateFrameSelector = pyqtSignal(int)
     preprocessDone = pyqtSignal()
+    changeSelectedFrame = pyqtSignal(int)
 
     def __init__(self, parent=None):
         super(FaceIsolator, self).__init__(parent)
@@ -39,6 +40,12 @@ class FaceIsolator(QThread):
         self.finished = False
         self.selecting = False
         self.done = False
+
+        self.forward = False
+        self.forwardToProcessed = False
+        self.backward = False
+        self.backwardToProcessed = False
+
         self.key = b'6cOMmRQnESKFNYyU2rD6uD-GvWVAMKibEkX4ws7-NwA='
         self.fernet = Fernet(self.key)
         config.IMG_KEY = self.key
@@ -137,11 +144,46 @@ class FaceIsolator(QThread):
                 self.js.saveJson(config.PATH_TO_JSON_TEMP)
                 print("Deleted face frame: " + str(config.SELECTED_FRAME))
 
+    def getNearestProcessed(self, iterations):
+        str_iterations = ""
+        aux_iterations = iterations
+        founds = []
+        if self.forwardToProcessed:
+            for k in self.previewData:
+                while True:
+                    aux_iterations += 1
+                    str_iterations = str(aux_iterations)
+                    if aux_iterations > config.VIDEO_LENGHT:
+                        aux_iterations = iterations
+                        break
+                    if str_iterations in self.previewData[k]:
+                        founds.append(aux_iterations)
+                        aux_iterations = iterations
+                        break
+            print(founds)
+            return min(founds)
+        elif self.backwardToProcessed:
+            for k in self.previewData:
+                while True:
+                    aux_iterations -= 1
+                    str_iterations = str(aux_iterations)
+                    if aux_iterations < 0:
+                        aux_iterations = iterations
+                        break
+                    if str_iterations in self.previewData[k]:
+                        founds.append(aux_iterations)
+                        aux_iterations = iterations
+                        break
+            print(founds)
+            return max(founds)
+        return 0
+
     def run(self):
         self.updateStatus.emit(self.setStatusText("Preparing pre-process"), 1)
         cap = cv2.VideoCapture(self.pathToVideo)
         config.VIDEO_LENGHT = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         iterations = 0
+        iterations_ratio = 0
         founds = 0
         faceCascade = cv2.CascadeClassifier(config.PATH_TO_MODEL)
         config.LOG += "\n" + ts.getTime(self) + " [" + str(config.VIDEO_LENGHT) + "] detected frames to be procesed"
@@ -178,7 +220,29 @@ class FaceIsolator(QThread):
                 while not self.finished:
                     if self.selecting and self.done:
                         if config.SELECTED_FRAME < config.VIDEO_LENGHT:
-                            cap.set(1, config.SELECTED_FRAME)
+
+                            if self.forward:
+                                config.SELECTED_FRAME += 1
+                                cap.set(1, config.SELECTED_FRAME)
+                                self.forward = False
+                            elif self.forwardToProcessed:
+                                config.SELECTED_FRAME = self.getNearestProcessed(iterations)
+                                cap.set(1, config.SELECTED_FRAME)
+                                self.forwardToProcessed = False
+                            elif self.backward:
+                                config.SELECTED_FRAME -= 1
+                                cap.set(1, config.SELECTED_FRAME)
+                                self.backward = False
+                            elif self.backwardToProcessed:
+                                config.SELECTED_FRAME = self.getNearestProcessed(iterations)
+                                cap.set(1, config.SELECTED_FRAME)
+                                self.backwardToProcessed = False
+                            else:
+                                cap.set(1, config.SELECTED_FRAME)
+
+                            iterations = config.SELECTED_FRAME
+                            self.changeSelectedFrame.emit(config.SELECTED_FRAME)
+
                             ret, frame = cap.read()
                             frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
 
@@ -231,9 +295,12 @@ class FaceIsolator(QThread):
                 cap.release()
                 ret = False
 
+            if iterations % config.SELECTED_SPEED == 0:
+                iterations_ratio += 1
+
             iterations += 1
 
-            if ret:
+            if ret and iterations % config.SELECTED_SPEED == 0 and iterations >= config.SELECTED_SPEED:
                 self.updateStatus.emit(self.setStatusText("Obtaining faces in video frame: [" + str(iterations) + "]"), 1)
                 frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
                 if iterations == config.VIDEO_LENGHT - 1:
@@ -254,7 +321,7 @@ class FaceIsolator(QThread):
                         for k, v in self.list.items():
                             if newFace.equal(config.PROP, self.list[k], frame):
                                 newFace.occurs += self.list[k].occurs + 1
-                                if newFace.occurs >= int(iterations*config.RATIO): newFace.valid = True
+                                if newFace.occurs >= int(iterations_ratio*config.RATIO): newFace.valid = True
                                 else: newFace.valid = False
                                 newFace.queue(newFace, self.list[k].list)
                                 self.list[k] = newFace
@@ -277,6 +344,7 @@ class FaceIsolator(QThread):
                             cv2.putText(frame, "Rejected", (int(x + (w * config.PROP)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                                         (0, 0, 255), 1, cv2.LINE_AA)
 
+            if ret:
                 rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 h, w, ch = rgbImage.shape
                 bytesPerLine = ch * w

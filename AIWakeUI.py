@@ -34,7 +34,6 @@ class AIWake_UI(QMainWindow):
         self.acceptanceLbl.setText(str(self.detection_ratio.value()/100))
         self.hb_detection_prop.valueChanged.connect(self.updateThreshold)
         self.thresholdLbl.setText(str(self.hb_detection_prop.value()/100))
-        self.forwardBt_step1.clicked.connect(self.forwardVideo_step1)
         self.frontTabPanel.currentChanged.connect(self.tabTest)
         self.FacePicker.currentIndexChanged.connect(self.testeo)
         self.FacePicker_pos.currentIndexChanged.connect(self.testeo)
@@ -55,8 +54,22 @@ class AIWake_UI(QMainWindow):
         self.deleteFaceFrameMood.clicked.connect(self.deleteFaceFrameMood_ck)
         self.updateMoodAll.clicked.connect(self.updateMoodAll_ck)
         self.VideoSpeed.addItems(["High detail", "Detail", "Fast", "Very fast"])
+        self.VideoSpeed.currentIndexChanged.connect(self.setProcessingSpeed)
         self.VideoSpeed.setCurrentText("High detail")
         self.deleteMoodAll.clicked.connect(self.deleteAllFaceFrameMood_ck)
+        self.backwardBt_to_processed.clicked.connect(self.backwardVideoToProcessed)
+        self.backwardBt.clicked.connect(self.backwardVideo)
+        self.forwardBt_to_processed.clicked.connect(self.forwardVideoToProcessed)
+        self.forwardBt_step1.clicked.connect(self.forwardVideo)
+
+    def forwardVideoToProcessed(self):
+        self.thread[1].forwardToProcessed = True
+
+    def backwardVideoToProcessed(self):
+        self.thread[1].backwardToProcessed = True
+
+    def backwardVideo(self):
+        self.thread[1].backward = True
 
     def deleteAllFaceFrameMood_ck(self):
         self.thread[3].deleteAll()
@@ -168,6 +181,19 @@ class AIWake_UI(QMainWindow):
         self.FacePicker_pos.clear()
         self.thread[1].deleteFace()
 
+    def setProcessingSpeed(self, i):
+        if i >= 0:
+            speed = self.VideoSpeed.currentText()
+            if speed == "High detail":
+                config.SELECTED_SPEED = 1
+            elif speed == "Detail":
+                config.SELECTED_SPEED = 3
+            elif speed == "Fast":
+                config.SELECTED_SPEED = 5
+            elif speed == "Very fast":
+                config.SELECTED_SPEED = 7
+        print(str(config.SELECTED_SPEED))
+
     def testeo(self, i):
         if i >= 0:
             self.FacePicker_pos.setCurrentIndex(i)
@@ -191,9 +217,8 @@ class AIWake_UI(QMainWindow):
         except Exception as e:
             print(str(e))
 
-    def forwardVideo_step1(self):
-        self.thread[1].pause = True
-        self.thread[1].jump = True
+    def forwardVideo(self):
+        self.thread[1].forward = True
 
     def forwardVideo_step2(self):
         self.thread[2].pause = True
@@ -242,6 +267,7 @@ class AIWake_UI(QMainWindow):
                 self.thread[1].setPicker.connect(self.setPicker)
                 self.thread[1].changePixmap_pick.connect(self.setPreview)
                 self.thread[1].preprocessDone.connect(self.startPostProcessing)
+                self.thread[1].changeSelectedFrame.connect(self.updateFrameSelector)
                 self.frameSelector.setMaximum(config.VIDEO_LENGHT)
         elif self.currentThread[2]:
             self.thread[3].pause = False
@@ -271,7 +297,6 @@ class AIWake_UI(QMainWindow):
         elif self.currentThread[2]:
             self.FacePicker.clear()
             self.FacePicker_pos.clear()
-        print("seteando el picker")
         self.FacePicker.addItems(idList)
         self.FacePicker_pos.addItems(idList)
         idList.clear()
