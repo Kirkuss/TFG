@@ -29,6 +29,10 @@ class postPreview(QThread):
         self.writeOnPause = True
         self.firstTime = True
         self.barReleased = False
+        self.forward = False
+        self.forwardToProcessed = False
+        self.backward = False
+        self.backwardToProcessed = False
 
     def getFaceIds(self, faceList, k, delete):
         idList = []
@@ -113,6 +117,41 @@ class postPreview(QThread):
 
             print("[" + str(self.iterations) + "] Frame procesado: " + str(id(frame)))
 
+    def getNearestProcessed(self, iterations):
+        aux_iterations = iterations
+        founds = []
+        if self.forwardToProcessed:
+            for k in self.facesInfo:
+                while True:
+                    aux_iterations += 1
+                    str_iterations = str(aux_iterations)
+                    if aux_iterations > config.VIDEO_LENGHT:
+                        aux_iterations = iterations
+                        break
+                    if str_iterations in self.facesInfo[k]:
+                        founds.append(aux_iterations)
+                        aux_iterations = iterations
+                        break
+            if len(founds) == 0:
+                return -1
+            return min(founds)
+        elif self.backwardToProcessed:
+            for k in self.facesInfo:
+                while True:
+                    aux_iterations -= 1
+                    str_iterations = str(aux_iterations)
+                    if aux_iterations < 0:
+                        aux_iterations = iterations
+                        break
+                    if str_iterations in self.facesInfo[k]:
+                        founds.append(aux_iterations)
+                        aux_iterations = iterations
+                        break
+            if len(founds) == 0:
+                return -1
+            return max(founds)
+        return -1
+
     def run(self):
         self.updateStatus.emit(self.setStatusText("Starting post-processing preview..."), 2)
         cap = cv2.VideoCapture(self.pathToVideo)
@@ -124,9 +163,41 @@ class postPreview(QThread):
             #   self.pause = True
 
             while self.pause:
-                if config.SELECTED_FRAME < config.VIDEO_LENGHT and config.SELECTED_FRAME > 0:
+                print("1: " + str(config.SELECTED_FRAME <= config.VIDEO_LENGHT))
+                print(str(config.SELECTED_FRAME > 0))
+
+                if self.forward:
+                    config.SELECTED_FRAME += 1
                     cap.set(1, config.SELECTED_FRAME)
+                    self.forward = False
+                elif self.forwardToProcessed:
+                    res = self.getNearestProcessed(self.iterations)
+                    if res < 0:
+                        pass
+                    else:
+                        config.SELECTED_FRAME = res
+                    cap.set(1, config.SELECTED_FRAME)
+                    self.forwardToProcessed = False
+                elif self.backward:
+                    config.SELECTED_FRAME -= 1
+                    cap.set(1, config.SELECTED_FRAME)
+                    self.backward = False
+                elif self.backwardToProcessed:
+                    res = self.getNearestProcessed(self.iterations)
+                    if res < 0:
+                        pass
+                    else:
+                        config.SELECTED_FRAME = res
+                    cap.set(1, config.SELECTED_FRAME)
+                    self.backwardToProcessed = False
+                else:
+                    cap.set(1, config.SELECTED_FRAME)
+
+                if config.SELECTED_FRAME <= config.VIDEO_LENGHT and config.SELECTED_FRAME > 0:
+
                     self.iterations = config.SELECTED_FRAME
+                    self.updateFrameSelector.emit(config.SELECTED_FRAME)
+
                     ret, frame = cap.read()
                     if frame is not None:
                         frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
@@ -143,17 +214,12 @@ class postPreview(QThread):
                 if self.writeOnPause:
                     print("Video paused at frame: " + str(self.iterations))
                     self.writeOnPause = False
-                print("Pausa")
 
             if self.barReleased:
                 print("Bar released")
                 #cap.set(1, config.SELECTED_FRAME)
                 self.iterations = config.SELECTED_FRAME
                 self.barReleased = False
-
-            if self.iterations == config.VIDEO_LENGHT:
-                config.SELECTED_FRAME = config.VIDEO_LENGHT - 1
-                self.pause = True
 
             self.writeOnPause = True
 
@@ -174,5 +240,12 @@ class postPreview(QThread):
                 self.changePixmap_preview.emit(convertToQt, 0)
 
                 self.iterations += 1
+
+                if self.iterations == 2:
+                    config.SELECTED_FRAME = 2
+                    self.pause = True
+
+                if self.iterations == config.VIDEO_LENGHT:
+                    self.pause = True
 
             self.updateFrameSelector.emit(self.iterations)

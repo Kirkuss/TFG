@@ -145,7 +145,6 @@ class FaceIsolator(QThread):
                 print("Deleted face frame: " + str(config.SELECTED_FRAME))
 
     def getNearestProcessed(self, iterations):
-        str_iterations = ""
         aux_iterations = iterations
         founds = []
         if self.forwardToProcessed:
@@ -160,7 +159,8 @@ class FaceIsolator(QThread):
                         founds.append(aux_iterations)
                         aux_iterations = iterations
                         break
-            print(founds)
+            if len(founds) == 0:
+                return -1
             return min(founds)
         elif self.backwardToProcessed:
             for k in self.previewData:
@@ -174,7 +174,8 @@ class FaceIsolator(QThread):
                         founds.append(aux_iterations)
                         aux_iterations = iterations
                         break
-            print(founds)
+            if len(founds) == 0:
+                return -1
             return max(founds)
         return 0
 
@@ -226,7 +227,11 @@ class FaceIsolator(QThread):
                                 cap.set(1, config.SELECTED_FRAME)
                                 self.forward = False
                             elif self.forwardToProcessed:
-                                config.SELECTED_FRAME = self.getNearestProcessed(iterations)
+                                res = self.getNearestProcessed(iterations)
+                                if res < 0:
+                                    pass
+                                else:
+                                    config.SELECTED_FRAME = res
                                 cap.set(1, config.SELECTED_FRAME)
                                 self.forwardToProcessed = False
                             elif self.backward:
@@ -234,7 +239,11 @@ class FaceIsolator(QThread):
                                 cap.set(1, config.SELECTED_FRAME)
                                 self.backward = False
                             elif self.backwardToProcessed:
-                                config.SELECTED_FRAME = self.getNearestProcessed(iterations)
+                                res = self.getNearestProcessed(iterations)
+                                if res < 0:
+                                    pass
+                                else:
+                                    config.SELECTED_FRAME = res
                                 cap.set(1, config.SELECTED_FRAME)
                                 self.backwardToProcessed = False
                             else:

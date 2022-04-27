@@ -63,13 +63,22 @@ class AIWake_UI(QMainWindow):
         self.forwardBt_step1.clicked.connect(self.forwardVideo)
 
     def forwardVideoToProcessed(self):
-        self.thread[1].forwardToProcessed = True
+        if self.currentThread[0]:
+            self.thread[1].forwardToProcessed = True
+        elif self.currentThread[2]:
+            self.thread[3].forwardToProcessed = True
 
     def backwardVideoToProcessed(self):
-        self.thread[1].backwardToProcessed = True
+        if self.currentThread[0]:
+            self.thread[1].backwardToProcessed = True
+        elif self.currentThread[2]:
+            self.thread[3].backwardToProcessed = True
 
     def backwardVideo(self):
-        self.thread[1].backward = True
+        if self.currentThread[0]:
+            self.thread[1].backward = True
+        elif self.currentThread[2]:
+            self.thread[3].backward = True
 
     def deleteAllFaceFrameMood_ck(self):
         self.thread[3].deleteAll()
@@ -218,7 +227,10 @@ class AIWake_UI(QMainWindow):
             print(str(e))
 
     def forwardVideo(self):
-        self.thread[1].forward = True
+        if self.currentThread[0]:
+            self.thread[1].forward = True
+        elif self.currentThread[2]:
+            self.thread[3].forward = True
 
     def forwardVideo_step2(self):
         self.thread[2].pause = True
