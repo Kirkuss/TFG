@@ -33,3 +33,5 @@ LABELS = {"angry": 0, "disgust": 0, "fear": 0, "happy": 0, "neutral": 0, "sad": 
 TILL_FRAME = False
 FACE_DATA_ONLY = False
 JSON_POST_DONE = False
+SELECTED_CHART = "Pie"
+CURRENT_FRAME = 1

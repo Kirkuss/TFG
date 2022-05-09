@@ -118,8 +118,6 @@ class postPreview(QThread):
                     #else:
                     #    self.drawFaceInfo(k, frame, x, y, w, h, False, prediction)
 
-            print("[" + str(self.iterations) + "] Frame procesado: " + str(id(frame)))
-
     def getNearestProcessed(self, iterations):
         aux_iterations = iterations
         founds = []
@@ -166,8 +164,6 @@ class postPreview(QThread):
             #   self.pause = True
 
             while self.pause:
-                print("1: " + str(config.SELECTED_FRAME <= config.VIDEO_LENGHT))
-                print(str(config.SELECTED_FRAME > 0))
 
                 if self.forward:
                     config.SELECTED_FRAME += 1
@@ -204,10 +200,7 @@ class postPreview(QThread):
                     ret, frame = cap.read()
                     if frame is not None:
                         frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
-                        print("[" + str(self.iterations) + "] Frame antes: " + str(id(frame)))
-                        print(str(self.iterations))
                         self.processFaces(frame)
-                        print("frame pocho")
                         rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                         h, w, ch = rgbImage.shape
                         bytesPerLine = ch * w
@@ -233,7 +226,6 @@ class postPreview(QThread):
                 frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
 
                 #FRAME TREATMENT
-                print("SI VES ESTO ALGO PASA")
                 self.processFaces(frame)
                 rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 h, w, ch = rgbImage.shape

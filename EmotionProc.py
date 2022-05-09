@@ -176,6 +176,7 @@ class EmotionProc(QThread):
                 break
 
             self.iterations += 1
+            config.CURRENT_FRAME = self.iterations
 
         self.updateStatus.emit(self.setStatusText("Saving analisys data to JSON..."), 2)
         self.saveProcessedFaces()

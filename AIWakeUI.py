@@ -68,6 +68,7 @@ class AIWake_UI(QMainWindow):
         self.VideoSpeed.setCurrentText("High detail")
         self.dataFocus.setCurrentText("Global")
         self.charTypes.setCurrentText("Pie")
+        self.charTypes.currentIndexChanged.connect(self.setCharType)
         self.deleteMoodAll.clicked.connect(self.deleteAllFaceFrameMood_ck)
         self.backwardBt_to_processed.clicked.connect(self.backwardVideoToProcessed)
         self.backwardBt.clicked.connect(self.backwardVideo)
@@ -78,6 +79,10 @@ class AIWake_UI(QMainWindow):
         self.canvas = FigureCanvas(self.figure)
         self.layoutCanvas.addWidget(self.canvas)
         self.initializePlotter()
+
+    def setCharType(self, i):
+        if i >= 0:
+            config.SELECTED_CHART = self.charTypes.currentText()
 
     def tillFrame(self):
         if self.tillFrameCb.isChecked(): config.TILL_FRAME = True
@@ -236,7 +241,6 @@ class AIWake_UI(QMainWindow):
                 config.SELECTED_SPEED = 5
             elif speed == "Very fast":
                 config.SELECTED_SPEED = 7
-        print(str(config.SELECTED_SPEED))
 
     def testeo(self, i):
         if i >= 0:
