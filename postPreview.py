@@ -16,6 +16,7 @@ class postPreview(QThread):
     updateStatus = pyqtSignal(list, int)
     setPickerMood = pyqtSignal(list)
     setPicker = pyqtSignal(list)
+    updatePlotter = pyqtSignal(list, list)
 
     def __init__(self, parent=None):
         super(postPreview, self).__init__(parent)
@@ -33,6 +34,8 @@ class postPreview(QThread):
         self.forwardToProcessed = False
         self.backward = False
         self.backwardToProcessed = False
+        self.x_data = []
+        self.y_data = []
 
     def getFaceIds(self, faceList, k, delete):
         idList = []

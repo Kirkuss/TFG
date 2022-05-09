@@ -21,6 +21,7 @@ class FaceIsolator(QThread):
     updateFrameSelector = pyqtSignal(int)
     preprocessDone = pyqtSignal()
     changeSelectedFrame = pyqtSignal(int)
+    updatePlotter = pyqtSignal(list, list)
 
     def __init__(self, parent=None):
         super(FaceIsolator, self).__init__(parent)
@@ -40,6 +41,8 @@ class FaceIsolator(QThread):
         self.finished = False
         self.selecting = False
         self.done = False
+        self.x_data = []
+        self.y_data = []
 
         self.forward = False
         self.forwardToProcessed = False
@@ -218,6 +221,9 @@ class FaceIsolator(QThread):
                 self.previewData = self.js.loadJson(config.PATH_TO_JSON_TEMP)
                 self.updateStatus.emit(self.setStatusText("Waiting for user to review obtained data"), 1)
 
+                self.x_data = list(range(1, int(iterations) + 1))
+                self.updatePlotter.emit(self.x_data, self.y_data)
+
                 while not self.finished:
                     if self.selecting and self.done:
                         if config.SELECTED_FRAME < config.VIDEO_LENGHT:
@@ -307,6 +313,7 @@ class FaceIsolator(QThread):
             if iterations % config.SELECTED_SPEED == 0:
                 iterations_ratio += 1
 
+            self.y_data.append(founds)
             iterations += 1
 
             if ret and iterations % config.SELECTED_SPEED == 0 and iterations >= config.SELECTED_SPEED:

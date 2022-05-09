@@ -2,12 +2,18 @@ from PyQt5.QtWidgets import QMainWindow, QFileDialog, QDialog
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
 
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+from numpy import random
+
 import DataProcessor as dp
 import FaceIsolator as fi
 import EmotionProc as ep
 import variables as config
 import postPreview as pp
 import PostDialog as pd
+import matplotlib.pyplot as plt
+import PlotManager as plotter
 
 class AIWake_UI(QMainWindow):
     def __init__(self):
@@ -28,6 +34,8 @@ class AIWake_UI(QMainWindow):
         self.playBt.clicked.connect(self.playBtClick)
         self.showBoxesCb.stateChanged.connect(self.previewChange_showHB)
         self.showDetailedCb.stateChanged.connect(self.previewChange_showDE)
+        self.tillFrameCb.stateChanged.connect(self.tillFrame)
+        self.faceDataOnlyCb.stateChanged.connect(self.faceDataOnly)
         self.pauseBt.clicked.connect(self.pauseBtClick_step1)
         self.selectFile_step1.clicked.connect(self.browseStep1Video)
         self.detection_ratio.valueChanged.connect(self.updateDetect)
@@ -54,13 +62,37 @@ class AIWake_UI(QMainWindow):
         self.deleteFaceFrameMood.clicked.connect(self.deleteFaceFrameMood_ck)
         self.updateMoodAll.clicked.connect(self.updateMoodAll_ck)
         self.VideoSpeed.addItems(["High detail", "Detail", "Fast", "Very fast"])
+        self.dataFocus.addItems(["Global", "Frame"])
+        self.charTypes.addItems(["Bar", "Line", "Pie"])
         self.VideoSpeed.currentIndexChanged.connect(self.setProcessingSpeed)
         self.VideoSpeed.setCurrentText("High detail")
+        self.dataFocus.setCurrentText("Global")
+        self.charTypes.setCurrentText("Pie")
         self.deleteMoodAll.clicked.connect(self.deleteAllFaceFrameMood_ck)
         self.backwardBt_to_processed.clicked.connect(self.backwardVideoToProcessed)
         self.backwardBt.clicked.connect(self.backwardVideo)
         self.forwardBt_to_processed.clicked.connect(self.forwardVideoToProcessed)
         self.forwardBt_step1.clicked.connect(self.forwardVideo)
+
+        self.figure = plt.figure()
+        self.canvas = FigureCanvas(self.figure)
+        self.layoutCanvas.addWidget(self.canvas)
+        self.initializePlotter()
+
+    def tillFrame(self):
+        if self.tillFrameCb.isChecked(): config.TILL_FRAME = True
+        else: config.TILL_FRAME = False
+
+    def faceDataOnly(self):
+        if self.faceDataOnlyCb.isChecked(): config.FACE_DATA_ONLY = True
+        else: config.FACE_DATA_ONLY = False
+
+    def initializePlotter(self):
+        self.thread[4] = plotter.PlotterManager(self.canvas, self.figure, parent=None)
+        self.thread[4].start()
+
+    def drawData(self, labels):
+        self.thread[4].labels = labels
 
     def forwardVideoToProcessed(self):
         if self.currentThread[0]:
@@ -167,6 +199,8 @@ class AIWake_UI(QMainWindow):
         self.thread[2].postPbValue.connect(self.setPostProgress)
         self.thread[2].done.connect(self.startPostPreview)
         self.thread[2].updateStatus.connect(self.updateStatus)
+        self.thread[2].updatePlotter.connect(self.drawData)
+        self.thread[4].proccessing = True
         self.thread[2].start()
 
     def startPostPreview(self):
@@ -180,6 +214,7 @@ class AIWake_UI(QMainWindow):
         self.thread[3].updateStatus.connect(self.updateStatus)
         self.thread[3].setPickerMood.connect(self.setPickerMood)
         self.thread[3].setPicker.connect(self.setPicker)
+        self.thread[4].readJson = True
         self.thread[3].start()
 
     def setPostProgress(self, progress):
@@ -280,9 +315,13 @@ class AIWake_UI(QMainWindow):
                 self.thread[1].changePixmap_pick.connect(self.setPreview)
                 self.thread[1].preprocessDone.connect(self.startPostProcessing)
                 self.thread[1].changeSelectedFrame.connect(self.updateFrameSelector)
+                self.thread[1].updatePlotter.connect(self.drawDataDetections)
                 self.frameSelector.setMaximum(config.VIDEO_LENGHT)
         elif self.currentThread[2]:
             self.thread[3].pause = False
+
+    def drawDataDetections(self, x_axis, y_axis, x_label="Frames", y_label="Detections", title="Data" ):
+        self.thread[4].drawDataDetections(x_axis, y_axis, x_label, y_label, title)
 
     def updateFrameSelector(self, frame):
         self.frameSelector.setValue(frame)

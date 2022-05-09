@@ -33,6 +33,7 @@ class EmotionProc(QThread):
     postPbValue = pyqtSignal(int)
     done = pyqtSignal()
     updateStatus = pyqtSignal(list, int)
+    updatePlotter = pyqtSignal(dict)
 
     js = Dmanager.jsonManager()
     faces = {}
@@ -51,6 +52,9 @@ class EmotionProc(QThread):
         self.resSum = 0
         self.model = tf.keras.models.load_model(config.PATH_TO_EMODEL)
         self.faces = self.js.loadJson(config.PATH_TO_JSON_PRE).copy()
+        self.x_data = []
+        self.y_data = []
+        self.labels = {"angry": 0, "disgust": 0, "fear": 0, "happy": 0, "neutral": 0, "sad": 0, "surprise": 0}
 
     #def predict(self, resized):
     #   return self.model.predict(resized, verbose = 0)
@@ -121,6 +125,13 @@ class EmotionProc(QThread):
         self.js.saveJson(self.pathToOutput)
         print("PostPro json saved")
 
+    def generatePlotData(self):
+        self.y_data.clear()
+        self.x_data.clear()
+        for i in self.labels:
+            self.y_data.append(i)
+            self.x_data.append(self.labels[i])
+
     def run(self):
         config.LOG += "\n" + ts.getTime(self) + " AIWake ... [STEP 2 - POSTPROCESSING - STARTED]\n" + ts.getTime(self) + \
                       " Video source [" + config.PATH_TO_VIDEO + "]\n" + ts.getTime(self) + " Data model for step 2 [" \
@@ -149,10 +160,15 @@ class EmotionProc(QThread):
                         predictions = self.model.predict(faceMat)
                         pred = Utilities.ModelInterpreter.getClass(n=np.argmax(predictions))  # sacar esto?
                         self.faces[k][str(self.iterations)]["prediction"] = pred
+                        config.LABELS[pred] += 1
                         #print(str(k) + "/" + str(self.iterations) + " WORKER [" + str(os.getpid()) + "]: " + str(pred))
                         self.updateStatus.emit(self.setStatusText("Analyzing face at frame [" + str(self.iterations) + "] face id [" + str(k) + "] prediction [" + pred + "]"), 1)
 
                 self.postPbValue.emit(perf.getVideoProgress(self.iterations, config.VIDEO_LENGHT))
+                if self.iterations % config.SELECTED_SPEED == 0:
+                    #self.generatePlotData()
+                    #self.updatePlotter.emit(self.labels)
+                    pass
 
             if self.iterations == config.VIDEO_LENGHT:
                 self.updateStatus.emit(self.setStatusText("Face analisys done..."), 1)
@@ -165,6 +181,7 @@ class EmotionProc(QThread):
         self.saveProcessedFaces()
         self.updateStatus.emit(self.setStatusText("JSON file saved: " + config.PATH_TO_JSON_POS), 1)
         self.done.emit()
+        config.JSON_POST_DONE = True
 
 
 
