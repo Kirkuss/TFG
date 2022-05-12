@@ -57,7 +57,6 @@ class AIWake_UI(QMainWindow):
         self.deleteAutomatCb.stateChanged.connect(self.deleteAllAutomatically)
         self.deleteAllRejected.clicked.connect(self.deleteAll)
         self.deleteFaceFrameBt.clicked.connect(self.deleteFaceFrame)
-        self.start3Test.clicked.connect(self.startTest)
         self.updateMoodFrame.clicked.connect(self.updateMoodFrame_ck)
         self.deleteFaceFrameMood.clicked.connect(self.deleteFaceFrameMood_ck)
         self.updateMoodAll.clicked.connect(self.updateMoodAll_ck)
@@ -145,13 +144,6 @@ class AIWake_UI(QMainWindow):
         if self.currentThread[2]:
             self.thread[3].pause = True
 
-    def startTest(self):
-        self.thread[3] = pp.postPreview(parent=None)
-        self.thread[3].changePixmap_preview.connect(self.updateVideo)
-        self.thread[3].changePixmap_pick.connect(self.setPreview)
-        self.thread[3].updateFrameSelector.connect(self.updateFrameSelector)
-        self.thread[3].start()
-
     def setPickerMood(self, mood):
         self.moodSelector.setCurrentText(mood[0])
 
@@ -186,7 +178,6 @@ class AIWake_UI(QMainWindow):
     def testSlider(self):
         config.SELECTED_FRAME = self.frameSelector.value()
         if self.currentThread[2]:
-            print("ALGO VA MAL")
             self.thread[3].firstTime = True
 
     def sliderReleased(self):
@@ -325,7 +316,9 @@ class AIWake_UI(QMainWindow):
             self.thread[3].pause = False
 
     def drawDataDetections(self, x_axis, y_axis, x_label="Frames", y_label="Detections", title="Data" ):
-        self.thread[4].drawDataDetections(x_axis, y_axis, x_label, y_label, title)
+        self.thread[4].x_axis = x_axis
+        self.thread[4].y_axis = y_axis
+        self.thread[4].plotDetections = True
 
     def updateFrameSelector(self, frame):
         self.frameSelector.setValue(frame)

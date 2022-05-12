@@ -182,6 +182,16 @@ class FaceIsolator(QThread):
             return max(founds)
         return 0
 
+    def getAcceptedAndRejectedNum(self):
+        accepted = 0
+        rejected = 0
+        for k in self.list:
+            if self.list[k].valid:
+                accepted += 1
+            else:
+                rejected += 1
+        return [accepted, rejected]
+
     def run(self):
         self.updateStatus.emit(self.setStatusText("Preparing pre-process"), 1)
         cap = cv2.VideoCapture(self.pathToVideo)
@@ -222,7 +232,6 @@ class FaceIsolator(QThread):
                 self.updateStatus.emit(self.setStatusText("Waiting for user to review obtained data"), 1)
 
                 self.x_data = list(range(1, int(iterations) + 1))
-                self.updatePlotter.emit(self.x_data, self.y_data)
 
                 while not self.finished:
                     if self.selecting and self.done:
@@ -359,6 +368,9 @@ class FaceIsolator(QThread):
                             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 1)
                             cv2.putText(frame, "Rejected", (int(x + (w * config.PROP)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                                         (0, 0, 255), 1, cv2.LINE_AA)
+
+                self.updatePlotter.emit(self.getAcceptedAndRejectedNum(), ["Accepted", "Rejected"])
+
 
             if ret:
                 rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)

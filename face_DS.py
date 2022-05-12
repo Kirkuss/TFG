@@ -1,17 +1,5 @@
-import base64
-import hashlib
-import json
-import time
-
-import matplotlib.image as mpimg
-
 import variables as config
-import numpy as np
 import cv2
-import io
-
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 
 def noiseOut(list2clear):
     aux = list2clear.copy() #Los diccionarios no funcionan de forma dinamica
@@ -31,7 +19,6 @@ class face:
         self.frame = frame
         self.occurs = occurs
         self.valid = valid
-        # self.visited = False ?
 
     #Metodo equal:
     # comprueba que un punto dado esta en un area si coincide
@@ -44,13 +31,6 @@ class face:
         else:
             pass
         self.list[face.frame] = face
-        """
-        if self.valid:
-            if queue is not None: self.list = queue
-            else: pass
-            self.list[face.frame] = face
-        else: self.list = None
-        """
 
     def equal(self, conf, item, frame):
         x1, y1 = int(self.x + (self.w * conf)),int(self.y + (self.h * conf))
@@ -86,26 +66,6 @@ class face:
         serialized["w"] = str(self.w)
         serialized["h"] = str(self.h)
         serialized["valid"] = str(self.valid)
-        #np.savez_compressed("frames.npz", frame=self.frameMat)
-        #faceEnc = self.fernet.encrypt(np.array2string(self.frameMat).encode())
-        #print(faceEnc)
-        #serialized["frame"] = str(faceEnc)
-        #faceb64 = base64.b64encode(self.frameMat)
-        #serialized["frame"] = str(faceEnc)
-        #print(str(self.frameMat))
-
-        """
-        faceDec = base64.decodebytes(faceEnc)
-        faceMat = np.frombuffer(faceDec, dtype=np.uint8)
-        print("CROP: " + str(np.size(self.frameMat)))
-        print("DECO: " + str(np.size(faceMat)))
-
-        time.sleep(1)
-        """
-
-        #print(str(np.size(self.frameMat)))
-        #serialized["frame"] = str(self.frame) no es necesario porque la key del propio json ya es el frame en el que aparece
-        #print(serialized)
         return serialized
 
 

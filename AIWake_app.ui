@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1707</width>
-    <height>647</height>
+    <height>1031</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,6 +23,99 @@
    <iconset>
     <normaloff>Resources/app_img/icons/pillow.png</normaloff>Resources/app_img/icons/pillow.png</iconset>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow#AIWake_UI {
+	background: #9FA5AB
+}
+
+QWidget#tab, QWidget#tab_2, QWidget#step1Tab {
+	background: #9FA5AB;
+	border: 1px solid white;
+}
+
+QTabWidget {
+	background: #9FA5AB;
+}
+
+Line#line_5, Line#line_4{
+	border: 1px solid #C0C8CF;
+	background: white;
+	max-height: 2px;
+	min-height: 2px;
+}
+
+QFrame {
+	border: 1px solid #C0C8CF;
+}
+
+QFrame#frame_5, QFrame#frame_6, QFrame#frame_10 {
+	border: 0px solid #C0C8CF;
+}
+
+QLabel {
+	color: white;
+}
+
+QCheckBox {
+	color: white;
+}
+
+QTabWidget::pane { 
+    border: 5px;
+}
+
+QTabWidget::tab-bar {
+    left: 5px; /* move to the right by 5px */
+}
+
+QTabBar::tab {
+    background: #9FA5AB;
+    color: white;
+    border: 1px solid white;
+    border-bottom-color: white; 
+	border-radius: 2px;
+    min-width: 60px;
+    padding: 2px;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background: #43A5FA;
+}
+
+QTabBar::tab:selected {
+    border-color: #43A5FA;
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px; /* make non-selected tabs look smaller */
+}
+
+QPushButton { 
+	background-color: #43A5FA; 
+	border-style: outset;
+	border-width: 2px;
+	border-radius: 10px;
+	border-color: #0088FF;
+	min-width: 80px;
+	max-width: 80px;
+	color: white;
+}
+
+QPushButton:pressed {
+	background-color:  #FAB443;
+	border-color: #AD6F0C;
+	color: white;
+}
+
+
+
+
+
+</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTabWidget" name="frontTabPanel">
     <property name="enabled">
@@ -33,11 +126,17 @@
       <x>10</x>
       <y>10</y>
       <width>1691</width>
-      <height>581</height>
+      <height>1011</height>
      </rect>
     </property>
     <property name="layoutDirection">
      <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="tabPosition">
      <enum>QTabWidget::North</enum>
@@ -52,6 +151,12 @@
      <enum>Qt::ElideNone</enum>
     </property>
     <widget class="QWidget" name="step1Tab">
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <attribute name="title">
       <string>File</string>
      </attribute>
@@ -61,7 +166,7 @@
         <x>690</x>
         <y>120</y>
         <width>441</width>
-        <height>191</height>
+        <height>421</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -156,8 +261,8 @@
       <widget class="QLabel" name="thresholdLbl">
        <property name="geometry">
         <rect>
-         <x>370</x>
-         <y>110</y>
+         <x>160</x>
+         <y>170</y>
          <width>49</width>
          <height>16</height>
         </rect>
@@ -169,8 +274,8 @@
       <widget class="QSlider" name="hb_detection_prop">
        <property name="geometry">
         <rect>
-         <x>240</x>
-         <y>110</y>
+         <x>30</x>
+         <y>170</y>
          <width>121</width>
          <height>22</height>
         </rect>
@@ -191,8 +296,8 @@
       <widget class="QLabel" name="label_2">
        <property name="geometry">
         <rect>
-         <x>240</x>
-         <y>90</y>
+         <x>30</x>
+         <y>150</y>
          <width>81</width>
          <height>16</height>
         </rect>
@@ -204,11 +309,14 @@
       <widget class="QPushButton" name="finishStep1Bt">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>150</y>
-         <width>75</width>
+         <x>100</x>
+         <y>250</y>
+         <width>84</width>
          <height>24</height>
         </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
        </property>
        <property name="text">
         <string>Save data</string>
@@ -233,9 +341,9 @@
       <widget class="QPushButton" name="deleteAllRejected">
        <property name="geometry">
         <rect>
-         <x>210</x>
-         <y>150</y>
-         <width>91</width>
+         <x>230</x>
+         <y>250</y>
+         <width>84</width>
          <height>24</height>
         </rect>
        </property>
@@ -397,7 +505,10 @@
         </rect>
        </property>
        <property name="frameShape">
-        <enum>QFrame::Box</enum>
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="lineWidth">
+        <number>0</number>
        </property>
        <property name="text">
         <string/>
@@ -434,9 +545,9 @@
       <widget class="QLineEdit" name="pathInText_step1">
        <property name="geometry">
         <rect>
-         <x>100</x>
+         <x>110</x>
          <y>20</y>
-         <width>541</width>
+         <width>531</width>
          <height>21</height>
         </rect>
        </property>
@@ -452,7 +563,7 @@
         <rect>
          <x>20</x>
          <y>20</y>
-         <width>75</width>
+         <width>84</width>
          <height>24</height>
         </rect>
        </property>
@@ -485,14 +596,17 @@
         <enum>QFrame::NoFrame</enum>
        </property>
        <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="lineWidth">
+        <number>0</number>
        </property>
        <widget class="QPushButton" name="forwardBt_to_processed">
         <property name="geometry">
          <rect>
-          <x>350</x>
+          <x>510</x>
           <y>0</y>
-          <width>21</width>
+          <width>84</width>
           <height>24</height>
          </rect>
         </property>
@@ -507,9 +621,9 @@
        <widget class="QPushButton" name="playBt">
         <property name="geometry">
          <rect>
-          <x>290</x>
+          <x>220</x>
           <y>0</y>
-          <width>21</width>
+          <width>84</width>
           <height>24</height>
          </rect>
         </property>
@@ -524,9 +638,9 @@
        <widget class="QPushButton" name="backwardBt_to_processed">
         <property name="geometry">
          <rect>
-          <x>250</x>
+          <x>30</x>
           <y>0</y>
-          <width>21</width>
+          <width>84</width>
           <height>24</height>
          </rect>
         </property>
@@ -541,9 +655,9 @@
        <widget class="QPushButton" name="forwardBt_step1">
         <property name="geometry">
          <rect>
-          <x>330</x>
+          <x>420</x>
           <y>0</y>
-          <width>21</width>
+          <width>84</width>
           <height>24</height>
          </rect>
         </property>
@@ -558,9 +672,9 @@
        <widget class="QPushButton" name="backwardBt">
         <property name="geometry">
          <rect>
-          <x>270</x>
+          <x>120</x>
           <y>0</y>
-          <width>21</width>
+          <width>84</width>
           <height>24</height>
          </rect>
         </property>
@@ -577,7 +691,7 @@
          <rect>
           <x>310</x>
           <y>0</y>
-          <width>21</width>
+          <width>84</width>
           <height>24</height>
          </rect>
         </property>
@@ -594,19 +708,25 @@
      <widget class="QTabWidget" name="tabWidget">
       <property name="geometry">
        <rect>
-        <x>690</x>
-        <y>320</y>
-        <width>451</width>
-        <height>221</height>
+        <x>1140</x>
+        <y>120</y>
+        <width>531</width>
+        <height>421</height>
        </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
       </property>
       <property name="tabShape">
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
        <attribute name="title">
         <string>Faces</string>
        </attribute>
@@ -615,8 +735,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>441</width>
-          <height>191</height>
+          <width>531</width>
+          <height>391</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -630,8 +750,8 @@
           <rect>
            <x>10</x>
            <y>10</y>
-           <width>151</width>
-           <height>141</height>
+           <width>221</width>
+           <height>211</height>
           </rect>
          </property>
          <property name="frameShape">
@@ -647,10 +767,10 @@
         <widget class="QPlainTextEdit" name="imgText">
          <property name="geometry">
           <rect>
-           <x>160</x>
-           <y>10</y>
-           <width>131</width>
-           <height>141</height>
+           <x>10</x>
+           <y>230</y>
+           <width>511</width>
+           <height>151</height>
           </rect>
          </property>
          <property name="autoFillBackground">
@@ -672,7 +792,7 @@
         <widget class="QLabel" name="label_17">
          <property name="geometry">
           <rect>
-           <x>300</x>
+           <x>240</x>
            <y>10</y>
            <width>49</width>
            <height>16</height>
@@ -685,7 +805,7 @@
         <widget class="QComboBox" name="FacePicker">
          <property name="geometry">
           <rect>
-           <x>350</x>
+           <x>290</x>
            <y>10</y>
            <width>81</width>
            <height>22</height>
@@ -701,8 +821,8 @@
         <widget class="QCheckBox" name="showSelectedOnlyCb">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>160</y>
+           <x>240</x>
+           <y>200</y>
            <width>151</width>
            <height>20</height>
           </rect>
@@ -714,9 +834,9 @@
         <widget class="QPushButton" name="deleteFaceFrameBt">
          <property name="geometry">
           <rect>
-           <x>300</x>
-           <y>110</y>
-           <width>61</width>
+           <x>240</x>
+           <y>170</y>
+           <width>84</width>
            <height>24</height>
           </rect>
          </property>
@@ -727,9 +847,9 @@
         <widget class="QPushButton" name="deleteBt_2">
          <property name="geometry">
           <rect>
-           <x>300</x>
-           <y>40</y>
-           <width>61</width>
+           <x>240</x>
+           <y>60</y>
+           <width>84</width>
            <height>24</height>
           </rect>
          </property>
@@ -740,9 +860,9 @@
         <widget class="QPushButton" name="deleteBt">
          <property name="geometry">
           <rect>
-           <x>360</x>
-           <y>40</y>
-           <width>61</width>
+           <x>330</x>
+           <y>60</y>
+           <width>84</width>
            <height>24</height>
           </rect>
          </property>
@@ -753,8 +873,8 @@
         <widget class="QLabel" name="label_20">
          <property name="geometry">
           <rect>
-           <x>300</x>
-           <y>90</y>
+           <x>240</x>
+           <y>140</y>
            <width>131</width>
            <height>16</height>
           </rect>
@@ -766,10 +886,10 @@
         <widget class="Line" name="line_4">
          <property name="geometry">
           <rect>
-           <x>300</x>
-           <y>70</y>
-           <width>131</width>
-           <height>16</height>
+           <x>240</x>
+           <y>100</y>
+           <width>271</width>
+           <height>4</height>
           </rect>
          </property>
          <property name="orientation">
@@ -779,6 +899,9 @@
        </widget>
       </widget>
       <widget class="QWidget" name="tab_2">
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
        <attribute name="title">
         <string>Moods</string>
        </attribute>
@@ -787,8 +910,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>441</width>
-          <height>191</height>
+          <width>531</width>
+          <height>391</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -802,8 +925,8 @@
           <rect>
            <x>10</x>
            <y>10</y>
-           <width>151</width>
-           <height>141</height>
+           <width>221</width>
+           <height>211</height>
           </rect>
          </property>
          <property name="frameShape">
@@ -819,10 +942,10 @@
         <widget class="QPlainTextEdit" name="imgText_3">
          <property name="geometry">
           <rect>
-           <x>160</x>
-           <y>10</y>
-           <width>131</width>
-           <height>141</height>
+           <x>10</x>
+           <y>230</y>
+           <width>511</width>
+           <height>151</height>
           </rect>
          </property>
          <property name="autoFillBackground">
@@ -844,7 +967,7 @@
         <widget class="QLabel" name="label_21">
          <property name="geometry">
           <rect>
-           <x>300</x>
+           <x>240</x>
            <y>10</y>
            <width>49</width>
            <height>16</height>
@@ -857,7 +980,7 @@
         <widget class="QComboBox" name="FacePicker_pos">
          <property name="geometry">
           <rect>
-           <x>350</x>
+           <x>290</x>
            <y>10</y>
            <width>81</width>
            <height>22</height>
@@ -873,8 +996,8 @@
         <widget class="QCheckBox" name="showSelectedOnly_pos">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>160</y>
+           <x>240</x>
+           <y>200</y>
            <width>151</width>
            <height>20</height>
           </rect>
@@ -886,9 +1009,9 @@
         <widget class="QPushButton" name="deleteFaceFrameMood">
          <property name="geometry">
           <rect>
-           <x>360</x>
-           <y>90</y>
-           <width>61</width>
+           <x>330</x>
+           <y>80</y>
+           <width>84</width>
            <height>24</height>
           </rect>
          </property>
@@ -899,7 +1022,7 @@
         <widget class="QLabel" name="label_22">
          <property name="geometry">
           <rect>
-           <x>300</x>
+           <x>240</x>
            <y>40</y>
            <width>131</width>
            <height>16</height>
@@ -912,9 +1035,9 @@
         <widget class="QPushButton" name="updateMoodFrame">
          <property name="geometry">
           <rect>
-           <x>300</x>
-           <y>90</y>
-           <width>61</width>
+           <x>240</x>
+           <y>80</y>
+           <width>84</width>
            <height>24</height>
           </rect>
          </property>
@@ -925,8 +1048,8 @@
         <widget class="QComboBox" name="moodSelector">
          <property name="geometry">
           <rect>
-           <x>300</x>
-           <y>60</y>
+           <x>370</x>
+           <y>40</y>
            <width>131</width>
            <height>22</height>
           </rect>
@@ -941,9 +1064,9 @@
         <widget class="QPushButton" name="updateMoodAll">
          <property name="geometry">
           <rect>
-           <x>300</x>
+           <x>240</x>
            <y>130</y>
-           <width>61</width>
+           <width>84</width>
            <height>24</height>
           </rect>
          </property>
@@ -954,9 +1077,9 @@
         <widget class="QPushButton" name="deleteMoodAll">
          <property name="geometry">
           <rect>
-           <x>360</x>
+           <x>330</x>
            <y>130</y>
-           <width>61</width>
+           <width>84</width>
            <height>24</height>
           </rect>
          </property>
@@ -967,10 +1090,10 @@
         <widget class="Line" name="line_5">
          <property name="geometry">
           <rect>
-           <x>300</x>
+           <x>240</x>
            <y>110</y>
-           <width>131</width>
-           <height>16</height>
+           <width>281</width>
+           <height>4</height>
           </rect>
          </property>
          <property name="orientation">
@@ -983,10 +1106,10 @@
      <widget class="QFrame" name="plotter">
       <property name="geometry">
        <rect>
-        <x>1150</x>
-        <y>120</y>
-        <width>521</width>
-        <height>421</height>
+        <x>10</x>
+        <y>550</y>
+        <width>1671</width>
+        <height>401</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -998,10 +1121,10 @@
       <widget class="QWidget" name="horizontalLayoutWidget">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>180</y>
-         <width>501</width>
-         <height>231</height>
+         <x>670</x>
+         <y>10</y>
+         <width>991</width>
+         <height>381</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="layoutCanvas"/>
@@ -1009,8 +1132,8 @@
       <widget class="QComboBox" name="dataFocus">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>150</y>
+         <x>580</x>
+         <y>40</y>
          <width>91</width>
          <height>22</height>
         </rect>
@@ -1025,8 +1148,8 @@
       <widget class="QCheckBox" name="tillFrameCb">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>70</y>
+         <x>290</x>
+         <y>10</y>
          <width>221</width>
          <height>20</height>
         </rect>
@@ -1041,8 +1164,8 @@
       <widget class="QCheckBox" name="faceDataOnlyCb">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>90</y>
+         <x>290</x>
+         <y>40</y>
          <width>221</width>
          <height>20</height>
         </rect>
@@ -1057,8 +1180,8 @@
       <widget class="QComboBox" name="charTypes">
        <property name="geometry">
         <rect>
-         <x>420</x>
-         <y>150</y>
+         <x>580</x>
+         <y>10</y>
          <width>91</width>
          <height>22</height>
         </rect>
@@ -1073,8 +1196,8 @@
       <widget class="QLabel" name="label_23">
        <property name="geometry">
         <rect>
-         <x>380</x>
-         <y>150</y>
+         <x>540</x>
+         <y>10</y>
          <width>41</width>
          <height>16</height>
         </rect>
@@ -1086,6 +1209,9 @@
      </widget>
     </widget>
     <widget class="QWidget" name="optionsTab">
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
      <attribute name="icon">
       <iconset>
        <normaloff>Resources/app_img/icons/gear.png</normaloff>Resources/app_img/icons/gear.png</iconset>
@@ -1127,7 +1253,7 @@
        <rect>
         <x>530</x>
         <y>30</y>
-        <width>75</width>
+        <width>84</width>
         <height>21</height>
        </rect>
       </property>
@@ -1276,7 +1402,7 @@
        <rect>
         <x>530</x>
         <y>280</y>
-        <width>75</width>
+        <width>84</width>
         <height>21</height>
        </rect>
       </property>
@@ -1334,7 +1460,7 @@
        <rect>
         <x>530</x>
         <y>330</y>
-        <width>75</width>
+        <width>84</width>
         <height>21</height>
        </rect>
       </property>
@@ -1454,7 +1580,7 @@
        <rect>
         <x>530</x>
         <y>440</y>
-        <width>75</width>
+        <width>84</width>
         <height>21</height>
        </rect>
       </property>
@@ -1496,7 +1622,7 @@
        <rect>
         <x>530</x>
         <y>490</y>
-        <width>75</width>
+        <width>84</width>
         <height>21</height>
        </rect>
       </property>
@@ -1588,23 +1714,6 @@
      <zorder>moodOptions</zorder>
      <zorder>BrowseFaceModelBt_5</zorder>
     </widget>
-   </widget>
-   <widget class="QPushButton" name="start3Test">
-    <property name="geometry">
-     <rect>
-      <x>690</x>
-      <y>590</y>
-      <width>21</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset>
-      <normaloff>Resources/app_img/icons/gear.png</normaloff>Resources/app_img/icons/gear.png</iconset>
-    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

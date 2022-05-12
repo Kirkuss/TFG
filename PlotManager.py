@@ -5,6 +5,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 import matplotlib.pyplot as plt
 import variables as config
 import Utilities as Dmanager
+import FaceData as data
 from scipy.interpolate import make_interp_spline, BSpline
 
 class PlotterManager(QThread):
@@ -15,32 +16,38 @@ class PlotterManager(QThread):
         self.notFinished = True
         self.y_data = []
         self.x_data = []
+        self.x_data_line = []
+        self.y_data_line = []
         self.labels = {"angry": 0, "disgust": 0, "fear": 0, "happy": 0, "neutral": 0, "sad": 0, "surprise": 0}
         self.lineData = {}
         self.proccessing = False
         self.js = Dmanager.jsonManager()
         self.facesInfo = {}
         self.readJson = config.JSON_POST_DONE
+        self.faceList = {}
+        self.x_axis = []
+        self.y_axis = []
+        self.plotDetections = False
 
     def run(self):
         self.readJson = config.JSON_POST_DONE
         self.generateYaxisLabelsForLine()
         while self.notFinished:
-            if self.proccessing:
-                self.getPlotData()
-                self.plotTest()
-                #print("plotter running in 2")
-            else:
-                pass
-
+            self.plotTest()
             if self.readJson:
                 self.facesInfo = self.js.loadJson(config.PATH_TO_JSON_POS)
                 self.readJson = False
-            if config.TILL_FRAME and config.JSON_POST_DONE:
-                time.sleep(0.2)
-            else:
-                time.sleep(3)
+                self.populateFaceList()
+            if config.TILL_FRAME and config.JSON_POST_DONE: time.sleep(0.2)
+            elif self.proccessing: time.sleep(3)
+            else: time.sleep(0.5)
         return 0
+
+    def populateFaceList(self):
+        for k in self.facesInfo:
+            self.faceList[str(k)] = data.FaceData(int(k), self.facesInfo[k])
+            self.faceList[str(k)].getLabels()
+            print(self.faceList[str(k)])
 
     def calculateTillFrame(self, line):
         for k in self.facesInfo:
@@ -63,21 +70,26 @@ class PlotterManager(QThread):
                 else: self.labels[k] = 0
 
     def getXaxisIfLine(self, line):
-        self.x_data.clear()
+        self.x_data_line.clear()
         if line:
-            self.x_data = list(range(1, config.CURRENT_FRAME + 1))
+            self.x_data_line = list(range(1, config.CURRENT_FRAME + 1))
         else:
-            self.x_data = list(range(1, config.SELECTED_FRAME + 1))
+            self.x_data_line = list(range(1, config.SELECTED_FRAME + 1))
 
     def getYaxisIfLine(self):
-        for i in self.x_data:
-            for k in self.lineData:
-                if i > len(self.lineData[k]) or len(self.lineData[k]) == 0:
-                    self.lineData[k].append(self.labels[k])
+        for k in self.faceList:
+            self.faceList[k].getYaxisData(self.x_data)
+
+        if config.FACE_DATA_ONLY and config.SELECTED_FACE > 0:
+            pass
+        else:
+            for i in self.x_data_line:
+                for k in self.lineData:
+                    if i > len(self.lineData[k]) or len(self.lineData[k]) == 0:
+                        self.lineData[k].append(self.labels[k])
 
     def generateYaxisLabelsForLine(self):
-        for k in self.labels:
-            self.lineData[k] = []
+        for k in self.labels: self.lineData[k] = []
 
     def getPlotData(self):
         self.y_data.clear()
@@ -94,40 +106,61 @@ class PlotterManager(QThread):
                 self.y_data.append(i)
                 self.x_data.append(self.labels[i])
 
-    def plotTest(self, x_label="Frames", y_label="Detections", title="Data"):
+    def plotTest(self, title="Data"):
         self.figure.clear()
-        if config.SELECTED_CHART == "Pie":
-            plt.pie(self.x_data,labels=self.y_data , autopct='%1d%%', shadow=False)
-            plt.axis('equal')
-            # plt.ylabel(y_label)
-            plt.title(title)
-        elif config.SELECTED_CHART == "Bar":
-            plt.bar(self.y_data, self.x_data)
-            plt.ylabel("%")
-            plt.title(title)
-        elif config.SELECTED_CHART == "Line":
-            if config.TILL_FRAME and config.SELECTED_FRAME > 0:
-                self.getXaxisIfLine(False)
-            else:
-                self.getXaxisIfLine(True)
-            self.getYaxisIfLine()
-            #xnew = np.linspace(np.array(self.x_data).min(),np.array(self.x_data).max(), 300)
-            for k in self.lineData:
-                #spl = make_interp_spline(np.array(self.x_data), np.array(self.lineData[k]))
-                #smoothy = spl(xnew)
-                if config.TILL_FRAME and config.SELECTED_FRAME > 0:
-                    plt.fill_between(self.x_data, self.lineData[k][0:len(self.x_data)], alpha=0.2)
-                    plt.plot(self.x_data, self.lineData[k][0:len(self.x_data)], label = k)
-                else:
-                    plt.fill_between(self.x_data, self.lineData[k], alpha=0.2)
-                    plt.plot(self.x_data, self.lineData[k], label=k)
-            plt.legend()
+        if self.proccessing: self.drawWhenProcessing(title)
+        else: self.drawDataDetections(self.x_axis, self.y_axis)
         self.canvas.draw()
 
-    def drawDataDetections(self, x_axis, y_axis, x_label="Frames", y_label="Detections", title="Data"):
-        self.figure.clear()
-        plt.plot(x_axis, y_axis)
-        plt.xlabel(x_label)
-        # plt.ylabel(y_label)
+    def drawWhenProcessing(self, title):
+        self.getPlotData()
+        if config.TILL_FRAME and config.SELECTED_FRAME > 0: self.getXaxisIfLine(False)
+        else: self.getXaxisIfLine(True)
+        self.getYaxisIfLine()
+        if config.SELECTED_CHART == "Pie": self.drawPie(title)
+        elif config.SELECTED_CHART == "Bar": self.drawBar(title)
+        elif config.SELECTED_CHART == "Line": self.drawLine()
+
+    def drawLine(self):
+        for k in self.lineData:
+            if config.TILL_FRAME and config.SELECTED_FRAME > 0: self.drawLineFaceSelected(k)
+            else: self.drawLineGlobal(k)
+        plt.legend()
+
+    def drawLineGlobal(self, k):
+        if config.FACE_DATA_ONLY and config.SELECTED_FACE > 0:
+            plt.fill_between(self.x_data_line, self.faceList[str(config.SELECTED_FACE)].labelsLine[k], alpha=0.2)
+            plt.plot(self.x_data_line, self.faceList[str(config.SELECTED_FACE)].labelsLine[k], label=k)
+        else:
+            plt.fill_between(self.x_data_line, self.lineData[k], alpha=0.2)
+            plt.plot(self.x_data_line, self.lineData[k], label=k)
+
+    def drawLineFaceSelected(self, k):
+        if config.FACE_DATA_ONLY and config.SELECTED_FACE > 0:
+            plt.fill_between(self.x_data_line,
+                             self.faceList[str(config.SELECTED_FACE)].labelsLine[k][0:len(self.x_data_line)], alpha=0.2)
+            plt.plot(self.x_data_line, self.faceList[str(config.SELECTED_FACE)].labelsLine[k][0:len(self.x_data_line)],
+                     label=k)
+        else:
+            plt.fill_between(self.x_data_line, self.lineData[k][0:len(self.x_data_line)], alpha=0.2)
+            plt.plot(self.x_data_line, self.lineData[k][0:len(self.x_data_line)], label=k)
+
+    def getTitleFrame(self, title):
+        if config.TILL_FRAME and config.SELECTED_FRAME > 0: title += " frame: {0}".format(config.SELECTED_FRAME)
+        else: title += " frame: {0}".format(config.CURRENT_FRAME)
+        return title
+
+    def drawBar(self, title):
+        plt.bar(self.y_data, self.x_data)
+        plt.ylabel("%")
+        plt.title(self.getTitleFrame(title))
+
+    def drawPie(self, title):
+        plt.pie(self.x_data, labels=self.y_data, autopct='%1d%%', shadow=False)
+        plt.axis('equal')
+        plt.title(self.getTitleFrame(title))
+
+    def drawDataDetections(self, x_axis, y_axis, title="Accepted - Rejected"):
+        plt.pie(x_axis, labels=y_axis, autopct='%1d%%', shadow=False)
+        plt.axis('equal')
         plt.title(title)
-        self.canvas.draw()
