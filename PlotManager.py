@@ -9,11 +9,13 @@ import FaceData as data
 from scipy.interpolate import make_interp_spline, BSpline
 
 class PlotterManager(QThread):
-    def __init__(self, canvas, figure,parent=None):
+    def __init__(self, canvas, figure, type, parent=None):
+        # type 0 controla la vista global, type 1 controla detailed
         super(PlotterManager, self).__init__(parent)
         self.canvas = canvas
         self.figure = figure
         self.notFinished = True
+        self.type = type
         self.y_data = []
         self.x_data = []
         self.x_data_line = []

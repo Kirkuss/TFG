@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/UIresources">
+        <file>app_img/icons/pillow.png</file>
+    </qresource>
+</RCC>

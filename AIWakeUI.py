@@ -42,11 +42,10 @@ class AIWake_UI(QMainWindow):
         self.acceptanceLbl.setText(str(self.detection_ratio.value()/100))
         self.hb_detection_prop.valueChanged.connect(self.updateThreshold)
         self.thresholdLbl.setText(str(self.hb_detection_prop.value()/100))
-        self.frontTabPanel.currentChanged.connect(self.tabTest)
         self.FacePicker.currentIndexChanged.connect(self.testeo)
         self.FacePicker_pos.currentIndexChanged.connect(self.testeo)
         self.deleteBt.clicked.connect(self.deleteFace)
-        self.statusColor.setStyleSheet("background-color: yellow;")
+        self.statusColor.setStyleSheet("background-color: #EDEC80;")
         #self.startPostProcessBt.clicked.connect(self.startPostProcessing)
         self.finishStep1Bt.clicked.connect(self.finishStep1)
         self.frameSelector.sliderReleased.connect(self.sliderReleased)
@@ -73,9 +72,18 @@ class AIWake_UI(QMainWindow):
         self.backwardBt.clicked.connect(self.backwardVideo)
         self.forwardBt_to_processed.clicked.connect(self.forwardVideoToProcessed)
         self.forwardBt_step1.clicked.connect(self.forwardVideo)
+        self.splitter.setSizes([440, 530])
+        self.splitter_2.setSizes([100,420])
+        self.splitter_3.setSizes([671,979])
+        self.splitter_4.setSizes([829, 829])
+        self.splitter_5.setSizes([539,389])
+        self.splitter_6.setSizes([1662, 158])
 
         self.figure = plt.figure()
+        self.figure_detailed = plt.figure(2)
         self.canvas = FigureCanvas(self.figure)
+        self.canvas_detailed = FigureCanvas(self.figure_detailed)
+        self.layoutCanvas_2.addWidget(self.canvas_detailed)
         self.layoutCanvas.addWidget(self.canvas)
         self.initializePlotter()
 
@@ -92,11 +100,14 @@ class AIWake_UI(QMainWindow):
         else: config.FACE_DATA_ONLY = False
 
     def initializePlotter(self):
-        self.thread[4] = plotter.PlotterManager(self.canvas, self.figure, parent=None)
+        self.thread[4] = plotter.PlotterManager(self.canvas, self.figure, type=0,  parent=None)
         self.thread[4].start()
+        #self.thread[5] = plotter.PlotterManager(self.canvas_detailed, self.figure_detailed, type=1,  parent=None)
+        #self.thread[5].start()
 
     def drawData(self, labels):
         self.thread[4].labels = labels
+        #self.thread[5].labels = labels
 
     def forwardVideoToProcessed(self):
         if self.currentThread[0]:
@@ -241,21 +252,6 @@ class AIWake_UI(QMainWindow):
             config.SELECTED_FACE = int(self.FacePicker_pos.currentText())
             self.thread[1].sig = False
 
-    def tabTest(self, index):
-        try:
-            if index == 0:
-                if self.thread[2].isRunning():
-                    print("2 running")
-                    #self.thread[2].wait(self.mutexTab2)
-            elif index == 1:
-                if self.thread[1].isRunning():
-                    print("1 running")
-                    #self.thread[1].wait(self.mutexTab1)
-                else: print("1 finished")
-
-        except Exception as e:
-            print(str(e))
-
     def forwardVideo(self):
         if self.currentThread[0]:
             self.thread[1].forward = True
@@ -324,9 +320,9 @@ class AIWake_UI(QMainWindow):
         self.frameSelector.setValue(frame)
 
     def updateStatus(self, text, color):
-        if color == 1: self.statusColor.setStyleSheet("background-color: green;")
-        elif color == 2: self.statusColor.setStyleSheet("background-color: yellow;")
-        elif color == 3: self.statusColor.setStyleSheet("background-color: red;")
+        if color == 1: self.statusColor.setStyleSheet("background-color: #51B1ED;")
+        elif color == 2: self.statusColor.setStyleSheet("background-color: #EDEC80;")
+        elif color == 3: self.statusColor.setStyleSheet("background-color: #ED6868;")
 
         self.statusText.setText(text[0])
 
