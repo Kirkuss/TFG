@@ -1,17 +1,15 @@
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QDialog
 from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import QThreadPool
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
-from numpy import random
 
 import DataProcessor as dp
 import FaceIsolator as fi
 import EmotionProc as ep
 import variables as config
 import postPreview as pp
-import PostDialog as pd
 import matplotlib.pyplot as plt
 import PlotManager as plotter
 
@@ -79,13 +77,7 @@ class AIWake_UI(QMainWindow):
         self.splitter_5.setSizes([539,389])
         self.splitter_6.setSizes([1662, 158])
 
-        self.figure = plt.figure()
-        self.figure_detailed = plt.figure(2)
-        self.canvas = FigureCanvas(self.figure)
-        self.canvas_detailed = FigureCanvas(self.figure_detailed)
-        self.layoutCanvas_2.addWidget(self.canvas_detailed)
-        self.layoutCanvas.addWidget(self.canvas)
-        self.initializePlotter()
+        #self.initializePlotters()
 
     def setCharType(self, i):
         if i >= 0:
@@ -99,11 +91,33 @@ class AIWake_UI(QMainWindow):
         if self.faceDataOnlyCb.isChecked(): config.FACE_DATA_ONLY = True
         else: config.FACE_DATA_ONLY = False
 
-    def initializePlotter(self):
-        self.thread[4] = plotter.PlotterManager(self.canvas, self.figure, type=0,  parent=None)
+    def initializePlotters(self):
+        #threadCount = QThreadPool.globalInstance().maxThreadCount()
+        #self.label.setText(f"Running {threadCount} Threads")
+        #pool = QThreadPool.globalInstance()
+        #self.figure = plt.figure(1)
+        #self.canvas = FigureCanvas(self.figure)
+        self.thread[4] = plotter.PlotterManager(4, type=1,  parent=None)
+        self.layoutCanvas.addWidget(self.thread[4].canvas)
+        #self.thread[4].drawing.connect(self.managePlotters)
         self.thread[4].start()
-        #self.thread[5] = plotter.PlotterManager(self.canvas_detailed, self.figure_detailed, type=1,  parent=None)
+        #self.thread[5] = plotter.PlotterManager(5, type=2,  parent=None)
+        #self.layoutCanvas_2.addWidget(self.thread[5].canvas)
+        #self.thread[5].drawing.connect(self.managePlotters)
+        #self.thread[5].draw = False
         #self.thread[5].start()
+        print(str(self.thread))
+
+    def managePlotters(self, id):
+        if self.thread[4] is not None and self.thread[5] is not None:
+            self.thread[id].draw = False
+            if id == 4: self.thread[5].draw = True
+            elif id == 5: self.thread[4].draw = True
+
+    def stopPlotters(self):
+        #self.thread[4].draw = False
+        #self.thread[5].draw = False
+        pass
 
     def drawData(self, labels):
         self.thread[4].labels = labels
@@ -202,12 +216,13 @@ class AIWake_UI(QMainWindow):
     def startPostProcessing(self):
         self.currentThread[0] = False
         self.currentThread[1] = True
+        self.stopPlotters()
         self.thread[2] = ep.EmotionProc(parent=None)
         self.thread[2].postPbValue.connect(self.setPostProgress)
         self.thread[2].done.connect(self.startPostPreview)
         self.thread[2].updateStatus.connect(self.updateStatus)
         self.thread[2].updatePlotter.connect(self.drawData)
-        self.thread[4].proccessing = True
+        #self.thread[4].proccessing = True
         self.thread[2].start()
 
     def startPostPreview(self):
@@ -312,9 +327,13 @@ class AIWake_UI(QMainWindow):
             self.thread[3].pause = False
 
     def drawDataDetections(self, x_axis, y_axis, x_label="Frames", y_label="Detections", title="Data" ):
-        self.thread[4].x_axis = x_axis
-        self.thread[4].y_axis = y_axis
-        self.thread[4].plotDetections = True
+        #self.thread[4].x_axis = x_axis
+        #self.thread[4].y_axis = y_axis
+        #self.thread[4].plotDetections = True
+        #self.thread[5].x_axis = x_axis
+        #self.thread[5].y_axis = y_axis
+        #self.thread[5].plotDetections = True
+        pass
 
     def updateFrameSelector(self, frame):
         self.frameSelector.setValue(frame)

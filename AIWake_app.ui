@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1831</width>
-    <height>994</height>
+    <width>1478</width>
+    <height>793</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -153,762 +153,1285 @@ QPushButton:pressed {
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <widget class="QSplitter" name="splitter_6">
-    <property name="geometry">
-     <rect>
-      <x>1</x>
-      <y>0</y>
-      <width>1831</width>
-      <height>951</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-    <widget class="QWidget" name="gridLayoutWidget_14">
-     <layout class="QGridLayout" name="gridLayout_20">
+   <layout class="QGridLayout" name="gridLayout_29">
+    <item row="0" column="0">
+     <layout class="QGridLayout" name="gridLayout_21">
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
       <item row="0" column="0">
-       <widget class="QSplitter" name="splitter_5">
+       <widget class="QSplitter" name="splitter_6">
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Horizontal</enum>
         </property>
-        <widget class="QWidget" name="gridLayoutWidget_7">
-         <layout class="QGridLayout" name="gridLayout_11">
+        <widget class="QWidget" name="gridLayoutWidget_14">
+         <layout class="QGridLayout" name="gridLayout_20">
           <item row="0" column="0">
-           <widget class="QSplitter" name="splitter_3">
+           <widget class="QSplitter" name="splitter_5">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Vertical</enum>
             </property>
-            <widget class="QWidget" name="gridLayoutWidget_6">
-             <layout class="QGridLayout" name="gridLayout_10">
-              <item row="1" column="0">
-               <widget class="QFrame" name="frame_8">
-                <property name="mouseTracking">
-                 <bool>true</bool>
+            <widget class="QWidget" name="gridLayoutWidget_7">
+             <layout class="QGridLayout" name="gridLayout_11">
+              <item row="0" column="0">
+               <widget class="QSplitter" name="splitter_3">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
                 </property>
-                <property name="frameShape">
-                 <enum>QFrame::Box</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <widget class="QWidget" name="gridLayoutWidget_9">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>0</y>
-                   <width>671</width>
-                   <height>531</height>
-                  </rect>
-                 </property>
-                 <layout class="QGridLayout" name="gridLayout_13">
-                  <property name="leftMargin">
-                   <number>5</number>
-                  </property>
-                  <property name="topMargin">
-                   <number>5</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>5</number>
-                  </property>
-                  <property name="bottomMargin">
-                   <number>5</number>
-                  </property>
-                  <property name="spacing">
-                   <number>0</number>
-                  </property>
-                  <item row="7" column="0" colspan="3">
-                   <layout class="QHBoxLayout" name="horizontalLayout_2">
-                    <property name="spacing">
-                     <number>6</number>
-                    </property>
-                    <item>
-                     <spacer name="horizontalSpacer_6">
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
-                      </property>
-                      <property name="sizeHint" stdset="0">
-                       <size>
-                        <width>40</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                     </spacer>
-                    </item>
-                    <item>
-                     <widget class="QPushButton" name="backwardBt_to_processed">
-                      <property name="text">
-                       <string/>
-                      </property>
-                      <property name="icon">
-                       <iconset>
-                        <normaloff>Resources/app_img/icons/backwards_black.png</normaloff>Resources/app_img/icons/backwards_black.png</iconset>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QPushButton" name="backwardBt">
-                      <property name="text">
-                       <string/>
-                      </property>
-                      <property name="icon">
-                       <iconset>
-                        <normaloff>Resources/app_img/icons/backwards.png</normaloff>Resources/app_img/icons/backwards.png</iconset>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QPushButton" name="playBt">
-                      <property name="text">
-                       <string/>
-                      </property>
-                      <property name="icon">
-                       <iconset>
-                        <normaloff>Resources/app_img/icons/play.png</normaloff>Resources/app_img/icons/play.png</iconset>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QPushButton" name="pauseBt">
-                      <property name="text">
-                       <string/>
-                      </property>
-                      <property name="icon">
-                       <iconset>
-                        <normaloff>Resources/app_img/icons/pause.png</normaloff>Resources/app_img/icons/pause.png</iconset>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QPushButton" name="forwardBt_step1">
-                      <property name="text">
-                       <string/>
-                      </property>
-                      <property name="icon">
-                       <iconset>
-                        <normaloff>Resources/app_img/icons/forward.png</normaloff>Resources/app_img/icons/forward.png</iconset>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QPushButton" name="forwardBt_to_processed">
-                      <property name="text">
-                       <string/>
-                      </property>
-                      <property name="icon">
-                       <iconset>
-                        <normaloff>Resources/app_img/icons/70082.png</normaloff>Resources/app_img/icons/70082.png</iconset>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <spacer name="horizontalSpacer_7">
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
-                      </property>
-                      <property name="sizeHint" stdset="0">
-                       <size>
-                        <width>40</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                     </spacer>
-                    </item>
-                   </layout>
-                  </item>
-                  <item row="0" column="2">
-                   <widget class="QLineEdit" name="pathInText_step1">
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                    <property name="placeholderText">
-                     <string>Path to video file...</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="2">
-                   <spacer name="verticalSpacer_4">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                    <property name="sizeType">
-                     <enum>QSizePolicy::Fixed</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>20</width>
-                      <height>5</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item row="2" column="0" colspan="3">
-                   <widget class="QLabel" name="step1Video">
+                <widget class="QWidget" name="gridLayoutWidget_6">
+                 <layout class="QGridLayout" name="gridLayout_10">
+                  <item row="1" column="0">
+                   <widget class="QFrame" name="frame_8">
                     <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                       <horstretch>0</horstretch>
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>600</width>
-                      <height>400</height>
-                     </size>
-                    </property>
-                    <property name="frameShape">
-                     <enum>QFrame::NoFrame</enum>
-                    </property>
-                    <property name="lineWidth">
-                     <number>0</number>
-                    </property>
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="scaledContents">
+                    <property name="mouseTracking">
                      <bool>true</bool>
                     </property>
-                    <property name="indent">
-                     <number>1</number>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="0">
-                   <widget class="QPushButton" name="selectFile_step1">
-                    <property name="minimumSize">
-                     <size>
-                      <width>80</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Browse</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="5" column="0" colspan="3">
-                   <widget class="QSlider" name="frameSelector">
-                    <property name="minimum">
-                     <number>1</number>
-                    </property>
-                    <property name="maximum">
-                     <number>262</number>
-                    </property>
-                    <property name="pageStep">
-                     <number>0</number>
-                    </property>
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="1">
-                   <spacer name="horizontalSpacer_5">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                     <enum>QSizePolicy::Fixed</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>10</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item row="6" column="0">
-                   <spacer name="verticalSpacer_6">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                    <property name="sizeType">
-                     <enum>QSizePolicy::Fixed</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>20</width>
-                      <height>5</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item row="4" column="0">
-                   <spacer name="verticalSpacer_5">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                    <property name="sizeType">
-                     <enum>QSizePolicy::Fixed</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>20</width>
-                      <height>5</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </widget>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="gridLayoutWidget_5">
-             <layout class="QGridLayout" name="gridLayout_9">
-              <item row="0" column="0">
-               <widget class="QSplitter" name="splitter_2">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <widget class="QWidget" name="gridLayoutWidget_3">
-                 <layout class="QGridLayout" name="gridLayout_7">
-                  <item row="0" column="0">
-                   <widget class="QFrame" name="frame_7">
                     <property name="frameShape">
                      <enum>QFrame::Box</enum>
                     </property>
                     <property name="frameShadow">
                      <enum>QFrame::Raised</enum>
                     </property>
-                    <widget class="QFrame" name="frame_2">
-                     <property name="geometry">
-                      <rect>
-                       <x>60</x>
-                       <y>70</y>
-                       <width>16</width>
-                       <height>16</height>
-                      </rect>
-                     </property>
-                     <property name="frameShape">
-                      <enum>QFrame::WinPanel</enum>
-                     </property>
-                     <property name="frameShadow">
-                      <enum>QFrame::Plain</enum>
-                     </property>
-                    </widget>
-                    <widget class="QWidget" name="horizontalLayoutWidget_3">
-                     <property name="geometry">
-                      <rect>
-                       <x>10</x>
-                       <y>10</y>
-                       <width>961</width>
-                       <height>81</height>
-                      </rect>
-                     </property>
-                     <layout class="QGridLayout" name="gridLayout_3">
-                      <item row="3" column="0">
-                       <widget class="QLabel" name="label_19">
-                        <property name="text">
-                         <string>STATUS:</string>
-                        </property>
-                        <property name="textFormat">
-                         <enum>Qt::RichText</enum>
-                        </property>
-                        <property name="scaledContents">
-                         <bool>false</bool>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="3" column="1">
-                       <widget class="QLabel" name="statusColor">
-                        <property name="minimumSize">
-                         <size>
-                          <width>20</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>20</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                        <property name="frameShape">
-                         <enum>QFrame::Box</enum>
-                        </property>
-                        <property name="frameShadow">
-                         <enum>QFrame::Sunken</enum>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="3" column="4">
-                       <spacer name="horizontalSpacer">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>40</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                      <item row="0" column="0" colspan="2">
-                       <widget class="QLabel" name="label_18">
-                        <property name="text">
-                         <string>Processing rate:</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="0" colspan="7">
-                       <widget class="QProgressBar" name="postPb">
-                        <property name="value">
-                         <number>0</number>
-                        </property>
-                        <property name="alignment">
-                         <set>Qt::AlignCenter</set>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="3" column="2">
-                       <widget class="QLabel" name="statusText">
-                        <property name="text">
-                         <string>Waiting for video source...</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="3" column="3">
-                       <spacer name="horizontalSpacer_4">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>40</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                      <item row="0" column="2">
-                       <widget class="QComboBox" name="VideoSpeed">
-                        <property name="minimumSize">
-                         <size>
-                          <width>100</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>100</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                        <property name="currentText">
-                         <string/>
-                        </property>
-                        <property name="placeholderText">
-                         <string>MAX</string>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
+                    <layout class="QGridLayout" name="gridLayout_17">
+                     <item row="0" column="2">
+                      <spacer name="horizontalSpacer_16">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item row="0" column="0">
+                      <spacer name="horizontalSpacer_15">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item row="0" column="1">
+                      <layout class="QGridLayout" name="gridLayout_13">
+                       <property name="leftMargin">
+                        <number>5</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>5</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>5</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>5</number>
+                       </property>
+                       <property name="spacing">
+                        <number>0</number>
+                       </property>
+                       <item row="0" column="0">
+                        <widget class="QPushButton" name="selectFile_step1">
+                         <property name="minimumSize">
+                          <size>
+                           <width>80</width>
+                           <height>0</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Browse</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="1">
+                        <spacer name="horizontalSpacer_5">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeType">
+                          <enum>QSizePolicy::Fixed</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>10</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="5" column="0">
+                        <spacer name="verticalSpacer_5">
+                         <property name="orientation">
+                          <enum>Qt::Vertical</enum>
+                         </property>
+                         <property name="sizeType">
+                          <enum>QSizePolicy::Fixed</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>5</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="2" column="0" colspan="3">
+                        <widget class="QLabel" name="step1Video">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>720</width>
+                           <height>480</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>720</width>
+                           <height>480</height>
+                          </size>
+                         </property>
+                         <property name="frameShape">
+                          <enum>QFrame::NoFrame</enum>
+                         </property>
+                         <property name="lineWidth">
+                          <number>0</number>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="scaledContents">
+                          <bool>true</bool>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
+                         </property>
+                         <property name="indent">
+                          <number>1</number>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="7" column="0">
+                        <spacer name="verticalSpacer_6">
+                         <property name="orientation">
+                          <enum>Qt::Vertical</enum>
+                         </property>
+                         <property name="sizeType">
+                          <enum>QSizePolicy::Fixed</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>5</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="1" column="2">
+                        <spacer name="verticalSpacer_4">
+                         <property name="orientation">
+                          <enum>Qt::Vertical</enum>
+                         </property>
+                         <property name="sizeType">
+                          <enum>QSizePolicy::Fixed</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>5</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="6" column="0" colspan="3">
+                        <widget class="QSlider" name="frameSelector">
+                         <property name="minimum">
+                          <number>1</number>
+                         </property>
+                         <property name="maximum">
+                          <number>262</number>
+                         </property>
+                         <property name="pageStep">
+                          <number>0</number>
+                         </property>
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="2">
+                        <widget class="QLineEdit" name="pathInText_step1">
+                         <property name="readOnly">
+                          <bool>true</bool>
+                         </property>
+                         <property name="placeholderText">
+                          <string>Path to video file...</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="8" column="0" colspan="3">
+                        <layout class="QHBoxLayout" name="horizontalLayout_2">
+                         <property name="spacing">
+                          <number>6</number>
+                         </property>
+                         <item>
+                          <spacer name="horizontalSpacer_6">
+                           <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>40</width>
+                             <height>20</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="backwardBt_to_processed">
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="icon">
+                            <iconset>
+                             <normaloff>Resources/app_img/icons/backwards_black.png</normaloff>Resources/app_img/icons/backwards_black.png</iconset>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="backwardBt">
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="icon">
+                            <iconset>
+                             <normaloff>Resources/app_img/icons/backwards.png</normaloff>Resources/app_img/icons/backwards.png</iconset>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="playBt">
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="icon">
+                            <iconset>
+                             <normaloff>Resources/app_img/icons/play.png</normaloff>Resources/app_img/icons/play.png</iconset>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="pauseBt">
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="icon">
+                            <iconset>
+                             <normaloff>Resources/app_img/icons/pause.png</normaloff>Resources/app_img/icons/pause.png</iconset>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="forwardBt_step1">
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="icon">
+                            <iconset>
+                             <normaloff>Resources/app_img/icons/forward.png</normaloff>Resources/app_img/icons/forward.png</iconset>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QPushButton" name="forwardBt_to_processed">
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="icon">
+                            <iconset>
+                             <normaloff>Resources/app_img/icons/70082.png</normaloff>Resources/app_img/icons/70082.png</iconset>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <spacer name="horizontalSpacer_7">
+                           <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>40</width>
+                             <height>20</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                        </layout>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
                    </widget>
                   </item>
                  </layout>
                 </widget>
-                <widget class="QWidget" name="gridLayoutWidget_4">
-                 <layout class="QGridLayout" name="gridLayout_8">
+                <widget class="QWidget" name="gridLayoutWidget_5">
+                 <layout class="QGridLayout" name="gridLayout_9">
                   <item row="0" column="0">
-                   <widget class="QSplitter" name="splitter">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="baseSize">
-                     <size>
-                      <width>0</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="layoutDirection">
-                     <enum>Qt::LeftToRight</enum>
-                    </property>
+                   <widget class="QSplitter" name="splitter_2">
                     <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
+                     <enum>Qt::Vertical</enum>
                     </property>
-                    <property name="opaqueResize">
-                     <bool>true</bool>
-                    </property>
-                    <property name="handleWidth">
-                     <number>5</number>
-                    </property>
-                    <property name="childrenCollapsible">
-                     <bool>false</bool>
-                    </property>
-                    <widget class="QWidget" name="gridLayoutWidget">
-                     <layout class="QGridLayout" name="gridLayout_5">
-                      <property name="sizeConstraint">
-                       <enum>QLayout::SetNoConstraint</enum>
-                      </property>
+                    <widget class="QWidget" name="gridLayoutWidget_3">
+                     <layout class="QGridLayout" name="gridLayout_7">
                       <item row="0" column="0">
-                       <widget class="QFrame" name="frame_4">
-                        <property name="styleSheet">
-                         <string notr="true">background-image: url(:/UIresources/app_img/icons/pillow.png);</string>
-                        </property>
+                       <widget class="QFrame" name="frame_7">
                         <property name="frameShape">
                          <enum>QFrame::Box</enum>
                         </property>
                         <property name="frameShadow">
                          <enum>QFrame::Raised</enum>
                         </property>
-                        <widget class="QWidget" name="verticalLayoutWidget_3">
-                         <property name="geometry">
-                          <rect>
-                           <x>5</x>
-                           <y>1</y>
-                           <width>431</width>
-                           <height>421</height>
-                          </rect>
-                         </property>
-                         <layout class="QGridLayout" name="gridLayout_2">
+                        <layout class="QGridLayout" name="gridLayout_23">
+                         <item row="1" column="0" rowspan="2" colspan="2">
+                          <layout class="QGridLayout" name="gridLayout_3">
+                           <item row="3" column="0">
+                            <widget class="QLabel" name="label_19">
+                             <property name="text">
+                              <string>STATUS:</string>
+                             </property>
+                             <property name="textFormat">
+                              <enum>Qt::RichText</enum>
+                             </property>
+                             <property name="scaledContents">
+                              <bool>false</bool>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="3" column="1">
+                            <widget class="QLabel" name="statusColor">
+                             <property name="minimumSize">
+                              <size>
+                               <width>20</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>20</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                             <property name="frameShape">
+                              <enum>QFrame::Box</enum>
+                             </property>
+                             <property name="frameShadow">
+                              <enum>QFrame::Sunken</enum>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="3" column="4">
+                            <spacer name="horizontalSpacer">
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>40</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                           <item row="0" column="0" colspan="2">
+                            <widget class="QLabel" name="label_18">
+                             <property name="text">
+                              <string>Processing rate:</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="2" column="0" colspan="7">
+                            <widget class="QProgressBar" name="postPb">
+                             <property name="value">
+                              <number>0</number>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignCenter</set>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="3" column="2">
+                            <widget class="QLabel" name="statusText">
+                             <property name="text">
+                              <string>Waiting for video source...</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="3" column="3">
+                            <spacer name="horizontalSpacer_4">
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>40</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                           <item row="0" column="2">
+                            <widget class="QComboBox" name="VideoSpeed">
+                             <property name="minimumSize">
+                              <size>
+                               <width>100</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>100</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                             <property name="currentText">
+                              <string/>
+                             </property>
+                             <property name="placeholderText">
+                              <string>MAX</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </item>
+                         <item row="2" column="1">
+                          <widget class="QFrame" name="frame_2">
+                           <property name="frameShape">
+                            <enum>QFrame::WinPanel</enum>
+                           </property>
+                           <property name="frameShadow">
+                            <enum>QFrame::Plain</enum>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="0">
+                          <spacer name="verticalSpacer_15">
+                           <property name="orientation">
+                            <enum>Qt::Vertical</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>20</width>
+                             <height>5</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                         <item row="3" column="0">
+                          <spacer name="verticalSpacer_16">
+                           <property name="orientation">
+                            <enum>Qt::Vertical</enum>
+                           </property>
+                           <property name="sizeHint" stdset="0">
+                            <size>
+                             <width>20</width>
+                             <height>5</height>
+                            </size>
+                           </property>
+                          </spacer>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="gridLayoutWidget_4">
+                     <layout class="QGridLayout" name="gridLayout_8">
+                      <item row="0" column="0">
+                       <widget class="QSplitter" name="splitter">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="baseSize">
+                         <size>
+                          <width>0</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="layoutDirection">
+                         <enum>Qt::LeftToRight</enum>
+                        </property>
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="opaqueResize">
+                         <bool>true</bool>
+                        </property>
+                        <property name="handleWidth">
+                         <number>5</number>
+                        </property>
+                        <property name="childrenCollapsible">
+                         <bool>false</bool>
+                        </property>
+                        <widget class="QWidget" name="gridLayoutWidget">
+                         <layout class="QGridLayout" name="gridLayout_5">
                           <property name="sizeConstraint">
                            <enum>QLayout::SetNoConstraint</enum>
                           </property>
-                          <property name="leftMargin">
-                           <number>10</number>
-                          </property>
-                          <property name="rightMargin">
-                           <number>10</number>
-                          </property>
-                          <item row="7" column="0">
-                           <widget class="QLabel" name="label_2">
-                            <property name="maximumSize">
-                             <size>
-                              <width>16777215</width>
-                              <height>10</height>
-                             </size>
-                            </property>
-                            <property name="text">
-                             <string>Threshold size</string>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="6" column="0" colspan="2">
-                           <widget class="QSlider" name="detection_ratio">
-                            <property name="maximumSize">
-                             <size>
-                              <width>16777215</width>
-                              <height>20</height>
-                             </size>
-                            </property>
-                            <property name="maximum">
-                             <number>100</number>
-                            </property>
-                            <property name="singleStep">
-                             <number>1</number>
-                            </property>
-                            <property name="sliderPosition">
-                             <number>40</number>
-                            </property>
-                            <property name="orientation">
-                             <enum>Qt::Horizontal</enum>
-                            </property>
-                            <property name="tickPosition">
-                             <enum>QSlider::TicksBelow</enum>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="6" column="2">
-                           <widget class="QLabel" name="acceptanceLbl">
-                            <property name="minimumSize">
-                             <size>
-                              <width>50</width>
-                              <height>0</height>
-                             </size>
-                            </property>
-                            <property name="text">
-                             <string>0.0</string>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="8" column="2">
-                           <widget class="QLabel" name="thresholdLbl">
-                            <property name="minimumSize">
-                             <size>
-                              <width>50</width>
-                              <height>0</height>
-                             </size>
-                            </property>
-                            <property name="text">
-                             <string>0.0</string>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="8" column="0" colspan="2">
-                           <widget class="QSlider" name="hb_detection_prop">
-                            <property name="maximumSize">
-                             <size>
-                              <width>16777215</width>
-                              <height>20</height>
-                             </size>
-                            </property>
-                            <property name="maximum">
-                             <number>100</number>
-                            </property>
-                            <property name="value">
-                             <number>25</number>
-                            </property>
-                            <property name="orientation">
-                             <enum>Qt::Horizontal</enum>
-                            </property>
-                            <property name="tickPosition">
-                             <enum>QSlider::TicksBelow</enum>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="4" column="0">
-                           <spacer name="verticalSpacer_3">
-                            <property name="orientation">
-                             <enum>Qt::Vertical</enum>
-                            </property>
-                            <property name="sizeType">
-                             <enum>QSizePolicy::Fixed</enum>
-                            </property>
-                            <property name="sizeHint" stdset="0">
-                             <size>
-                              <width>20</width>
-                              <height>20</height>
-                             </size>
-                            </property>
-                           </spacer>
-                          </item>
-                          <item row="11" column="0">
-                           <spacer name="verticalSpacer_2">
-                            <property name="orientation">
-                             <enum>Qt::Vertical</enum>
-                            </property>
-                            <property name="sizeHint" stdset="0">
-                             <size>
-                              <width>20</width>
-                              <height>40</height>
-                             </size>
-                            </property>
-                           </spacer>
-                          </item>
-                          <item row="2" column="0">
-                           <widget class="QCheckBox" name="showBoxesCb">
-                            <property name="text">
-                             <string>Show detection threshold</string>
-                            </property>
-                            <property name="checked">
-                             <bool>true</bool>
-                            </property>
-                           </widget>
-                          </item>
                           <item row="0" column="0">
-                           <widget class="QCheckBox" name="showDetailedCb">
-                            <property name="text">
-                             <string>Show detected faces</string>
-                            </property>
-                            <property name="checked">
+                           <widget class="QFrame" name="frame_4">
+                            <property name="autoFillBackground">
                              <bool>true</bool>
                             </property>
+                            <property name="styleSheet">
+                             <string notr="true">background-image: url(:/UIresources/app_img/icons/pillow.png);</string>
+                            </property>
+                            <property name="frameShape">
+                             <enum>QFrame::Box</enum>
+                            </property>
+                            <property name="frameShadow">
+                             <enum>QFrame::Raised</enum>
+                            </property>
+                            <layout class="QGridLayout" name="gridLayout_18">
+                             <item row="0" column="0">
+                              <layout class="QGridLayout" name="gridLayout_2">
+                               <property name="sizeConstraint">
+                                <enum>QLayout::SetNoConstraint</enum>
+                               </property>
+                               <property name="leftMargin">
+                                <number>10</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>10</number>
+                               </property>
+                               <item row="7" column="0">
+                                <widget class="QLabel" name="label_2">
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>10</height>
+                                  </size>
+                                 </property>
+                                 <property name="text">
+                                  <string>Threshold size</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="6" column="0" colspan="2">
+                                <widget class="QSlider" name="detection_ratio">
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>20</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximum">
+                                  <number>100</number>
+                                 </property>
+                                 <property name="singleStep">
+                                  <number>1</number>
+                                 </property>
+                                 <property name="sliderPosition">
+                                  <number>40</number>
+                                 </property>
+                                 <property name="orientation">
+                                  <enum>Qt::Horizontal</enum>
+                                 </property>
+                                 <property name="tickPosition">
+                                  <enum>QSlider::TicksBelow</enum>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="6" column="2">
+                                <widget class="QLabel" name="acceptanceLbl">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>50</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="text">
+                                  <string>0.0</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="8" column="2">
+                                <widget class="QLabel" name="thresholdLbl">
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>50</width>
+                                   <height>0</height>
+                                  </size>
+                                 </property>
+                                 <property name="text">
+                                  <string>0.0</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="8" column="0" colspan="2">
+                                <widget class="QSlider" name="hb_detection_prop">
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>20</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximum">
+                                  <number>100</number>
+                                 </property>
+                                 <property name="value">
+                                  <number>25</number>
+                                 </property>
+                                 <property name="orientation">
+                                  <enum>Qt::Horizontal</enum>
+                                 </property>
+                                 <property name="tickPosition">
+                                  <enum>QSlider::TicksBelow</enum>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="4" column="0">
+                                <spacer name="verticalSpacer_3">
+                                 <property name="orientation">
+                                  <enum>Qt::Vertical</enum>
+                                 </property>
+                                 <property name="sizeType">
+                                  <enum>QSizePolicy::Fixed</enum>
+                                 </property>
+                                 <property name="sizeHint" stdset="0">
+                                  <size>
+                                   <width>20</width>
+                                   <height>20</height>
+                                  </size>
+                                 </property>
+                                </spacer>
+                               </item>
+                               <item row="11" column="0">
+                                <spacer name="verticalSpacer_2">
+                                 <property name="orientation">
+                                  <enum>Qt::Vertical</enum>
+                                 </property>
+                                 <property name="sizeHint" stdset="0">
+                                  <size>
+                                   <width>20</width>
+                                   <height>40</height>
+                                  </size>
+                                 </property>
+                                </spacer>
+                               </item>
+                               <item row="2" column="0">
+                                <widget class="QCheckBox" name="showBoxesCb">
+                                 <property name="text">
+                                  <string>Show detection threshold</string>
+                                 </property>
+                                 <property name="checked">
+                                  <bool>true</bool>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="0" column="0">
+                                <widget class="QCheckBox" name="showDetailedCb">
+                                 <property name="text">
+                                  <string>Show detected faces</string>
+                                 </property>
+                                 <property name="checked">
+                                  <bool>true</bool>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="5" column="0">
+                                <widget class="QLabel" name="label">
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>10</height>
+                                  </size>
+                                 </property>
+                                 <property name="text">
+                                  <string>Acceptance value</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="10" column="0" colspan="3">
+                                <layout class="QHBoxLayout" name="horizontalLayout">
+                                 <item>
+                                  <spacer name="horizontalSpacer_3">
+                                   <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>10</width>
+                                     <height>20</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item>
+                                  <widget class="QPushButton" name="finishStep1Bt">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>80</width>
+                                     <height>40</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true"/>
+                                   </property>
+                                   <property name="text">
+                                    <string>Save data</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item>
+                                  <widget class="QPushButton" name="deleteAllRejected">
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>80</width>
+                                     <height>40</height>
+                                    </size>
+                                   </property>
+                                   <property name="text">
+                                    <string>Delete rejected</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item>
+                                  <spacer name="horizontalSpacer_2">
+                                   <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>10</width>
+                                     <height>20</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                </layout>
+                               </item>
+                               <item row="9" column="0">
+                                <spacer name="verticalSpacer">
+                                 <property name="orientation">
+                                  <enum>Qt::Vertical</enum>
+                                 </property>
+                                 <property name="sizeHint" stdset="0">
+                                  <size>
+                                   <width>20</width>
+                                   <height>40</height>
+                                  </size>
+                                 </property>
+                                </spacer>
+                               </item>
+                               <item row="3" column="0">
+                                <widget class="QCheckBox" name="deleteAutomatCb">
+                                 <property name="text">
+                                  <string>Delete all rejected faces automatically</string>
+                                 </property>
+                                 <property name="checked">
+                                  <bool>false</bool>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </item>
+                            </layout>
                            </widget>
                           </item>
-                          <item row="5" column="0">
-                           <widget class="QLabel" name="label">
-                            <property name="maximumSize">
-                             <size>
-                              <width>16777215</width>
-                              <height>10</height>
-                             </size>
-                            </property>
-                            <property name="text">
-                             <string>Acceptance value</string>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="10" column="0" colspan="3">
-                           <layout class="QHBoxLayout" name="horizontalLayout">
-                            <item>
-                             <spacer name="horizontalSpacer_3">
-                              <property name="orientation">
-                               <enum>Qt::Horizontal</enum>
-                              </property>
-                              <property name="sizeHint" stdset="0">
-                               <size>
-                                <width>40</width>
-                                <height>20</height>
-                               </size>
-                              </property>
-                             </spacer>
-                            </item>
-                            <item>
-                             <widget class="QPushButton" name="finishStep1Bt">
-                              <property name="minimumSize">
-                               <size>
-                                <width>80</width>
-                                <height>40</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true"/>
-                              </property>
-                              <property name="text">
-                               <string>Save data</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item>
-                             <widget class="QPushButton" name="deleteAllRejected">
-                              <property name="minimumSize">
-                               <size>
-                                <width>80</width>
-                                <height>40</height>
-                               </size>
-                              </property>
-                              <property name="text">
-                               <string>Delete rejected</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item>
-                             <spacer name="horizontalSpacer_2">
-                              <property name="orientation">
-                               <enum>Qt::Horizontal</enum>
-                              </property>
-                              <property name="sizeHint" stdset="0">
-                               <size>
-                                <width>40</width>
-                                <height>20</height>
-                               </size>
-                              </property>
-                             </spacer>
-                            </item>
-                           </layout>
-                          </item>
-                          <item row="9" column="0">
-                           <spacer name="verticalSpacer">
-                            <property name="orientation">
-                             <enum>Qt::Vertical</enum>
-                            </property>
-                            <property name="sizeHint" stdset="0">
-                             <size>
-                              <width>20</width>
-                              <height>40</height>
-                             </size>
-                            </property>
-                           </spacer>
-                          </item>
-                          <item row="3" column="0">
-                           <widget class="QCheckBox" name="deleteAutomatCb">
-                            <property name="text">
-                             <string>Delete all rejected faces automatically</string>
-                            </property>
-                            <property name="checked">
+                         </layout>
+                        </widget>
+                        <widget class="QWidget" name="gridLayoutWidget_2">
+                         <layout class="QGridLayout" name="gridLayout_6">
+                          <item row="0" column="0">
+                           <widget class="QTabWidget" name="tabWidget">
+                            <property name="autoFillBackground">
                              <bool>false</bool>
                             </property>
+                            <property name="tabShape">
+                             <enum>QTabWidget::Rounded</enum>
+                            </property>
+                            <property name="currentIndex">
+                             <number>1</number>
+                            </property>
+                            <widget class="QWidget" name="tab">
+                             <property name="autoFillBackground">
+                              <bool>false</bool>
+                             </property>
+                             <attribute name="title">
+                              <string>Faces</string>
+                             </attribute>
+                             <layout class="QGridLayout" name="gridLayout_24">
+                              <item row="0" column="0">
+                               <widget class="QFrame" name="frame_6">
+                                <property name="frameShape">
+                                 <enum>QFrame::Box</enum>
+                                </property>
+                                <property name="frameShadow">
+                                 <enum>QFrame::Raised</enum>
+                                </property>
+                                <widget class="QLabel" name="PreviewFaceLbl">
+                                 <property name="geometry">
+                                  <rect>
+                                   <x>10</x>
+                                   <y>10</y>
+                                   <width>221</width>
+                                   <height>211</height>
+                                  </rect>
+                                 </property>
+                                 <property name="frameShape">
+                                  <enum>QFrame::Box</enum>
+                                 </property>
+                                 <property name="text">
+                                  <string/>
+                                 </property>
+                                 <property name="scaledContents">
+                                  <bool>true</bool>
+                                 </property>
+                                </widget>
+                                <widget class="QPlainTextEdit" name="imgText">
+                                 <property name="geometry">
+                                  <rect>
+                                   <x>10</x>
+                                   <y>230</y>
+                                   <width>511</width>
+                                   <height>151</height>
+                                  </rect>
+                                 </property>
+                                 <property name="autoFillBackground">
+                                  <bool>false</bool>
+                                 </property>
+                                 <property name="readOnly">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="plainText">
+                                  <string/>
+                                 </property>
+                                 <property name="overwriteMode">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="backgroundVisible">
+                                  <bool>false</bool>
+                                 </property>
+                                </widget>
+                                <widget class="QLabel" name="label_17">
+                                 <property name="geometry">
+                                  <rect>
+                                   <x>240</x>
+                                   <y>10</y>
+                                   <width>49</width>
+                                   <height>16</height>
+                                  </rect>
+                                 </property>
+                                 <property name="text">
+                                  <string>Face ID:</string>
+                                 </property>
+                                </widget>
+                                <widget class="QComboBox" name="FacePicker">
+                                 <property name="geometry">
+                                  <rect>
+                                   <x>290</x>
+                                   <y>10</y>
+                                   <width>81</width>
+                                   <height>22</height>
+                                  </rect>
+                                 </property>
+                                 <property name="currentText">
+                                  <string/>
+                                 </property>
+                                 <property name="placeholderText">
+                                  <string>Choose...</string>
+                                 </property>
+                                </widget>
+                                <widget class="QCheckBox" name="showSelectedOnlyCb">
+                                 <property name="geometry">
+                                  <rect>
+                                   <x>240</x>
+                                   <y>200</y>
+                                   <width>151</width>
+                                   <height>20</height>
+                                  </rect>
+                                 </property>
+                                 <property name="text">
+                                  <string>Only show selected face</string>
+                                 </property>
+                                </widget>
+                                <widget class="QPushButton" name="deleteFaceFrameBt">
+                                 <property name="geometry">
+                                  <rect>
+                                   <x>240</x>
+                                   <y>170</y>
+                                   <width>80</width>
+                                   <height>24</height>
+                                  </rect>
+                                 </property>
+                                 <property name="text">
+                                  <string>Delete</string>
+                                 </property>
+                                </widget>
+                                <widget class="QPushButton" name="deleteBt_2">
+                                 <property name="geometry">
+                                  <rect>
+                                   <x>240</x>
+                                   <y>60</y>
+                                   <width>80</width>
+                                   <height>24</height>
+                                  </rect>
+                                 </property>
+                                 <property name="text">
+                                  <string>Accept all</string>
+                                 </property>
+                                </widget>
+                                <widget class="QPushButton" name="deleteBt">
+                                 <property name="geometry">
+                                  <rect>
+                                   <x>330</x>
+                                   <y>60</y>
+                                   <width>80</width>
+                                   <height>24</height>
+                                  </rect>
+                                 </property>
+                                 <property name="text">
+                                  <string>Delete all</string>
+                                 </property>
+                                </widget>
+                                <widget class="QLabel" name="label_20">
+                                 <property name="geometry">
+                                  <rect>
+                                   <x>240</x>
+                                   <y>140</y>
+                                   <width>131</width>
+                                   <height>16</height>
+                                  </rect>
+                                 </property>
+                                 <property name="text">
+                                  <string>Frame actions</string>
+                                 </property>
+                                </widget>
+                                <widget class="Line" name="line_4">
+                                 <property name="geometry">
+                                  <rect>
+                                   <x>240</x>
+                                   <y>100</y>
+                                   <width>271</width>
+                                   <height>4</height>
+                                  </rect>
+                                 </property>
+                                 <property name="orientation">
+                                  <enum>Qt::Horizontal</enum>
+                                 </property>
+                                </widget>
+                               </widget>
+                              </item>
+                             </layout>
+                            </widget>
+                            <widget class="QWidget" name="tab_2">
+                             <property name="autoFillBackground">
+                              <bool>false</bool>
+                             </property>
+                             <attribute name="title">
+                              <string>Moods</string>
+                             </attribute>
+                             <widget class="QFrame" name="frame_10">
+                              <property name="geometry">
+                               <rect>
+                                <x>-4</x>
+                                <y>0</y>
+                                <width>461</width>
+                                <height>611</height>
+                               </rect>
+                              </property>
+                              <property name="sizePolicy">
+                               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                                <horstretch>0</horstretch>
+                                <verstretch>0</verstretch>
+                               </sizepolicy>
+                              </property>
+                              <property name="frameShape">
+                               <enum>QFrame::Box</enum>
+                              </property>
+                              <property name="frameShadow">
+                               <enum>QFrame::Raised</enum>
+                              </property>
+                              <layout class="QGridLayout" name="gridLayout_25">
+                               <property name="sizeConstraint">
+                                <enum>QLayout::SetNoConstraint</enum>
+                               </property>
+                               <item row="1" column="0">
+                                <spacer name="verticalSpacer_7">
+                                 <property name="orientation">
+                                  <enum>Qt::Vertical</enum>
+                                 </property>
+                                 <property name="sizeHint" stdset="0">
+                                  <size>
+                                   <width>20</width>
+                                   <height>40</height>
+                                  </size>
+                                 </property>
+                                </spacer>
+                               </item>
+                               <item row="0" column="0">
+                                <layout class="QGridLayout" name="gridLayout">
+                                 <property name="sizeConstraint">
+                                  <enum>QLayout::SetNoConstraint</enum>
+                                 </property>
+                                 <property name="topMargin">
+                                  <number>0</number>
+                                 </property>
+                                 <property name="spacing">
+                                  <number>6</number>
+                                 </property>
+                                 <item row="0" column="4">
+                                  <widget class="QComboBox" name="FacePicker_pos">
+                                   <property name="sizePolicy">
+                                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                                     <horstretch>0</horstretch>
+                                     <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                   </property>
+                                   <property name="maximumSize">
+                                    <size>
+                                     <width>100</width>
+                                     <height>16777215</height>
+                                    </size>
+                                   </property>
+                                   <property name="currentText">
+                                    <string/>
+                                   </property>
+                                   <property name="placeholderText">
+                                    <string>Choose...</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="0" column="3">
+                                  <widget class="QLabel" name="label_21">
+                                   <property name="text">
+                                    <string>Face ID:</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="0" column="0">
+                                  <spacer name="horizontalSpacer_13">
+                                   <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>40</width>
+                                     <height>20</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item row="2" column="2">
+                                  <spacer name="horizontalSpacer_12">
+                                   <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                   </property>
+                                   <property name="sizeHint" stdset="0">
+                                    <size>
+                                     <width>40</width>
+                                     <height>20</height>
+                                    </size>
+                                   </property>
+                                  </spacer>
+                                 </item>
+                                 <item row="2" column="3">
+                                  <layout class="QGridLayout" name="gridLayout_4">
+                                   <item row="0" column="0">
+                                    <widget class="QPushButton" name="updateMoodFrame">
+                                     <property name="enabled">
+                                      <bool>true</bool>
+                                     </property>
+                                     <property name="sizePolicy">
+                                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                                       <horstretch>0</horstretch>
+                                       <verstretch>0</verstretch>
+                                      </sizepolicy>
+                                     </property>
+                                     <property name="layoutDirection">
+                                      <enum>Qt::LeftToRight</enum>
+                                     </property>
+                                     <property name="autoFillBackground">
+                                      <bool>false</bool>
+                                     </property>
+                                     <property name="styleSheet">
+                                      <string notr="true"/>
+                                     </property>
+                                     <property name="text">
+                                      <string>Update</string>
+                                     </property>
+                                     <property name="flat">
+                                      <bool>false</bool>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="0" column="1">
+                                    <widget class="QPushButton" name="deleteFaceFrameMood">
+                                     <property name="sizePolicy">
+                                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                                       <horstretch>0</horstretch>
+                                       <verstretch>0</verstretch>
+                                      </sizepolicy>
+                                     </property>
+                                     <property name="text">
+                                      <string>Delete</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="1" column="1">
+                                    <widget class="QPushButton" name="deleteMoodAll">
+                                     <property name="sizePolicy">
+                                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                                       <horstretch>0</horstretch>
+                                       <verstretch>0</verstretch>
+                                      </sizepolicy>
+                                     </property>
+                                     <property name="text">
+                                      <string>Delete all</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                   <item row="1" column="0">
+                                    <widget class="QPushButton" name="updateMoodAll">
+                                     <property name="sizePolicy">
+                                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                                       <horstretch>0</horstretch>
+                                       <verstretch>0</verstretch>
+                                      </sizepolicy>
+                                     </property>
+                                     <property name="text">
+                                      <string>Update all</string>
+                                     </property>
+                                    </widget>
+                                   </item>
+                                  </layout>
+                                 </item>
+                                 <item row="4" column="1" colspan="4">
+                                  <widget class="QPlainTextEdit" name="imgText_3">
+                                   <property name="autoFillBackground">
+                                    <bool>false</bool>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">max-height: 180px;
+border: 0px solid white;
+background: #7A7A7A;
+color: white;</string>
+                                   </property>
+                                   <property name="readOnly">
+                                    <bool>true</bool>
+                                   </property>
+                                   <property name="plainText">
+                                    <string/>
+                                   </property>
+                                   <property name="overwriteMode">
+                                    <bool>true</bool>
+                                   </property>
+                                   <property name="backgroundVisible">
+                                    <bool>false</bool>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="0" column="1" rowspan="4">
+                                  <widget class="QLabel" name="PreviewFaceLblMood">
+                                   <property name="sizePolicy">
+                                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                                     <horstretch>0</horstretch>
+                                     <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                   </property>
+                                   <property name="minimumSize">
+                                    <size>
+                                     <width>200</width>
+                                     <height>200</height>
+                                    </size>
+                                   </property>
+                                   <property name="styleSheet">
+                                    <string notr="true">max-width: 200px;
+max-height: 200px;
+min-widht: 200px;
+min-height: 200px;</string>
+                                   </property>
+                                   <property name="frameShape">
+                                    <enum>QFrame::Box</enum>
+                                   </property>
+                                   <property name="text">
+                                    <string/>
+                                   </property>
+                                   <property name="scaledContents">
+                                    <bool>true</bool>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="1" column="4">
+                                  <widget class="QComboBox" name="moodSelector">
+                                   <property name="currentText">
+                                    <string/>
+                                   </property>
+                                   <property name="placeholderText">
+                                    <string>MAX</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="3" column="3">
+                                  <widget class="QCheckBox" name="showSelectedOnly_pos">
+                                   <property name="text">
+                                    <string>Only show selected face</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item row="1" column="3">
+                                  <widget class="QLabel" name="label_22">
+                                   <property name="text">
+                                    <string>Current mood (frame):</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                </layout>
+                               </item>
+                               <item row="0" column="1">
+                                <spacer name="horizontalSpacer_14">
+                                 <property name="orientation">
+                                  <enum>Qt::Horizontal</enum>
+                                 </property>
+                                 <property name="sizeHint" stdset="0">
+                                  <size>
+                                   <width>40</width>
+                                   <height>20</height>
+                                  </size>
+                                 </property>
+                                </spacer>
+                               </item>
+                              </layout>
+                             </widget>
+                            </widget>
                            </widget>
                           </item>
                          </layout>
@@ -917,423 +1440,257 @@ QPushButton:pressed {
                       </item>
                      </layout>
                     </widget>
-                    <widget class="QWidget" name="gridLayoutWidget_2">
-                     <layout class="QGridLayout" name="gridLayout_6">
-                      <item row="0" column="0">
-                       <widget class="QTabWidget" name="tabWidget">
-                        <property name="autoFillBackground">
-                         <bool>false</bool>
-                        </property>
-                        <property name="tabShape">
-                         <enum>QTabWidget::Rounded</enum>
-                        </property>
-                        <property name="currentIndex">
-                         <number>0</number>
-                        </property>
-                        <widget class="QWidget" name="tab">
-                         <property name="autoFillBackground">
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="gridLayoutWidget_13">
+             <layout class="QGridLayout" name="gridLayout_19">
+              <item row="0" column="0">
+               <widget class="QSplitter" name="splitter_4">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <widget class="QWidget" name="gridLayoutWidget_11">
+                 <layout class="QGridLayout" name="gridLayout_15">
+                  <item row="0" column="0">
+                   <widget class="QFrame" name="plotter">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::Box</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_27">
+                     <item row="0" column="0">
+                      <layout class="QGridLayout" name="gridLayout_16">
+                       <property name="leftMargin">
+                        <number>5</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>5</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>5</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>5</number>
+                       </property>
+                       <item row="0" column="3">
+                        <widget class="QComboBox" name="dataFocus">
+                         <property name="currentText">
+                          <string/>
+                         </property>
+                         <property name="placeholderText">
+                          <string>MAX</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="1">
+                        <spacer name="horizontalSpacer_11">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="0" column="4">
+                        <spacer name="horizontalSpacer_9">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="0" column="0">
+                        <widget class="QLabel" name="label_16">
+                         <property name="text">
+                          <string>Global</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="5">
+                        <widget class="QLabel" name="label_23">
+                         <property name="text">
+                          <string>Charts:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="2">
+                        <widget class="QCheckBox" name="faceDataOnlyCb_2">
+                         <property name="text">
+                          <string>Show only actual frame</string>
+                         </property>
+                         <property name="checked">
                           <bool>false</bool>
                          </property>
-                         <attribute name="title">
-                          <string>Faces</string>
-                         </attribute>
-                         <widget class="QFrame" name="frame_6">
-                          <property name="geometry">
-                           <rect>
-                            <x>0</x>
-                            <y>0</y>
-                            <width>531</width>
-                            <height>391</height>
-                           </rect>
-                          </property>
-                          <property name="frameShape">
-                           <enum>QFrame::Box</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <widget class="QLabel" name="PreviewFaceLbl">
-                           <property name="geometry">
-                            <rect>
-                             <x>10</x>
-                             <y>10</y>
-                             <width>221</width>
-                             <height>211</height>
-                            </rect>
-                           </property>
-                           <property name="frameShape">
-                            <enum>QFrame::Box</enum>
-                           </property>
-                           <property name="text">
-                            <string/>
-                           </property>
-                           <property name="scaledContents">
-                            <bool>true</bool>
-                           </property>
-                          </widget>
-                          <widget class="QPlainTextEdit" name="imgText">
-                           <property name="geometry">
-                            <rect>
-                             <x>10</x>
-                             <y>230</y>
-                             <width>511</width>
-                             <height>151</height>
-                            </rect>
-                           </property>
-                           <property name="autoFillBackground">
-                            <bool>false</bool>
-                           </property>
-                           <property name="readOnly">
-                            <bool>true</bool>
-                           </property>
-                           <property name="plainText">
-                            <string/>
-                           </property>
-                           <property name="overwriteMode">
-                            <bool>true</bool>
-                           </property>
-                           <property name="backgroundVisible">
-                            <bool>false</bool>
-                           </property>
-                          </widget>
-                          <widget class="QLabel" name="label_17">
-                           <property name="geometry">
-                            <rect>
-                             <x>240</x>
-                             <y>10</y>
-                             <width>49</width>
-                             <height>16</height>
-                            </rect>
-                           </property>
-                           <property name="text">
-                            <string>Face ID:</string>
-                           </property>
-                          </widget>
-                          <widget class="QComboBox" name="FacePicker">
-                           <property name="geometry">
-                            <rect>
-                             <x>290</x>
-                             <y>10</y>
-                             <width>81</width>
-                             <height>22</height>
-                            </rect>
-                           </property>
-                           <property name="currentText">
-                            <string/>
-                           </property>
-                           <property name="placeholderText">
-                            <string>Choose...</string>
-                           </property>
-                          </widget>
-                          <widget class="QCheckBox" name="showSelectedOnlyCb">
-                           <property name="geometry">
-                            <rect>
-                             <x>240</x>
-                             <y>200</y>
-                             <width>151</width>
-                             <height>20</height>
-                            </rect>
-                           </property>
-                           <property name="text">
-                            <string>Only show selected face</string>
-                           </property>
-                          </widget>
-                          <widget class="QPushButton" name="deleteFaceFrameBt">
-                           <property name="geometry">
-                            <rect>
-                             <x>240</x>
-                             <y>170</y>
-                             <width>80</width>
-                             <height>24</height>
-                            </rect>
-                           </property>
-                           <property name="text">
-                            <string>Delete</string>
-                           </property>
-                          </widget>
-                          <widget class="QPushButton" name="deleteBt_2">
-                           <property name="geometry">
-                            <rect>
-                             <x>240</x>
-                             <y>60</y>
-                             <width>80</width>
-                             <height>24</height>
-                            </rect>
-                           </property>
-                           <property name="text">
-                            <string>Accept all</string>
-                           </property>
-                          </widget>
-                          <widget class="QPushButton" name="deleteBt">
-                           <property name="geometry">
-                            <rect>
-                             <x>330</x>
-                             <y>60</y>
-                             <width>80</width>
-                             <height>24</height>
-                            </rect>
-                           </property>
-                           <property name="text">
-                            <string>Delete all</string>
-                           </property>
-                          </widget>
-                          <widget class="QLabel" name="label_20">
-                           <property name="geometry">
-                            <rect>
-                             <x>240</x>
-                             <y>140</y>
-                             <width>131</width>
-                             <height>16</height>
-                            </rect>
-                           </property>
-                           <property name="text">
-                            <string>Frame actions</string>
-                           </property>
-                          </widget>
-                          <widget class="Line" name="line_4">
-                           <property name="geometry">
-                            <rect>
-                             <x>240</x>
-                             <y>100</y>
-                             <width>271</width>
-                             <height>4</height>
-                            </rect>
-                           </property>
-                           <property name="orientation">
-                            <enum>Qt::Horizontal</enum>
-                           </property>
-                          </widget>
-                         </widget>
                         </widget>
-                        <widget class="QWidget" name="tab_2">
-                         <property name="autoFillBackground">
+                       </item>
+                       <item row="0" column="6">
+                        <widget class="QComboBox" name="charTypes">
+                         <property name="minimumSize">
+                          <size>
+                           <width>100</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>100</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="currentText">
+                          <string/>
+                         </property>
+                         <property name="placeholderText">
+                          <string>MAX</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0" colspan="7">
+                        <layout class="QHBoxLayout" name="layoutCanvas"/>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="gridLayoutWidget_8">
+                 <layout class="QGridLayout" name="gridLayout_12">
+                  <item row="0" column="0">
+                   <widget class="QFrame" name="frame">
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_26">
+                     <item row="0" column="0">
+                      <layout class="QGridLayout" name="gridLayout_14">
+                       <property name="leftMargin">
+                        <number>5</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>5</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>5</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>5</number>
+                       </property>
+                       <item row="0" column="3" colspan="2">
+                        <widget class="QCheckBox" name="tillFrameCb">
+                         <property name="text">
+                          <string>Show data before selected frame</string>
+                         </property>
+                         <property name="checked">
                           <bool>false</bool>
                          </property>
-                         <attribute name="title">
-                          <string>Moods</string>
-                         </attribute>
-                         <widget class="QFrame" name="frame_10">
-                          <property name="geometry">
-                           <rect>
-                            <x>0</x>
-                            <y>0</y>
-                            <width>521</width>
-                            <height>391</height>
-                           </rect>
-                          </property>
-                          <property name="frameShape">
-                           <enum>QFrame::Box</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <widget class="QWidget" name="verticalLayoutWidget">
-                           <property name="geometry">
-                            <rect>
-                             <x>10</x>
-                             <y>10</y>
-                             <width>511</width>
-                             <height>388</height>
-                            </rect>
-                           </property>
-                           <layout class="QGridLayout" name="gridLayout">
-                            <property name="sizeConstraint">
-                             <enum>QLayout::SetDefaultConstraint</enum>
-                            </property>
-                            <property name="topMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="spacing">
-                             <number>6</number>
-                            </property>
-                            <item row="4" column="0" colspan="3">
-                             <widget class="QPlainTextEdit" name="imgText_3">
-                              <property name="autoFillBackground">
-                               <bool>false</bool>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">max-height: 180px;
-border: 0px solid white;
-background: #7A7A7A;
-color: white;</string>
-                              </property>
-                              <property name="readOnly">
-                               <bool>true</bool>
-                              </property>
-                              <property name="plainText">
-                               <string/>
-                              </property>
-                              <property name="overwriteMode">
-                               <bool>true</bool>
-                              </property>
-                              <property name="backgroundVisible">
-                               <bool>false</bool>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="2" column="1">
-                             <layout class="QGridLayout" name="gridLayout_4">
-                              <item row="0" column="0">
-                               <widget class="QPushButton" name="updateMoodFrame">
-                                <property name="enabled">
-                                 <bool>true</bool>
-                                </property>
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <property name="layoutDirection">
-                                 <enum>Qt::LeftToRight</enum>
-                                </property>
-                                <property name="autoFillBackground">
-                                 <bool>false</bool>
-                                </property>
-                                <property name="styleSheet">
-                                 <string notr="true"/>
-                                </property>
-                                <property name="text">
-                                 <string>Update</string>
-                                </property>
-                                <property name="flat">
-                                 <bool>false</bool>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="0" column="1">
-                               <widget class="QPushButton" name="deleteFaceFrameMood">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <property name="text">
-                                 <string>Delete</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="1" column="1">
-                               <widget class="QPushButton" name="deleteMoodAll">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <property name="text">
-                                 <string>Delete all</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="1" column="0">
-                               <widget class="QPushButton" name="updateMoodAll">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <property name="text">
-                                 <string>Update all</string>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </item>
-                            <item row="0" column="0" rowspan="4">
-                             <widget class="QLabel" name="PreviewFaceLblMood">
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                                <horstretch>0</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>200</width>
-                                <height>200</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">max-width: 200px;
-max-height: 200px;
-min-widht: 200px;
-min-height: 200px;</string>
-                              </property>
-                              <property name="frameShape">
-                               <enum>QFrame::Box</enum>
-                              </property>
-                              <property name="text">
-                               <string/>
-                              </property>
-                              <property name="scaledContents">
-                               <bool>true</bool>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="1" column="1">
-                             <widget class="QLabel" name="label_22">
-                              <property name="text">
-                               <string>Current mood (frame):</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="1" column="2">
-                             <widget class="QComboBox" name="moodSelector">
-                              <property name="currentText">
-                               <string/>
-                              </property>
-                              <property name="placeholderText">
-                               <string>MAX</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="0" column="1">
-                             <widget class="QLabel" name="label_21">
-                              <property name="text">
-                               <string>Face ID:</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="0" column="2">
-                             <widget class="QComboBox" name="FacePicker_pos">
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                                <horstretch>0</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>100</width>
-                                <height>16777215</height>
-                               </size>
-                              </property>
-                              <property name="currentText">
-                               <string/>
-                              </property>
-                              <property name="placeholderText">
-                               <string>Choose...</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="3" column="1">
-                             <widget class="QCheckBox" name="showSelectedOnly_pos">
-                              <property name="text">
-                               <string>Only show selected face</string>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </widget>
-                         </widget>
                         </widget>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
+                       </item>
+                       <item row="0" column="2">
+                        <widget class="QCheckBox" name="faceDataOnlyCb">
+                         <property name="text">
+                          <string>Show only selected faced data</string>
+                         </property>
+                         <property name="checked">
+                          <bool>false</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="0">
+                        <widget class="QLabel" name="label_24">
+                         <property name="text">
+                          <string>Detailed</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="6">
+                        <widget class="QLabel" name="label_25">
+                         <property name="text">
+                          <string>Charts:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="5">
+                        <spacer name="horizontalSpacer_8">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="0" column="7">
+                        <widget class="QComboBox" name="charTypes_2">
+                         <property name="minimumSize">
+                          <size>
+                           <width>100</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>100</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="currentText">
+                          <string/>
+                         </property>
+                         <property name="placeholderText">
+                          <string>MAX</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0" colspan="8">
+                        <layout class="QHBoxLayout" name="layoutCanvas_2"/>
+                       </item>
+                       <item row="0" column="1">
+                        <spacer name="horizontalSpacer_10">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
                    </widget>
                   </item>
                  </layout>
@@ -1346,551 +1703,381 @@ min-height: 200px;</string>
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="gridLayoutWidget_13">
-         <layout class="QGridLayout" name="gridLayout_19">
-          <item row="0" column="0">
-           <widget class="QSplitter" name="splitter_4">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <widget class="QWidget" name="gridLayoutWidget_11">
-             <layout class="QGridLayout" name="gridLayout_15">
-              <item row="0" column="0">
-               <widget class="QFrame" name="plotter">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::Box</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <widget class="QWidget" name="gridLayoutWidget_12">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>0</y>
-                   <width>831</width>
-                   <height>391</height>
-                  </rect>
-                 </property>
-                 <layout class="QGridLayout" name="gridLayout_16">
-                  <property name="leftMargin">
-                   <number>5</number>
-                  </property>
-                  <property name="topMargin">
-                   <number>5</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>5</number>
-                  </property>
-                  <property name="bottomMargin">
-                   <number>5</number>
-                  </property>
-                  <item row="0" column="3">
-                   <widget class="QComboBox" name="dataFocus">
-                    <property name="currentText">
-                     <string/>
-                    </property>
-                    <property name="placeholderText">
-                     <string>MAX</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="1">
-                   <spacer name="horizontalSpacer_11">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item row="0" column="4">
-                   <spacer name="horizontalSpacer_9">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="label_16">
-                    <property name="text">
-                     <string>Global</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="5">
-                   <widget class="QLabel" name="label_23">
-                    <property name="text">
-                     <string>Charts:</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="2">
-                   <widget class="QCheckBox" name="faceDataOnlyCb_2">
-                    <property name="text">
-                     <string>Show only actual frame</string>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="6">
-                   <widget class="QComboBox" name="charTypes">
-                    <property name="minimumSize">
-                     <size>
-                      <width>100</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>100</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                    <property name="currentText">
-                     <string/>
-                    </property>
-                    <property name="placeholderText">
-                     <string>MAX</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0" colspan="7">
-                   <layout class="QHBoxLayout" name="layoutCanvas"/>
-                  </item>
-                 </layout>
-                </widget>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="gridLayoutWidget_8">
-             <layout class="QGridLayout" name="gridLayout_12">
-              <item row="0" column="0">
-               <widget class="QFrame" name="frame">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <widget class="QWidget" name="gridLayoutWidget_10">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>0</y>
-                   <width>831</width>
-                   <height>391</height>
-                  </rect>
-                 </property>
-                 <layout class="QGridLayout" name="gridLayout_14">
-                  <property name="leftMargin">
-                   <number>5</number>
-                  </property>
-                  <property name="topMargin">
-                   <number>5</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>5</number>
-                  </property>
-                  <property name="bottomMargin">
-                   <number>5</number>
-                  </property>
-                  <item row="0" column="3" colspan="2">
-                   <widget class="QCheckBox" name="tillFrameCb">
-                    <property name="text">
-                     <string>Show data before selected frame</string>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="2">
-                   <widget class="QCheckBox" name="faceDataOnlyCb">
-                    <property name="text">
-                     <string>Show only selected faced data</string>
-                    </property>
-                    <property name="checked">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="label_24">
-                    <property name="text">
-                     <string>Detailed</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="6">
-                   <widget class="QLabel" name="label_25">
-                    <property name="text">
-                     <string>Charts:</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="5">
-                   <spacer name="horizontalSpacer_8">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item row="0" column="7">
-                   <widget class="QComboBox" name="charTypes_2">
-                    <property name="minimumSize">
-                     <size>
-                      <width>100</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>100</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                    <property name="currentText">
-                     <string/>
-                    </property>
-                    <property name="placeholderText">
-                     <string>MAX</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0" colspan="8">
-                   <layout class="QHBoxLayout" name="layoutCanvas_2"/>
-                  </item>
-                  <item row="0" column="1">
-                   <spacer name="horizontalSpacer_10">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </widget>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QWidget" name="gridLayoutWidget_15">
-     <layout class="QGridLayout" name="gridLayout_21">
-      <item row="0" column="0">
-       <widget class="QFrame" name="frame_3">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <widget class="QWidget" name="gridLayoutWidget_16">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>160</width>
-           <height>951</height>
-          </rect>
+        <widget class="QFrame" name="frame_3">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <layout class="QGridLayout" name="gridLayout_22">
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_9">
-            <property name="text">
-             <string>Step 1 JSON file</string>
-            </property>
-           </widget>
-          </item>
-          <item row="15" column="0">
-           <widget class="Line" name="line_3">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLineEdit" name="lineEdit_2">
-            <property name="text">
-             <string>C:\Users\elalu\Documents\GitHub\TFG\Resources\datasets\Models\FINAL</string>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLineEdit" name="moodOptions">
-            <property name="text">
-             <string>angry, disgust, fear, happy, neutral, sad, surprise</string>
-            </property>
-            <property name="readOnly">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_12">
-            <property name="text">
-             <string>POST PROCESSING</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>Step 2</string>
-            </property>
-           </widget>
-          </item>
-          <item row="13" column="0">
-           <widget class="QComboBox" name="comboBox_2">
-            <property name="currentText">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="Line" name="line">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QLineEdit" name="lineEdit_3">
-            <property name="text">
-             <string>C:\Users\elalu\Documents\GitHub\TFG\Resources\jsonFiles\PreProcessResults.json</string>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Face detection Model</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="0">
-           <widget class="QLabel" name="label_15">
-            <property name="text">
-             <string>Prediction tags</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>Step 1</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Emotion detection Model</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="0">
-           <widget class="QPushButton" name="BrowseFaceModelBt_5">
-            <property name="text">
-             <string>Browse</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="0">
-           <widget class="QLineEdit" name="lineEdit_4">
-            <property name="text">
-             <string>C:\Users\elalu\Documents\GitHub\TFG\Resources\jsonFiles\PostProcessResults.json</string>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QPushButton" name="BrowseFaceModelBt_2">
-            <property name="text">
-             <string>Browse</string>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="0">
-           <widget class="QPushButton" name="BrowseFaceModelBt">
-            <property name="text">
-             <string>Browse</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="0">
-           <widget class="QCheckBox" name="checkBox">
-            <property name="text">
-             <string>Preview video</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_10">
-            <property name="text">
-             <string>Step 3</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>Output JSON</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="0">
-           <widget class="QPushButton" name="BrowseFaceModelBt_3">
-            <property name="text">
-             <string>Browse</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QScrollBar" name="verticalScrollBar">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_28">
+          <item row="0" column="0">
+           <spacer name="verticalSpacer_9">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
-           </widget>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>10</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="3" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <spacer name="horizontalSpacer_17">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Help</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_18">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item row="2" column="0">
+           <spacer name="verticalSpacer_8">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="1" column="0">
+           <layout class="QGridLayout" name="gridLayout_22">
+            <item row="2" column="0">
+             <spacer name="verticalSpacer_10">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>10</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="15" column="1">
+             <widget class="QPushButton" name="BrowseFaceModelBt_5">
+              <property name="text">
+               <string>Browse</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0" colspan="3">
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Face detection Model</string>
+              </property>
+             </widget>
+            </item>
+            <item row="17" column="1">
+             <widget class="QPushButton" name="BrowseFaceModelBt_3">
+              <property name="text">
+               <string>Browse</string>
+              </property>
+             </widget>
+            </item>
+            <item row="16" column="0">
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Output JSON</string>
+              </property>
+             </widget>
+            </item>
+            <item row="19" column="1">
+             <widget class="Line" name="line_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QCheckBox" name="checkBox_2">
+              <property name="text">
+               <string>Preview video</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="13" column="0">
+             <widget class="QLineEdit" name="moodOptions">
+              <property name="text">
+               <string>angry, disgust, fear, happy, neutral, sad, surprise</string>
+              </property>
+              <property name="cursorPosition">
+               <number>0</number>
+              </property>
+              <property name="readOnly">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="17" column="0">
+             <widget class="QLineEdit" name="lineEdit_4">
+              <property name="text">
+               <string>C:\Users\elalu\Documents\GitHub\TFG\Resources\jsonFiles\PostProcessResults.json</string>
+              </property>
+              <property name="cursorPosition">
+               <number>0</number>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="0">
+             <spacer name="verticalSpacer_12">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>10</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="10" column="0" colspan="2">
+             <widget class="QLabel" name="label_12">
+              <property name="text">
+               <string>POST PROCESSING</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLineEdit" name="lineEdit">
+              <property name="minimumSize">
+               <size>
+                <width>20</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Resources\haarcascade_frontalface_default.xml</string>
+              </property>
+              <property name="cursorPosition">
+               <number>0</number>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0" colspan="2">
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>PRE PROCESSING</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="0" colspan="2">
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>Output JSON</string>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="1">
+             <widget class="QPushButton" name="BrowseFaceModelBt_4">
+              <property name="text">
+               <string>Browse</string>
+              </property>
+             </widget>
+            </item>
+            <item row="12" column="0" colspan="2">
+             <widget class="QLabel" name="label_15">
+              <property name="text">
+               <string>Prediction tags</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <spacer name="verticalSpacer_11">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>5</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="14" column="0" colspan="2">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Emotion detection Model</string>
+              </property>
+             </widget>
+            </item>
+            <item row="13" column="1">
+             <widget class="QPushButton" name="BrowseFaceModelBt">
+              <property name="text">
+               <string>Browse</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Line" name="line">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="0">
+             <widget class="QLineEdit" name="lineEdit_3">
+              <property name="text">
+               <string>C:\Users\elalu\Documents\GitHub\TFG\Resources\jsonFiles\PreProcessResults.json</string>
+              </property>
+              <property name="cursorPosition">
+               <number>0</number>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="11" column="0">
+             <spacer name="verticalSpacer_13">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>5</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="6" column="1">
+             <widget class="QPushButton" name="BrowseFaceModelBt_2">
+              <property name="minimumSize">
+               <size>
+                <width>50</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Browse</string>
+              </property>
+             </widget>
+            </item>
+            <item row="15" column="0">
+             <widget class="QLineEdit" name="lineEdit_2">
+              <property name="text">
+               <string>C:\Users\elalu\Documents\GitHub\TFG\Resources\datasets\Models\FINAL</string>
+              </property>
+              <property name="cursorPosition">
+               <number>0</number>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item row="4" column="0">
-           <widget class="QComboBox" name="comboBox">
-            <property name="currentText">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="13" column="0">
-           <widget class="QLabel" name="label_11">
-            <property name="text">
-             <string>PRE PROCESSING</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="0">
-           <widget class="QLabel" name="label_13">
-            <property name="text">
-             <string>ANALISYS</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="0">
-           <widget class="QPushButton" name="BrowseFaceModelBt_4">
-            <property name="text">
-             <string>Browse</string>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="0">
-           <widget class="Line" name="line_2">
+           <spacer name="verticalSpacer_14">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Vertical</enum>
             </property>
-           </widget>
-          </item>
-          <item row="11" column="0">
-           <widget class="QLineEdit" name="lineEdit">
-            <property name="text">
-             <string>Resources\haarcascade_frontalface_default.xml</string>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
             </property>
-            <property name="readOnly">
-             <bool>true</bool>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
             </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_7">
-            <property name="text">
-             <string>Output JSON</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="checkBox_2">
-            <property name="text">
-             <string>Preview video</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_14">
-            <property name="text">
-             <string>Step 2 JSON file</string>
-            </property>
-           </widget>
+           </spacer>
           </item>
          </layout>
         </widget>
        </widget>
       </item>
      </layout>
-    </widget>
-   </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1831</width>
+     <width>1478</width>
      <height>22</height>
     </rect>
    </property>
