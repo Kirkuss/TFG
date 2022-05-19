@@ -1,170 +1,35 @@
 import os
 import time
 
-import numpy as np
-from PyQt5.QtCore import QThread, pyqtSignal
-import matplotlib.pyplot as plt
-import variables as config
-import Utilities as Dmanager
-import FaceData as data
-from scipy.interpolate import make_interp_spline, BSpline
+from PyQt5.QtGui import QPen
+from PyQt5.QtCore import Qt, QThread
+from PyQt5.QtChart import QChart, QChartView, QPieSeries, QPieSlice
+
+from random import seed
+from random import random
 
 class PlotterManager_2(QThread):
-    def __init__(self, canvas, figure, type, parent=None):
+    def __init__(self, id, chart, series, parent=None):
         # type 0 controla la vista global, type 1 controla detailed
         super(PlotterManager_2, self).__init__(parent)
-        self.canvas = canvas
-        self.figure = figure
-        self.notFinished = True
-        self.type = type
-        self.y_data = []
-        self.x_data = []
-        self.x_data_line = []
-        self.y_data_line = []
-        self.labels = {"angry": 0, "disgust": 0, "fear": 0, "happy": 0, "neutral": 0, "sad": 0, "surprise": 0}
-        self.lineData = {}
-        self.proccessing = False
-        self.js = Dmanager.jsonManager()
-        self.facesInfo = {}
-        self.readJson = config.JSON_POST_DONE
-        self.faceList = {}
-        self.x_axis = []
-        self.y_axis = []
-        self.plotDetections = False
+        self.chart = chart
+        self.series = series
+        self.id = id
 
     def run(self):
-        print("Plotter: " + str(os.getpid()) + " canvas: " + str(self.canvas))
-        self.readJson = config.JSON_POST_DONE
-        self.generateYaxisLabelsForLine()
-        while self.notFinished:
-            self.plotTest()
-            if self.readJson:
-                self.facesInfo = self.js.loadJson(config.PATH_TO_JSON_POS)
-                self.readJson = False
-                self.populateFaceList()
-            if config.TILL_FRAME and config.JSON_POST_DONE: time.sleep(0.2)
-            elif self.proccessing: time.sleep(3)
-            else: time.sleep(0.5)
-        return 0
+        slices = list()
+        seed(self.id)
+        slices.append(QPieSlice("1", random()))
+        slices.append(QPieSlice("2", random()))
+        slices.append(QPieSlice("3", random()))
+        slices.append(QPieSlice("4", random()))
+        for k in slices:
+            self.series.append(k)
+        while True:
+            for k in self.series.slices():
+                #print(str(k) + " id: " + str(self.id))
+                k.setValue(random())
+            self.chart.addSeries(self.series)
+            time.sleep(0.1)
 
-    def populateFaceList(self):
-        for k in self.facesInfo:
-            self.faceList[str(k)] = data.FaceData(int(k), self.facesInfo[k])
-            self.faceList[str(k)].getLabels()
-            print(self.faceList[str(k)])
 
-    def calculateTillFrame(self, line):
-        for k in self.facesInfo:
-            for n in self.facesInfo[k]:
-                if line:
-                    if int(n) <= config.CURRENT_FRAME:
-                        self.labels[self.facesInfo[k][n]["prediction"]] += 1
-                else:
-                    if int(n) <= config.SELECTED_FRAME:
-                        self.labels[self.facesInfo[k][n]["prediction"]] += 1
-
-    def calculatePercent(self):
-        total = 0
-        for k in self.labels:
-            total += self.labels[k]
-        for k in self.labels:
-            if total > 0:
-                if self.labels[k] > 0:
-                    self.labels[k] = (self.labels[k]/total) * 100
-                else: self.labels[k] = 0
-
-    def getXaxisIfLine(self, line):
-        self.x_data_line.clear()
-        if line:
-            self.x_data_line = list(range(1, config.CURRENT_FRAME + 1))
-        else:
-            self.x_data_line = list(range(1, config.SELECTED_FRAME + 1))
-
-    def getYaxisIfLine(self):
-        for k in self.faceList:
-            self.faceList[k].getYaxisData(self.x_data)
-
-        if config.FACE_DATA_ONLY and config.SELECTED_FACE > 0:
-            pass
-        else:
-            for i in self.x_data_line:
-                for k in self.lineData:
-                    if i > len(self.lineData[k]) or len(self.lineData[k]) == 0:
-                        self.lineData[k].append(self.labels[k])
-
-    def generateYaxisLabelsForLine(self):
-        for k in self.labels: self.lineData[k] = []
-
-    def getPlotData(self):
-        self.y_data.clear()
-        self.x_data.clear()
-        if config.TILL_FRAME and config.JSON_POST_DONE:
-            self.labels = {"angry": 0, "disgust": 0, "fear": 0, "happy": 0, "neutral": 0, "sad": 0, "surprise": 0}
-            self.calculateTillFrame(False)
-            self.calculatePercent()
-        else:
-            self.labels = config.LABELS.copy()
-            self.calculatePercent()
-        for i in self.labels:
-            if self.labels[i] > 0:
-                self.y_data.append(i)
-                self.x_data.append(self.labels[i])
-
-    def plotTest(self, title="Data"):
-        self.figure.clear()
-        if self.proccessing: self.drawWhenProcessing(title)
-        else: self.drawDataDetections(self.x_axis, self.y_axis)
-        self.canvas.draw()
-
-    def drawWhenProcessing(self, title):
-        self.getPlotData()
-        if config.TILL_FRAME and config.SELECTED_FRAME > 0: self.getXaxisIfLine(False)
-        else: self.getXaxisIfLine(True)
-        self.getYaxisIfLine()
-        if config.SELECTED_CHART == "Pie": self.drawPie(title)
-        elif config.SELECTED_CHART == "Bar": self.drawBar(title)
-        elif config.SELECTED_CHART == "Line": self.drawLine()
-
-    def drawLine(self):
-        for k in self.lineData:
-            if config.TILL_FRAME and config.SELECTED_FRAME > 0: self.drawLineFaceSelected(k)
-            else: self.drawLineGlobal(k)
-        plt.legend()
-
-    def drawLineGlobal(self, k):
-        if config.FACE_DATA_ONLY and config.SELECTED_FACE > 0:
-            plt.fill_between(self.x_data_line, self.faceList[str(config.SELECTED_FACE)].labelsLine[k], alpha=0.2)
-            plt.plot(self.x_data_line, self.faceList[str(config.SELECTED_FACE)].labelsLine[k], label=k)
-        else:
-            plt.fill_between(self.x_data_line, self.lineData[k], alpha=0.2)
-            plt.plot(self.x_data_line, self.lineData[k], label=k)
-
-    def drawLineFaceSelected(self, k):
-        if config.FACE_DATA_ONLY and config.SELECTED_FACE > 0:
-            plt.fill_between(self.x_data_line,
-                             self.faceList[str(config.SELECTED_FACE)].labelsLine[k][0:len(self.x_data_line)], alpha=0.2)
-            plt.plot(self.x_data_line, self.faceList[str(config.SELECTED_FACE)].labelsLine[k][0:len(self.x_data_line)],
-                     label=k)
-        else:
-            plt.fill_between(self.x_data_line, self.lineData[k][0:len(self.x_data_line)], alpha=0.2)
-            plt.plot(self.x_data_line, self.lineData[k][0:len(self.x_data_line)], label=k)
-
-    def getTitleFrame(self, title):
-        if config.TILL_FRAME and config.SELECTED_FRAME > 0: title += " frame: {0}".format(config.SELECTED_FRAME)
-        else: title += " frame: {0}".format(config.CURRENT_FRAME)
-        return title
-
-    def drawBar(self, title):
-        plt.bar(self.y_data, self.x_data)
-        plt.ylabel("%")
-        plt.title(self.getTitleFrame(title))
-
-    def drawPie(self, title):
-        plt.pie(self.x_data, labels=self.y_data, autopct='%1d%%', shadow=False)
-        plt.axis('equal')
-        plt.title(self.getTitleFrame(title))
-
-    def drawDataDetections(self, x_axis, y_axis, title="Accepted - Rejected"):
-        plt.pie(x_axis, labels=y_axis, autopct='%1d%%', shadow=False)
-        plt.axis('equal')
-        plt.title(title)

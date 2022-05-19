@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QDialog
 from PyQt5 import uic
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import QThreadPool
+from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor, QBrush
+from PyQt5.QtCore import QThreadPool, Qt
+from PyQt5.QtChart import QChart, QChartView, QPieSeries, QPieSlice
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
@@ -12,6 +13,7 @@ import variables as config
 import postPreview as pp
 import matplotlib.pyplot as plt
 import PlotManager as plotter
+import PlotManager_2 as plotter_2
 
 class AIWake_UI(QMainWindow):
     def __init__(self):
@@ -77,7 +79,7 @@ class AIWake_UI(QMainWindow):
         self.splitter_5.setSizes([539,389])
         self.splitter_6.setSizes([1662, 158])
 
-        #self.initializePlotters()
+        self.initializePlotters()
 
     def setCharType(self, i):
         if i >= 0:
@@ -97,16 +99,34 @@ class AIWake_UI(QMainWindow):
         #pool = QThreadPool.globalInstance()
         #self.figure = plt.figure(1)
         #self.canvas = FigureCanvas(self.figure)
-        self.thread[4] = plotter.PlotterManager(4, type=1,  parent=None)
-        self.layoutCanvas.addWidget(self.thread[4].canvas)
-        #self.thread[4].drawing.connect(self.managePlotters)
+        chart = QChart()
+        series = QPieSeries()
+        chart.setAnimationOptions(QChart.SeriesAnimations)
+        chart.setTitle("testeo")
+        brush = QBrush(QColor(35,35,35))
+        #chart.setBackgroundBrush(brush)
+        chartTest = QChartView(chart)
+        self.layoutCanvas.addWidget(chartTest)
+        chart_2 = QChart()
+        series_2 = QPieSeries()
+        chart_2.setAnimationOptions(QChart.SeriesAnimations)
+        chart_2.setTitle("testeo2")
+        #chart_2.setBackgroundBrush(brush)
+        chartTest_2 = QChartView(chart_2)
+        self.layoutCanvas_2.addWidget(chartTest_2)
+        self.thread[4] = plotter_2.PlotterManager_2(1, chart, series, parent=None)
         self.thread[4].start()
+        self.thread[5] = plotter_2.PlotterManager_2(2, chart_2, series_2, parent=None)
+        self.thread[5].start()
+        #self.layoutCanvas.addWidget(self.thread[4].canvas)
+        #self.thread[4].drawing.connect(self.managePlotters)
+        #self.thread[4].start()
         #self.thread[5] = plotter.PlotterManager(5, type=2,  parent=None)
         #self.layoutCanvas_2.addWidget(self.thread[5].canvas)
         #self.thread[5].drawing.connect(self.managePlotters)
         #self.thread[5].draw = False
         #self.thread[5].start()
-        print(str(self.thread))
+        #print(str(self.thread))
 
     def managePlotters(self, id):
         if self.thread[4] is not None and self.thread[5] is not None:
