@@ -30,6 +30,6 @@ class PlotterManager_2(QThread):
                 #print(str(k) + " id: " + str(self.id))
                 k.setValue(random())
             self.chart.addSeries(self.series)
-            time.sleep(0.1)
+            time.sleep(0.033)
 
 

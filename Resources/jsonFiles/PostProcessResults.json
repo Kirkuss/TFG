@@ -14527,14 +14527,14 @@
             "prediction": "happy"
         }
     },
-    "13": {
-        "13": {
+    "12": {
+        "12": {
             "x": "199",
             "y": "112",
             "w": "33",
             "h": "33",
             "valid": "True",
-            "prediction": "sad"
+            "prediction": "happy"
         },
         "76": {
             "x": "183",
