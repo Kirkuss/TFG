@@ -10,12 +10,18 @@ import FaceData as data
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 
+class plotDataDetailed_struct():
+    def __init__(self, frame, data):
+        self.frame = frame
+        self.data = data
+
 class PlotterManager(QThread):
     drawing = pyqtSignal(int)
 
     def __init__(self, id, type, parent=None):
         # type 0 controla la vista global, type 1 controla detailed
         super(PlotterManager, self).__init__(parent)
+        self.isolatorDetailedData = []
         self.id = id
         self.figure = plt.figure(type)
         self.canvas = FigureCanvas(self.figure)

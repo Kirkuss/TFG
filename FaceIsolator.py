@@ -369,7 +369,7 @@ class FaceIsolator(QThread):
                             cv2.putText(frame, "Rejected", (int(x + (w * config.PROP)) + 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                                         (0, 0, 255), 1, cv2.LINE_AA)
 
-                self.updatePlotter.emit([4,4], ["Accepted", "Rejected"])
+                self.updatePlotter.emit(self.getAcceptedAndRejectedNum(), ["Accepted", "Rejected"])
                 #self.getAcceptedAndRejectedNum()
 
 

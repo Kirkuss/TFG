@@ -84,6 +84,8 @@ class AIWake_UI(QMainWindow):
     def setCharType(self, i):
         if i >= 0:
             config.SELECTED_CHART = self.charTypes.currentText()
+            self.thread[4].change = True
+            self.thread[5].change = True
 
     def tillFrame(self):
         if self.tillFrameCb.isChecked(): config.TILL_FRAME = True
@@ -99,13 +101,13 @@ class AIWake_UI(QMainWindow):
         #pool = QThreadPool.globalInstance()
         #self.figure = plt.figure(1)
         #self.canvas = FigureCanvas(self.figure)
-        chart = QChart()
+        self.chart = QChart()
         series = QPieSeries()
-        chart.setAnimationOptions(QChart.SeriesAnimations)
-        chart.setTitle("testeo")
+        self.chart.setAnimationOptions(QChart.SeriesAnimations)
+        self.chart.setTitle("testeo")
         brush = QBrush(QColor(35,35,35))
         #chart.setBackgroundBrush(brush)
-        chartTest = QChartView(chart)
+        chartTest = QChartView(self.chart)
         self.layoutCanvas.addWidget(chartTest)
         chart_2 = QChart()
         series_2 = QPieSeries()
@@ -114,7 +116,7 @@ class AIWake_UI(QMainWindow):
         #chart_2.setBackgroundBrush(brush)
         chartTest_2 = QChartView(chart_2)
         self.layoutCanvas_2.addWidget(chartTest_2)
-        self.thread[4] = plotter_2.PlotterManager_2(1, chart, series, parent=None)
+        self.thread[4] = plotter_2.PlotterManager_2(1, self.chart, series, parent=None)
         self.thread[4].start()
         self.thread[5] = plotter_2.PlotterManager_2(2, chart_2, series_2, parent=None)
         self.thread[5].start()
@@ -127,6 +129,12 @@ class AIWake_UI(QMainWindow):
         #self.thread[5].draw = False
         #self.thread[5].start()
         #print(str(self.thread))
+
+    def wheelEvent(self, event):
+        if event.angleDelta().y() > 0:
+            self.chart.zoomIn()
+        else:
+            self.chart.zoomOut()
 
     def managePlotters(self, id):
         if self.thread[4] is not None and self.thread[5] is not None:
@@ -347,12 +355,10 @@ class AIWake_UI(QMainWindow):
             self.thread[3].pause = False
 
     def drawDataDetections(self, x_axis, y_axis, x_label="Frames", y_label="Detections", title="Data" ):
-        #self.thread[4].x_axis = x_axis
-        #self.thread[4].y_axis = y_axis
-        #self.thread[4].plotDetections = True
-        #self.thread[5].x_axis = x_axis
-        #self.thread[5].y_axis = y_axis
-        #self.thread[5].plotDetections = True
+        self.thread[4].labels = y_axis
+        self.thread[4].values = x_axis
+        self.thread[5].labels = y_axis
+        self.thread[5].values = x_axis
         pass
 
     def updateFrameSelector(self, frame):
