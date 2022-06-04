@@ -160,6 +160,8 @@ class postPreview(QThread):
 
         while (cap.isOpened()):
 
+            time.sleep(0.033)
+
             #if self.iterations == config.VIDEO_LENGHT:
             #   self.pause = True
 

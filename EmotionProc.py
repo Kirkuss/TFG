@@ -34,6 +34,7 @@ class EmotionProc(QThread):
     done = pyqtSignal()
     updateStatus = pyqtSignal(list, int)
     updatePlotter = pyqtSignal(dict)
+    updatePlotterDetailed = pyqtSignal(dict)
 
     js = Dmanager.jsonManager()
     faces = {}
@@ -145,9 +146,14 @@ class EmotionProc(QThread):
         blocker = Dmanager.threadManager(parent=self)
         blocker.poolSize = pool_size
 
+        predictions_inst = config.LABELS.copy()
+
         while (cap.isOpened()):
 
             ret, frame = cap.read()
+
+            for s in predictions_inst:
+                predictions_inst[s] = 0
 
             if ret:
                 frame = cv2.resize(frame, (540, 380), fx=0, fy=0, interpolation=cv2.INTER_CUBIC)
@@ -161,14 +167,17 @@ class EmotionProc(QThread):
                         pred = Utilities.ModelInterpreter.getClass(n=np.argmax(predictions))  # sacar esto?
                         self.faces[k][str(self.iterations)]["prediction"] = pred
                         config.LABELS[pred] += 1
+                        predictions_inst[pred] += 1
                         #print(str(k) + "/" + str(self.iterations) + " WORKER [" + str(os.getpid()) + "]: " + str(pred))
                         self.updateStatus.emit(self.setStatusText("Analyzing face at frame [" + str(self.iterations) + "] face id [" + str(k) + "] prediction [" + pred + "]"), 1)
 
                 self.postPbValue.emit(perf.getVideoProgress(self.iterations, config.VIDEO_LENGHT))
+                self.updatePlotterDetailed.emit(predictions_inst)
                 if self.iterations % config.SELECTED_SPEED == 0:
                     #self.generatePlotData()
                     #self.updatePlotter.emit(self.labels)
                     pass
+                #self.updatePlotterDetailed()
 
             if self.iterations == config.VIDEO_LENGHT:
                 self.updateStatus.emit(self.setStatusText("Face analisys done..."), 1)

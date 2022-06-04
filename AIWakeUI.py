@@ -14,6 +14,7 @@ import postPreview as pp
 import matplotlib.pyplot as plt
 import PlotManager as plotter
 import PlotManager_2 as plotter_2
+import DetailedManager as detailed
 
 class AIWake_UI(QMainWindow):
     def __init__(self):
@@ -62,11 +63,14 @@ class AIWake_UI(QMainWindow):
         self.VideoSpeed.addItems(["High detail", "Detail", "Fast", "Very fast"])
         self.dataFocus.addItems(["Global", "Frame"])
         self.charTypes.addItems(["Bar", "Line", "Pie"])
+        self.charTypes_2.addItems(["Bar", "Line", "Pie"])
         self.VideoSpeed.currentIndexChanged.connect(self.setProcessingSpeed)
         self.VideoSpeed.setCurrentText("High detail")
         self.dataFocus.setCurrentText("Global")
-        self.charTypes.setCurrentText("Pie")
+        self.charTypes.setCurrentText(config.SELECTED_CHART)
+        self.charTypes_2.setCurrentText(config.SELECTED_CHART_DET)
         self.charTypes.currentIndexChanged.connect(self.setCharType)
+        self.charTypes_2.currentIndexChanged.connect(self.setCharType_2)
         self.deleteMoodAll.clicked.connect(self.deleteAllFaceFrameMood_ck)
         self.backwardBt_to_processed.clicked.connect(self.backwardVideoToProcessed)
         self.backwardBt.clicked.connect(self.backwardVideo)
@@ -85,6 +89,10 @@ class AIWake_UI(QMainWindow):
         if i >= 0:
             config.SELECTED_CHART = self.charTypes.currentText()
             self.thread[4].change = True
+
+    def setCharType_2(self, i):
+        if i >= 0:
+            config.SELECTED_CHART_DET = self.charTypes_2.currentText()
             self.thread[5].change = True
 
     def tillFrame(self):
@@ -103,7 +111,6 @@ class AIWake_UI(QMainWindow):
         #self.canvas = FigureCanvas(self.figure)
         self.chart = QChart()
         series = QPieSeries()
-        self.chart.setAnimationOptions(QChart.SeriesAnimations)
         self.chart.setTitle("testeo")
         brush = QBrush(QColor(35,35,35))
         #chart.setBackgroundBrush(brush)
@@ -111,15 +118,16 @@ class AIWake_UI(QMainWindow):
         self.layoutCanvas.addWidget(chartTest)
         chart_2 = QChart()
         series_2 = QPieSeries()
-        chart_2.setAnimationOptions(QChart.SeriesAnimations)
-        chart_2.setTitle("testeo2")
+        chart_2.setAnimationOptions(QChart.GridAxisAnimations)
+        chart_2.setTitle("testeo detailed")
         #chart_2.setBackgroundBrush(brush)
         chartTest_2 = QChartView(chart_2)
         self.layoutCanvas_2.addWidget(chartTest_2)
         self.thread[4] = plotter_2.PlotterManager_2(1, self.chart, series, parent=None)
         self.thread[4].start()
-        self.thread[5] = plotter_2.PlotterManager_2(2, chart_2, series_2, parent=None)
+        self.thread[5] = detailed.DetailedManager(2, chart_2, series_2, parent=None)
         self.thread[5].start()
+
         #self.layoutCanvas.addWidget(self.thread[4].canvas)
         #self.thread[4].drawing.connect(self.managePlotters)
         #self.thread[4].start()
@@ -250,7 +258,10 @@ class AIWake_UI(QMainWindow):
         self.thread[2].done.connect(self.startPostPreview)
         self.thread[2].updateStatus.connect(self.updateStatus)
         self.thread[2].updatePlotter.connect(self.drawData)
+        self.thread[2].updatePlotterDetailed.connect(self.updatePlotterDetailed)
         #self.thread[4].proccessing = True
+        self.thread[4].processing = True
+        self.thread[5].processing = True
         self.thread[2].start()
 
     def startPostPreview(self):
@@ -265,10 +276,18 @@ class AIWake_UI(QMainWindow):
         self.thread[3].setPickerMood.connect(self.setPickerMood)
         self.thread[3].setPicker.connect(self.setPicker)
         self.thread[4].readJson = True
+        self.thread[5].readJson = True
         self.thread[3].start()
+
+    def updatePlotterDetailed(self, labels):
+        self.thread[5].labelHashProcessing = labels.copy()
+        self.thread[5].updateValues_lineProcessing(labels.copy())
+        self.thread[5].updateValues_barProcessing()
+        self.thread[5].updateValues_pieProcessing()
 
     def setPostProgress(self, progress):
         self.postPb.setValue(progress)
+        self.thread[4].updateValues_lineProcessing()
 
     def deleteFace(self):
         self.FacePicker.clear()
@@ -350,15 +369,29 @@ class AIWake_UI(QMainWindow):
                 self.thread[1].preprocessDone.connect(self.startPostProcessing)
                 self.thread[1].changeSelectedFrame.connect(self.updateFrameSelector)
                 self.thread[1].updatePlotter.connect(self.drawDataDetections)
+                self.thread[1].updatePlotterDetailed.connect(self.updateDetailedPlot)
+                self.thread[5].videoReady = True
+
                 self.frameSelector.setMaximum(config.VIDEO_LENGHT)
         elif self.currentThread[2]:
             self.thread[3].pause = False
 
+    def updateDetailedPlot(self, data):
+        labels = []
+        values = []
+        for k in data:
+            labels.append(k)
+            values.append(data[k])
+        self.thread[5].labels = labels
+        self.thread[5].values = values
+        self.thread[5].updateValues_line()
+
     def drawDataDetections(self, x_axis, y_axis, x_label="Frames", y_label="Detections", title="Data" ):
         self.thread[4].labels = y_axis
         self.thread[4].values = x_axis
-        self.thread[5].labels = y_axis
-        self.thread[5].values = x_axis
+        self.thread[4].frame += 1
+        self.thread[5].frame += 1
+        self.thread[4].updateValues_line()
         pass
 
     def updateFrameSelector(self, frame):

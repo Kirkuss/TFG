@@ -22,6 +22,7 @@ class FaceIsolator(QThread):
     preprocessDone = pyqtSignal()
     changeSelectedFrame = pyqtSignal(int)
     updatePlotter = pyqtSignal(list, list)
+    updatePlotterDetailed = pyqtSignal(dict)
 
     def __init__(self, parent=None):
         super(FaceIsolator, self).__init__(parent)
@@ -185,6 +186,7 @@ class FaceIsolator(QThread):
     def getAcceptedAndRejectedNum(self):
         accepted = 0
         rejected = 0
+        total = 0
         for k in self.list:
             if self.list[k].valid:
                 accepted += 1
@@ -199,11 +201,13 @@ class FaceIsolator(QThread):
         iterations = 0
         iterations_ratio = 0
         founds = 0
+        frame_stats = {"Accepted": 0, "Rejected": 0}
         faceCascade = cv2.CascadeClassifier(config.PATH_TO_MODEL)
         config.LOG += "\n" + ts.getTime(self) + " [" + str(config.VIDEO_LENGHT) + "] detected frames to be procesed"
         config.LOG += "\n" + ts.getTime(self) + " Processing..."
         self.updateTerminal.emit()
         lastFrame = ""
+        config.CURRENT_FRAME = 1
 
         while (cap.isOpened()):
 
@@ -334,6 +338,8 @@ class FaceIsolator(QThread):
                 GrayFrame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 faces = faceCascade.detectMultiScale(GrayFrame, 1.1, 4)
 
+                for k in frame_stats: frame_stats[k] = 0
+
                 for (x, y, w, h) in faces:
                     newFace = DS.face(x, y, w, h, iterations, self.fernet)
                     newFound = True
@@ -342,12 +348,17 @@ class FaceIsolator(QThread):
                         self.list[str(founds)] = newFace
                         newFace.queue(newFace, None)
                         self.setPicker.emit(self.getFaceIds(self.list ,str(founds), False))
+                        frame_stats["Rejected"] += 1
                     else:
                         for k, v in self.list.items():
                             if newFace.equal(config.PROP, self.list[k], frame):
                                 newFace.occurs += self.list[k].occurs + 1
-                                if newFace.occurs >= int(iterations_ratio*config.RATIO): newFace.valid = True
-                                else: newFace.valid = False
+                                if newFace.occurs >= int(iterations_ratio*config.RATIO):
+                                    newFace.valid = True
+                                    frame_stats["Accepted"] += 1
+                                else:
+                                    newFace.valid = False
+                                    frame_stats["Rejected"] += 1
                                 newFace.queue(newFace, self.list[k].list)
                                 self.list[k] = newFace
                                 newFound = False
@@ -358,6 +369,7 @@ class FaceIsolator(QThread):
                         newFace.queue(newFace, None)
                         self.list[str(founds)] = newFace
                         self.setPicker.emit(self.getFaceIds(self.list, str(founds), False))
+                        frame_stats["Rejected"] += 1
 
                     if config.DETAILED:
                         if newFace.valid:
@@ -370,6 +382,7 @@ class FaceIsolator(QThread):
                                         (0, 0, 255), 1, cv2.LINE_AA)
 
                 self.updatePlotter.emit(self.getAcceptedAndRejectedNum(), ["Accepted", "Rejected"])
+                self.updatePlotterDetailed.emit(frame_stats)
                 #self.getAcceptedAndRejectedNum()
 
 
